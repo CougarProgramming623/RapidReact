@@ -5,9 +5,13 @@
 #pragma once
 
 #include <frc/TimedRobot.h>
+#include <frc/AddressableLED.h>
 
 class Robot : public frc::TimedRobot {
  public:
+
+  Robot();
+
   void RobotInit() override;
   void RobotPeriodic() override;
 
@@ -22,4 +26,10 @@ class Robot : public frc::TimedRobot {
 
   void TestInit() override;
   void TestPeriodic() override;
+
+  private:
+  
+  static Robot* s_Instance;
+  frc::AddressableLED m_LED{9};
+  std::array<frc::AddressableLED::LEDData, 140> m_ledBuffer;
 };
