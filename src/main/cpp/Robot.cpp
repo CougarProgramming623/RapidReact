@@ -5,16 +5,16 @@
 #include "Robot.h"
 #include <wpi/raw_ostream.h>
 #include <frc/Errors.h>
+#include "Util.h"
 
 Robot* Robot::s_Instance = nullptr;
 
 Robot::Robot(){
-  wpi::outs() << "Robot Cpnstruct\n";
   s_Instance = this;
 }
 
 void Robot::RobotInit() {
-  wpi::outs() << "Robot Init\n";
+  DebugOutF("Robot Init");
   m_LED.SetLength(140);
 
   for (int i = 0; i < 140; i++)
@@ -26,15 +26,19 @@ void Robot::RobotInit() {
   m_LED.Start();
 }
 
-void Robot::RobotPeriodic() {}
+void Robot::RobotPeriodic() {
+  frc2::CommandScheduler::GetInstance().Run();
+}
 
 void Robot::AutonomousInit() {
-  wpi::outs() << "Auto Init\n";
+  DebugOutF("Auto Init");
+
 }
 void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {
-  wpi::outs() << "Teleop Init\n";
+  DebugOutF("Teleop Init");
+
 }
 void Robot::TeleopPeriodic() {}
 

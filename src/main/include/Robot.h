@@ -6,6 +6,7 @@
 
 #include <frc/TimedRobot.h>
 #include <frc/AddressableLED.h>
+#include <frc2/command/PrintCommand.h>
 
 class Robot : public frc::TimedRobot {
  public:
