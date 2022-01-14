@@ -47,5 +47,5 @@ class Robot : public frc::TimedRobot {
 	frc::Joystick m_DriverJoystick = frc::Joystick(0);
 	frc::Joystick m_ButtonBoard = frc::Joystick(1);
 
-  Drive m_DriveTrain;
+  DriveTrain m_DriveTrain;
 };

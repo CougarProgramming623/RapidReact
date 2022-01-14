@@ -1,8 +1,8 @@
-#include "subsystems/Drive.h"
+#include "subsystems/DriveTrain.h"
 #include "Robot.h"
 #include "ID.h"
 
-Drive::Drive():
+DriveTrain::DriveTrain():
     m_FrontLeft(DRIVE_FRONT_LEFT),
     m_FrontRight(DRIVE_FRONT_RIGHT),
     m_BackLeft(DRIVE_BACK_LEFT),

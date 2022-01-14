@@ -2,9 +2,9 @@
 
 #include <ctre/phoenix/motorcontrol/can/TalonFX.h>
 
-class Drive {
+class DriveTrain {
 public: 
-    Drive::Drive();
+    DriveTrain::DriveTrain();
 
 
 private:
