@@ -7,6 +7,8 @@
 #include <frc/Errors.h>
 #include "Util.h"
 
+#include <subsystems/Drive.h>
+
 Robot* Robot::s_Instance = nullptr;
 
 Robot::Robot(){
@@ -32,13 +34,13 @@ void Robot::RobotPeriodic() {
 
 void Robot::AutonomousInit() {
   DebugOutF("Auto Init");
-
 }
-void Robot::AutonomousPeriodic() {}
+void Robot::AutonomousPeriodic() {
+  
+}
 
 void Robot::TeleopInit() {
   DebugOutF("Teleop Init");
-
 }
 void Robot::TeleopPeriodic() {}
 

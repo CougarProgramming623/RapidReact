@@ -8,6 +8,8 @@
 #include <frc/AddressableLED.h>
 #include <frc2/command/PrintCommand.h>
 
+#include <frc/Joystick.h>
+
 class Robot : public frc::TimedRobot {
  public:
 
@@ -28,9 +30,22 @@ class Robot : public frc::TimedRobot {
   void TestInit() override;
   void TestPeriodic() override;
 
+  void GetDriveTrain();
+  void SetDriveTrain();
+
+  inline static Robot* GetRobot(){
+    return s_Instance;
+  }
+
   private:
   
   static Robot* s_Instance;
   frc::AddressableLED m_LED{9};
   std::array<frc::AddressableLED::LEDData, 140> m_ledBuffer;
+
+  
+	frc::Joystick m_DriverJoystick = frc::Joystick(0);
+	frc::Joystick m_ButtonBoard = frc::Joystick(1);
+
+  Drive m_DriveTrain;
 };
