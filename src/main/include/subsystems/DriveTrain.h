@@ -4,7 +4,7 @@
 
 class DriveTrain {
 public: 
-    DriveTrain::DriveTrain();
+    DriveTrain();
 
 
 private:
