@@ -45,8 +45,8 @@ class Robot : public frc::TimedRobot {
 
   Shooter m_Shooter;
 
-  frc::Joystick m_ButtonBoard = frc::Joystick(1);
-  frc::Joystick m_Joystick = frc::Joystick(0);
+  frc::Joystick m_ButtonBoard = frc::Joystick(0);
+  frc::Joystick m_Joystick = frc::Joystick(1);
   
   
 };
