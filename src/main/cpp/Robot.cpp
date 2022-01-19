@@ -11,7 +11,7 @@
 
 Robot* Robot::s_Instance = nullptr;
 
-Robot::Robot(){
+Robot::Robot() {
   s_Instance = this;
 }
 
@@ -26,6 +26,8 @@ void Robot::RobotInit() {
   
   m_LED.SetData(m_ledBuffer);
   m_LED.Start();
+
+  m_DriveTrain.DriveInit();
 }
 
 void Robot::RobotPeriodic() {

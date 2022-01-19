@@ -8,10 +8,10 @@
 
 #ifdef ROBOT_SABER
 
-#define DRIVE_FRONT_LEFT -1
-#define DRIVE_FRONT_RIGHT -1
-#define DRIVE_BACK_LEFT -1
-#define DRIVE_BACK_RIGHT -1
+#define DRIVE_FRONT_LEFT 31
+#define DRIVE_FRONT_RIGHT 32
+#define DRIVE_BACK_LEFT 34
+#define DRIVE_BACK_RIGHT 33
 
 #endif
 

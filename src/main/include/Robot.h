@@ -38,6 +38,13 @@ class Robot : public frc::TimedRobot {
     return s_Instance;
   }
 
+  inline frc::Joystick* GetButtonBoard(){
+    return &m_ButtonBoard;
+  }
+
+
+  DriveTrain m_DriveTrain;
+
   private:
   
   static Robot* s_Instance;
@@ -48,5 +55,4 @@ class Robot : public frc::TimedRobot {
 	frc::Joystick m_DriverJoystick = frc::Joystick(0);
 	frc::Joystick m_ButtonBoard = frc::Joystick(1);
 
-  DriveTrain m_DriveTrain;
 };
