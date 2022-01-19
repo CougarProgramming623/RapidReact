@@ -29,7 +29,11 @@ class Robot : public frc::TimedRobot {
   void TestInit() override;
   void TestPeriodic() override;
 
-  // inline Shooter* GetShooter(){ return &m_Shooter; }
+  static Robot* GetRobot(){ return s_Instance; }
+
+  frc::Joystick& GetButtonBoard(){ return m_ButtonBoard; }
+
+  inline Shooter& GetShooter(){ return m_Shooter; }
 
   private:
   
@@ -37,5 +41,8 @@ class Robot : public frc::TimedRobot {
   frc::AddressableLED m_LED{9};
   std::array<frc::AddressableLED::LEDData, 140> m_ledBuffer;
 
-  // Shooter m_Shooter;
+  Shooter m_Shooter;
+
+  frc::Joystick m_ButtonBoard = frc::Joystick(1);
+  
 };

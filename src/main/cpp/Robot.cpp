@@ -24,6 +24,8 @@ void Robot::RobotInit() {
   
   m_LED.SetData(m_ledBuffer);
   m_LED.Start();
+
+  m_Shooter.ShooterInit();
 }
 
 void Robot::RobotPeriodic() {
@@ -31,10 +33,11 @@ void Robot::RobotPeriodic() {
 }
 
 void Robot::AutonomousInit() {
-  DebugOutF("Auto Init");
+  
+}
+void Robot::AutonomousPeriodic() {
 
 }
-void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {
   DebugOutF("Teleop Init");
