@@ -10,16 +10,14 @@
 using ctre::phoenix::motorcontrol::ControlMode;
 
 Shooter::Shooter() :
-
+m_FeederButton(BUTTON_L(FEEDER_BUTTON)),
+m_FlywheelToggle(BUTTON_L(FLYWHEEL_BUTTON)),
 m_FlywheelFront(FLYWHEEL_FRONT),
 m_FlywheelBack(FLYWHEEL_BACK),
-m_Feeder(FEEDER),
-m_FeederButton( [&] { return Robot::GetRobot()->GetButtonBoard().GetRawButton(FEEDER_BUTTON);}),
-m_FlywheelToggle( [&] { return Robot::GetRobot()->GetButtonBoard().GetRawButton(FLYWHEEL_BUTTON);})
+m_Feeder(FEEDER)
 {}
 
 void Shooter::ShooterInit(){
-
     FeederButton();
     FlywheelButton();
     m_FlywheelBack.Set(ControlMode::Follower, FLYWHEEL_FRONT);

@@ -31,9 +31,11 @@ class Robot : public frc::TimedRobot {
 
   static Robot* GetRobot(){ return s_Instance; }
 
-  frc::Joystick& GetButtonBoard(){ return m_ButtonBoard; }
+  inline frc::Joystick& GetButtonBoard(){ return m_ButtonBoard; }
+  inline frc::Joystick& GetJoystick() { return m_Joystick; }
 
   inline Shooter& GetShooter(){ return m_Shooter; }
+
 
   private:
   
@@ -44,5 +46,7 @@ class Robot : public frc::TimedRobot {
   Shooter m_Shooter;
 
   frc::Joystick m_ButtonBoard = frc::Joystick(1);
+  frc::Joystick m_Joystick = frc::Joystick(0);
+  
   
 };
