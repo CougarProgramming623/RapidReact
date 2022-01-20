@@ -15,7 +15,7 @@ public:
     void BreakMode(bool on);
     void CartesianDrive(double y, double x, double rotation, double angle);
 
-
+    bool m_FOD = true;
 
 private:
     TalonFX m_FrontLeft;
@@ -24,6 +24,6 @@ private:
     TalonFX m_BackRight;
 
     frc2::Button m_DriveButton;
+    frc2::Button m_FODToggle;
 
-    bool m_isFOD;
 };

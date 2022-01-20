@@ -48,7 +48,7 @@ void Robot::TeleopInit() {
   m_DriveTrain.BreakMode(true);
 }
 void Robot::TeleopPeriodic() {
-  m_DriveTrain.CartesianDrive(-m_Joystick.GetRawAxis(1), m_Joystick.GetRawAxis(0), m_Joystick.GetRawAxis(2), 0);
+  m_DriveTrain.CartesianDrive(-m_Joystick.GetRawAxis(1), m_Joystick.GetRawAxis(0), m_Joystick.GetRawAxis(2), GetNavX()->GetYaw());
 }
 
 void Robot::DisabledInit() {

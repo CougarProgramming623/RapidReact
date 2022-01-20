@@ -12,7 +12,8 @@ DriveTrain::DriveTrain():
     m_FrontRight(DRIVE_FRONT_RIGHT),
     m_BackLeft(DRIVE_BACK_LEFT),
     m_BackRight(DRIVE_BACK_RIGHT),
-    m_DriveButton(BUTTON_L(2))
+    m_DriveButton(BUTTON_L(2)),
+    m_FODToggle([&] {return Robot::GetRobot()->GetJoystick().GetRawButton(1);})
 {
     
 };
@@ -50,11 +51,15 @@ void DriveTrain::CartesianDrive(double y, double x, double rotation, double angl
     for(int i = 0; i < 4; i++) {
         wheelSpeeds.push_back(0.0);
     }
-    
+
     const int kFRONT_LEFT = 0;
     const int kFRONT_RIGHT = 1;
     const int kBACK_LEFT = 2;
     const int kBACK_RIGHT = 3;
+
+    x = abs(x) <= 0.05f ? 0 : x;
+	y = abs(y) <= 0.05f ? 0 : y;
+	rotation = abs(rotation) <= 0.025f ? 0 : rotation;
 	
 	wheelSpeeds[kFRONT_LEFT] = input.y + input.x + rotation;
 	wheelSpeeds[kFRONT_RIGHT] = input.y - input.x - rotation;
@@ -63,10 +68,18 @@ void DriveTrain::CartesianDrive(double y, double x, double rotation, double angl
 
 	Normalize(wheelSpeeds);
 
-    m_FrontLeft.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_LEFT]);
-    m_FrontRight.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_RIGHT]);
-    m_BackLeft.Set(ControlMode::PercentOutput, wheelSpeeds[kBACK_LEFT]);
-    m_BackRight.Set(ControlMode::PercentOutput, wheelSpeeds[kBACK_RIGHT]);
+    if (m_FOD)
+    {
+        m_FrontLeft.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_LEFT] );
+        m_FrontRight.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_RIGHT]);
+        m_BackLeft.Set(ControlMode::PercentOutput, wheelSpeeds[kBACK_LEFT]);
+        m_BackRight.Set(ControlMode::PercentOutput, wheelSpeeds[kBACK_RIGHT]);
+    } else {
+        m_FrontLeft.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_LEFT]);
+        m_FrontRight.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_RIGHT]);
+        m_BackLeft.Set(ControlMode::PercentOutput, wheelSpeeds[kBACK_LEFT]);
+        m_BackRight.Set(ControlMode::PercentOutput, wheelSpeeds[kBACK_RIGHT]);
+    }  
 }
 
 
@@ -87,6 +100,11 @@ void DriveTrain::DriveInit(){
     }));
 
     BreakMode(true);
+
+    m_FODToggle.WhenPressed([&] {
+        m_FOD = !m_FOD;
+    });
+    
 }
 
 void DriveTrain::BaseDrive(double power){
