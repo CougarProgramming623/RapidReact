@@ -47,7 +47,9 @@ void Robot::TeleopInit() {
   DebugOutF("Teleop Init");
   m_DriveTrain.BreakMode(true);
 }
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+  m_DriveTrain.CartesianDrive(-m_Joystick.GetRawAxis(1), m_Joystick.GetRawAxis(0), m_Joystick.GetRawAxis(2), 0);
+}
 
 void Robot::DisabledInit() {
   m_DriveTrain.BreakMode(false);
