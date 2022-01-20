@@ -28,6 +28,7 @@ void Robot::RobotInit() {
   m_LED.Start();
 
   m_DriveTrain.DriveInit();
+  m_Shooter.ShooterInit();
 }
 
 void Robot::RobotPeriodic() {
@@ -36,6 +37,7 @@ void Robot::RobotPeriodic() {
 
 void Robot::AutonomousInit() {
   DebugOutF("Auto Init");
+  m_DriveTrain.BreakMode(true);
 }
 void Robot::AutonomousPeriodic() {
   
@@ -43,10 +45,13 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() {
   DebugOutF("Teleop Init");
+  m_DriveTrain.BreakMode(true);
 }
 void Robot::TeleopPeriodic() {}
 
-void Robot::DisabledInit() {}
+void Robot::DisabledInit() {
+  m_DriveTrain.BreakMode(false);
+}
 void Robot::DisabledPeriodic() {}
 
 void Robot::TestInit() {}

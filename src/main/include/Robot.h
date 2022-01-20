@@ -7,6 +7,7 @@
 #include <frc/TimedRobot.h>
 #include <frc/AddressableLED.h>
 #include <frc2/command/PrintCommand.h>
+#include "subsystems/Shooter.h"
 
 #include <frc/Joystick.h>
 #include "subsystems/DriveTrain.h"
@@ -34,16 +35,15 @@ class Robot : public frc::TimedRobot {
   void GetDriveTrain();
   void SetDriveTrain();
 
-  inline static Robot* GetRobot(){
-    return s_Instance;
-  }
-
-  inline frc::Joystick* GetButtonBoard(){
-    return &m_ButtonBoard;
-  }
-
-
   DriveTrain m_DriveTrain;
+
+  static Robot* GetRobot(){ return s_Instance; }
+
+  inline frc::Joystick& GetButtonBoard(){ return m_ButtonBoard; }
+  inline frc::Joystick& GetJoystick() { return m_Joystick; }
+
+  inline Shooter& GetShooter(){ return m_Shooter; }
+
 
   private:
   
@@ -51,8 +51,10 @@ class Robot : public frc::TimedRobot {
   frc::AddressableLED m_LED{9};
   std::array<frc::AddressableLED::LEDData, 140> m_ledBuffer;
 
-  
-	frc::Joystick m_DriverJoystick = frc::Joystick(0);
-	frc::Joystick m_ButtonBoard = frc::Joystick(1);
+  Shooter m_Shooter;
 
+  frc::Joystick m_ButtonBoard = frc::Joystick(0);
+  frc::Joystick m_Joystick = frc::Joystick(1);
+  
+  
 };
