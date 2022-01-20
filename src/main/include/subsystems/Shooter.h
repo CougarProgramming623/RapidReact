@@ -17,6 +17,7 @@ class Shooter {
 
         frc2::Button m_FeederButton;
         frc2::Button m_FlywheelToggle;
+        frc2::Button m_FlywheelDial;
 
         ctre::phoenix::motorcontrol::can::TalonFX m_FlywheelFront;
         ctre::phoenix::motorcontrol::can::TalonFX m_FlywheelBack;

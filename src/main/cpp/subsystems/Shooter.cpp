@@ -3,6 +3,7 @@
 #include "Util.h"
 #include "ID.h"
 #include <frc2/command/InstantCommand.h>
+#include <frc2/command/FunctionalCommand.h>
 #include "ctre/phoenix/motorcontrol/can/TalonFX.h"
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <ctre/phoenix/motorcontrol/InvertType.h>
@@ -36,9 +37,23 @@ void Shooter::FeederButton(){
 
 void Shooter::FlywheelButton(){
 
-    m_FlywheelToggle.WhenPressed(frc2::InstantCommand( [&] { 
-        m_FlywheelFront.Set(ControlMode::PercentOutput, 0.1);
+    /*m_FlywheelToggle.WhenPressed(frc2::InstantCommand( [&] { 
+        DebugOutF(std::to_string((Robot::GetRobot()->GetButtonBoard().GetRawAxis(0) + 1) / 2));
+        m_FlywheelFront.Set(ControlMode::PercentOutput, ((Robot::GetRobot()->GetButtonBoard().GetRawAxis(0) + 1) / 2));
     }));
+    */
+
+   m_FlywheelToggle.WhenHeld(frc2::FunctionalCommand( [&]{}, [&]{ //onExecute
+
+            double dialSpeed = ((Robot::GetRobot()->GetButtonBoard().GetRawAxis(0) + 1) / 2);
+            
+            m_FlywheelFront.Set(ControlMode::PercentOutput, dialSpeed);
+
+        }, [&](bool e){ //onEnd
+
+                m_FlywheelFront.Set(ControlMode::PercentOutput, 0);
+        }, [&]{ return false; }, {}
+   ));
 
     m_FlywheelToggle.WhenReleased(frc2::InstantCommand( [&] { 
         m_FlywheelFront.Set(ControlMode::PercentOutput, 0);
