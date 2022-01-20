@@ -14,6 +14,7 @@
 #define FEEDER 3
 #define FEEDER_BUTTON 2
 #define FLYWHEEL_BUTTON 4
+#define FLYWHEEL_DIAL -1
 
 #endif
 
