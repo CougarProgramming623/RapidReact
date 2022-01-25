@@ -91,11 +91,11 @@ void DriveTrain::DriveInit(){
 
 
     m_DriveButton.WhileHeld(frc2::InstantCommand([&] {
-        Robot::GetRobot()->m_DriveTrain.BaseDrive(.15);
+        Robot::GetRobot()->GetDriveTrain().BaseDrive(.15);
         DebugOutF("Forward");
     }));
     m_DriveButton.WhenReleased(frc2::InstantCommand([&] {
-        Robot::GetRobot()->m_DriveTrain.BaseDrive(0);
+        Robot::GetRobot()->GetDriveTrain().BaseDrive(0);
         DebugOutF("Stop");
     }));
 

@@ -28,17 +28,18 @@ void Robot::RobotInit() {
   m_LED.SetData(m_ledBuffer);
   m_LED.Start();
 
-  m_DriveTrain.DriveInit();
+  GetDriveTrain().DriveInit();
   m_Shooter.ShooterInit();
 }
 
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
+  GetCOB().GetTable().GetEntry("/COB/FOD").SetBoolean(GetDriveTrain().m_FOD);
 }
 
 void Robot::AutonomousInit() {
   DebugOutF("Auto Init");
-  m_DriveTrain.BreakMode(true);
+  GetDriveTrain().BreakMode(true);
 }
 void Robot::AutonomousPeriodic() {
   
@@ -46,14 +47,14 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() {
   DebugOutF("Teleop Init");
-  m_DriveTrain.BreakMode(true);
+  GetDriveTrain().BreakMode(true);
 }
 void Robot::TeleopPeriodic() {
-  m_DriveTrain.CartesianDrive(-m_Joystick.GetRawAxis(1), m_Joystick.GetRawAxis(0), m_Joystick.GetRawAxis(2), GetNavX().GetYaw());
+  GetDriveTrain().CartesianDrive(-m_Joystick.GetRawAxis(1), m_Joystick.GetRawAxis(0), m_Joystick.GetRawAxis(2), GetNavX().GetYaw());
 }
 
 void Robot::DisabledInit() {
-  m_DriveTrain.BreakMode(false);
+  GetDriveTrain().BreakMode(false);
 }
 void Robot::DisabledPeriodic() {}
 

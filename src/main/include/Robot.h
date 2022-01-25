@@ -13,6 +13,7 @@
 #include "subsystems/DriveTrain.h"
 #include <AHRS.h>
 #include <frc/SPI.h>
+#include "COB.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -34,10 +35,7 @@ class Robot : public frc::TimedRobot {
   void TestInit() override;
   void TestPeriodic() override;
 
-  void GetDriveTrain();
-  void SetDriveTrain();
-
-  DriveTrain m_DriveTrain;
+  inline DriveTrain& GetDriveTrain(){return m_DriveTrain;}
 
   static Robot* GetRobot(){ return s_Instance; }
 
@@ -47,6 +45,8 @@ class Robot : public frc::TimedRobot {
   inline Shooter& GetShooter(){ return m_Shooter; }
 
   inline AHRS& GetNavX() {return m_NavX; }
+
+  inline COB& GetCOB() {return m_COB; }
 
   private:
   
@@ -60,4 +60,8 @@ class Robot : public frc::TimedRobot {
   frc::Joystick m_Joystick = frc::Joystick(1);
   
   AHRS m_NavX {frc::SPI::Port::kMXP};
+
+  DriveTrain m_DriveTrain;
+
+  COB m_COB;
 };
