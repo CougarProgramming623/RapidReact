@@ -11,6 +11,8 @@
 
 #include <frc/Joystick.h>
 #include "subsystems/DriveTrain.h"
+#include <AHRS.h>
+#include <frc/SPI.h>
 
 class Robot : public frc::TimedRobot {
  public:
@@ -44,6 +46,7 @@ class Robot : public frc::TimedRobot {
 
   inline Shooter& GetShooter(){ return m_Shooter; }
 
+  inline AHRS& GetNavX() {return m_NavX; }
 
   private:
   
@@ -56,5 +59,5 @@ class Robot : public frc::TimedRobot {
   frc::Joystick m_ButtonBoard = frc::Joystick(0);
   frc::Joystick m_Joystick = frc::Joystick(1);
   
-  
+  AHRS m_NavX {frc::SPI::Port::kMXP};
 };

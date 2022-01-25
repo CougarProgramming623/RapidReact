@@ -13,6 +13,7 @@ Robot* Robot::s_Instance = nullptr;
 
 Robot::Robot() {
   s_Instance = this;
+  
 }
 
 void Robot::RobotInit() {
@@ -48,7 +49,7 @@ void Robot::TeleopInit() {
   m_DriveTrain.BreakMode(true);
 }
 void Robot::TeleopPeriodic() {
-  m_DriveTrain.CartesianDrive(-m_Joystick.GetRawAxis(1), m_Joystick.GetRawAxis(0), m_Joystick.GetRawAxis(2), GetNavX()->GetYaw());
+  m_DriveTrain.CartesianDrive(-m_Joystick.GetRawAxis(1), m_Joystick.GetRawAxis(0), m_Joystick.GetRawAxis(2), GetNavX().GetYaw());
 }
 
 void Robot::DisabledInit() {
