@@ -34,13 +34,13 @@ void Robot::RobotInit() {
 
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
-  GetCOB().GetTable().GetEntry("/COB/FOD").SetBoolean(GetDriveTrain().m_FOD);
+  GetCOB().GetTable().GetEntry(COB_KEY_FOD).SetBoolean(GetDriveTrain().m_FOD);
 }
 
 void Robot::AutonomousInit() {
   DebugOutF("Auto Init");
   GetDriveTrain().BreakMode(true);
-  GetCOB().GetTable().GetEntry(COB_ENABLED).SetBoolean(true);
+  GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
 }
 void Robot::AutonomousPeriodic() {
   
@@ -49,7 +49,7 @@ void Robot::AutonomousPeriodic() {
 void Robot::TeleopInit() {
   DebugOutF("Teleop Init");
   GetDriveTrain().BreakMode(true);
-  GetCOB().GetTable().GetEntry(COB_ENABLED).SetBoolean(true);
+  GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
 
 }
 void Robot::TeleopPeriodic() {
@@ -58,7 +58,7 @@ void Robot::TeleopPeriodic() {
 
 void Robot::DisabledInit() {
   GetDriveTrain().BreakMode(false);
-  GetCOB().GetTable().GetEntry(COB_ENABLED).SetBoolean(false);
+  GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(false);
 }
 void Robot::DisabledPeriodic() {}
 
