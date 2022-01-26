@@ -4,7 +4,8 @@
 #include <networktables/NetworkTableEntry.h>
 #include <networktables/NetworkTableInstance.h>
 
-#define COB_ENABLED "/COB/enabled"
+#define COB_KEY_ENABLED "/COB/enabled"
+#define COB_KEY_FOD "/COB/FOD"
 
 
 class COB
