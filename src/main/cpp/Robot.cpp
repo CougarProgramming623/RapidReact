@@ -35,13 +35,17 @@ void Robot::RobotInit() {
 
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
-  GetCOB().GetTable().GetEntry("/COB/FOD").SetBoolean(GetDriveTrain().m_FOD);
+
   Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1);
+  
+  GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_SPEED).SetDouble(GetShooter().FlywheelSpeed());
+  GetCOB().GetTable().GetEntry(COB_KEY_FOD).SetBoolean(GetDriveTrain().m_FOD);
 }
 
 void Robot::AutonomousInit() {
   DebugOutF("Auto Init");
   GetDriveTrain().BreakMode(true);
+  GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
 }
 void Robot::AutonomousPeriodic() {
   
@@ -50,6 +54,8 @@ void Robot::AutonomousPeriodic() {
 void Robot::TeleopInit() {
   DebugOutF("Teleop Init");
   GetDriveTrain().BreakMode(true);
+  GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
+
 }
 void Robot::TeleopPeriodic() {
   GetDriveTrain().CartesianDrive(-m_Joystick.GetRawAxis(1), m_Joystick.GetRawAxis(0), m_Joystick.GetRawAxis(2), GetNavX().GetYaw());
@@ -57,6 +63,7 @@ void Robot::TeleopPeriodic() {
 
 void Robot::DisabledInit() {
   GetDriveTrain().BreakMode(false);
+  GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(false);
 }
 void Robot::DisabledPeriodic() {}
 

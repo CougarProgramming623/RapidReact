@@ -12,6 +12,7 @@ class Shooter {
         void ShooterInit();
         void FeederButton();
         void FlywheelButton();
+        double FlywheelSpeed();
 
     private:
 
