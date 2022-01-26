@@ -4,6 +4,7 @@
 #include <networktables/NetworkTableEntry.h>
 #include <networktables/NetworkTableInstance.h>
 
+
 class COB
 {
 

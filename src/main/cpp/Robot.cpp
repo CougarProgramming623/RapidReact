@@ -35,6 +35,7 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
   GetCOB().GetTable().GetEntry("/COB/FOD").SetBoolean(GetDriveTrain().m_FOD);
+  GetCOB().GetTable().GetEntry("/COB/flywheelSpeed").SetDouble(GetShooter().FlywheelSpeed());
 }
 
 void Robot::AutonomousInit() {
