@@ -28,10 +28,14 @@ void Shooter::ShooterInit(){
 void Shooter::FeederButton(){
     m_FeederButton.WhenPressed(frc2::InstantCommand( [&] { 
         m_Feeder.Set(ControlMode::PercentOutput, 0.5);
+        Robot::GetRobot()->GetCOB().GetTable().GetEntry("/COB/ifShooting").SetBoolean(true);
+
     }));
 
     m_FeederButton.WhenReleased(frc2::InstantCommand( [&] { 
         m_Feeder.Set(ControlMode::PercentOutput, 0);
+        Robot::GetRobot()->GetCOB().GetTable().GetEntry("/COB/ifShooting").SetBoolean(false);
+
     }));
 }
 
