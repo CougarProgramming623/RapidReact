@@ -7,10 +7,13 @@
 #include <frc/Errors.h>
 #include "Util.h"
 
+#include <subsystems/DriveTrain.h>
+
 Robot* Robot::s_Instance = nullptr;
 
-Robot::Robot(){
+Robot::Robot() {
   s_Instance = this;
+  
 }
 
 void Robot::RobotInit() {
@@ -25,27 +28,34 @@ void Robot::RobotInit() {
   m_LED.SetData(m_ledBuffer);
   m_LED.Start();
 
+  GetDriveTrain().DriveInit();
   m_Shooter.ShooterInit();
 }
 
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
+  GetCOB().GetTable().GetEntry("/COB/FOD").SetBoolean(GetDriveTrain().m_FOD);
 }
 
 void Robot::AutonomousInit() {
-  
+  DebugOutF("Auto Init");
+  GetDriveTrain().BreakMode(true);
 }
 void Robot::AutonomousPeriodic() {
-
+  
 }
 
 void Robot::TeleopInit() {
   DebugOutF("Teleop Init");
-
+  GetDriveTrain().BreakMode(true);
 }
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+  GetDriveTrain().CartesianDrive(-m_Joystick.GetRawAxis(1), m_Joystick.GetRawAxis(0), m_Joystick.GetRawAxis(2), GetNavX().GetYaw());
+}
 
-void Robot::DisabledInit() {}
+void Robot::DisabledInit() {
+  GetDriveTrain().BreakMode(false);
+}
 void Robot::DisabledPeriodic() {}
 
 void Robot::TestInit() {}
