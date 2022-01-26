@@ -63,3 +63,7 @@ void Shooter::FlywheelButton(){
         m_FlywheelFront.Set(ControlMode::PercentOutput, 0);
     }));
 }
+
+double Shooter::FlywheelSpeed(){
+    return m_FlywheelFront.GetSelectedSensorVelocity() * 600 / 2048;
+}

@@ -6,6 +6,7 @@
 
 #define COB_KEY_ENABLED "/COB/enabled"
 #define COB_KEY_FOD "/COB/FOD"
+#define COB_KEY_FLYWHEEL_SPEED "/COB/flywheelSpeed"
 
 
 class COB
