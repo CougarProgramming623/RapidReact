@@ -45,8 +45,8 @@ void DriveTrain::CartesianDrive(double y, double x, double rotation, double angl
 	//source: WPILib
 	//same code found in CartesianDrive in the WPI Library but adapted for being used in Velocity Mode
 	frc::Vector2d input{x, y};
-	input.Rotate(angle);
 	std::vector<double> wheelSpeeds;
+
 
     for(int i = 0; i < 4; i++) {
         wheelSpeeds.push_back(0.0);
@@ -56,6 +56,8 @@ void DriveTrain::CartesianDrive(double y, double x, double rotation, double angl
     const int kFRONT_RIGHT = 1;
     const int kBACK_LEFT = 2;
     const int kBACK_RIGHT = 3;
+
+    if (m_FOD){ input.Rotate(angle); }
 
     x = abs(x) <= 0.05f ? 0 : x;
 	y = abs(y) <= 0.05f ? 0 : y;
@@ -67,19 +69,12 @@ void DriveTrain::CartesianDrive(double y, double x, double rotation, double angl
 	wheelSpeeds[kBACK_RIGHT] = input.y + input.x - rotation;
 
 	Normalize(wheelSpeeds);
+        
+    m_FrontLeft.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_LEFT] );
+    m_FrontRight.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_RIGHT]);
+    m_BackLeft.Set(ControlMode::PercentOutput, wheelSpeeds[kBACK_LEFT]);
+    m_BackRight.Set(ControlMode::PercentOutput, wheelSpeeds[kBACK_RIGHT]);
 
-    if (m_FOD)
-    {
-        m_FrontLeft.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_LEFT] );
-        m_FrontRight.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_RIGHT]);
-        m_BackLeft.Set(ControlMode::PercentOutput, wheelSpeeds[kBACK_LEFT]);
-        m_BackRight.Set(ControlMode::PercentOutput, wheelSpeeds[kBACK_RIGHT]);
-    } else {
-        m_FrontLeft.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_LEFT]);
-        m_FrontRight.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_RIGHT]);
-        m_BackLeft.Set(ControlMode::PercentOutput, wheelSpeeds[kBACK_LEFT]);
-        m_BackRight.Set(ControlMode::PercentOutput, wheelSpeeds[kBACK_RIGHT]);
-    }  
 }
 
 
