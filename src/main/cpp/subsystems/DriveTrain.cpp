@@ -12,7 +12,7 @@ DriveTrain::DriveTrain():
     m_FrontRight(DRIVE_FRONT_RIGHT),
     m_BackLeft(DRIVE_BACK_LEFT),
     m_BackRight(DRIVE_BACK_RIGHT),
-    m_DriveButton(BUTTON_L(2)),
+    m_DriveButton(BUTTON_L(1)),
     m_FODToggle([&] {return Robot::GetRobot()->GetJoystick().GetRawButton(1);})
 {
     
