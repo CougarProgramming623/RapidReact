@@ -40,6 +40,7 @@ void Robot::RobotPeriodic() {
 void Robot::AutonomousInit() {
   DebugOutF("Auto Init");
   GetDriveTrain().BreakMode(true);
+  GetCOB().GetTable().GetEntry("/COB/enabled").SetBoolean(true);
 }
 void Robot::AutonomousPeriodic() {
   
@@ -48,6 +49,8 @@ void Robot::AutonomousPeriodic() {
 void Robot::TeleopInit() {
   DebugOutF("Teleop Init");
   GetDriveTrain().BreakMode(true);
+  GetCOB().GetTable().GetEntry("/COB/enabled").SetBoolean(true);
+
 }
 void Robot::TeleopPeriodic() {
   GetDriveTrain().CartesianDrive(-m_Joystick.GetRawAxis(1), m_Joystick.GetRawAxis(0), m_Joystick.GetRawAxis(2), GetNavX().GetYaw());
@@ -55,6 +58,7 @@ void Robot::TeleopPeriodic() {
 
 void Robot::DisabledInit() {
   GetDriveTrain().BreakMode(false);
+  GetCOB().GetTable().GetEntry("/COB/enabled").SetBoolean(false);
 }
 void Robot::DisabledPeriodic() {}
 
