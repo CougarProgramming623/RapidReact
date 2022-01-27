@@ -5,7 +5,6 @@
 #include <frc/drive/Vector2d.h>
 
 const int kMAX_VELOCITY = 6380/60/10*2048;//RPM->Convert to RPS->Convert to RP100MS->Convert to TP100MS
-const int kWHEEL_CIRCUMFRENCE = 0;
 
 using ctre::phoenix::motorcontrol::ControlMode;
 using ctre::phoenix::motorcontrol::NeutralMode;
@@ -112,10 +111,9 @@ void DriveTrain::SetPID(double E, double P, double I, double D, double F){
     m_FrontRight.Config_kF(0.0, F, 0.0);
 }
 
-void DriveTrain::DriveToPosition(double x, double angle){
-    ControlMode temp = m_FrontLeft.GetControlMode();
-    
-}
+//void DriveTrain::DriveToPosition(double x){
+  //  m_FrontLeft.
+//}
 
 void DriveTrain::DriveInit(){
 

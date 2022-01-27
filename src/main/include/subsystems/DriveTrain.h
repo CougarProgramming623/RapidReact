@@ -20,8 +20,8 @@ public:
     void UseVelocityPID();
     void SetPID(double E, double P, double I, double D, double F);
 
-    void DriveToPosition(double x, double anlge);
-    
+    void DriveToPosition(double x);
+
 
 private:
     TalonFX m_FrontLeft;
