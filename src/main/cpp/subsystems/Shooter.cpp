@@ -10,6 +10,12 @@
 
 using ctre::phoenix::motorcontrol::ControlMode;
 
+const double P = 0.14314;
+const double E = 0;
+const double D = 0;
+const double F = 0.10747;
+const double I = 0;
+
 Shooter::Shooter() :
 m_FeederButton(BUTTON_L(FEEDER_BUTTON)),
 m_FlywheelToggle(BUTTON_L(FLYWHEEL_BUTTON)),
@@ -23,6 +29,7 @@ void Shooter::ShooterInit(){
     FlywheelButton();
     m_FlywheelBack.Set(ControlMode::Follower, FLYWHEEL_FRONT);
     m_FlywheelBack.SetInverted(ctre::phoenix::motorcontrol::InvertType::OpposeMaster);
+
 }
 
 void Shooter::FeederButton(){
@@ -49,9 +56,11 @@ void Shooter::FlywheelButton(){
 
    m_FlywheelToggle.WhenHeld(frc2::FunctionalCommand( [&]{}, [&]{ //onExecute
 
-            double dialSpeed = ((Robot::GetRobot()->GetButtonBoard().GetRawAxis(0) + 1) / 2);
-            
-            m_FlywheelFront.Set(ControlMode::PercentOutput, dialSpeed);
+            double dialSpeed = ((int)((Robot::GetRobot()->GetButtonBoard().GetRawAxis(0) + 1)  / 2 * 6001)); //rpm
+            double targetSpeed = dialSpeed / 600 * 2048; //ticks per second
+            Robot::GetRobot()->GetCOB().GetTable().GetEntry("/COB/flywheelSpeedSetpoint").SetDouble(dialSpeed);
+
+                m_FlywheelFront.Set(ControlMode::Velocity, targetSpeed);
 
         }, [&](bool e){ //onEnd
 
@@ -59,11 +68,11 @@ void Shooter::FlywheelButton(){
         }, [&]{ return false; }, {}
    ));
 
-    m_FlywheelToggle.WhenReleased(frc2::InstantCommand( [&] { 
+        m_FlywheelToggle.WhenReleased(frc2::InstantCommand( [&] { 
         m_FlywheelFront.Set(ControlMode::PercentOutput, 0);
     }));
 }
 
 double Shooter::FlywheelSpeed(){
-    return m_FlywheelFront.GetSelectedSensorVelocity() * 600 / 2048;
+    return m_FlywheelFront.GetSelectedSensorVelocity() * 600 / 2048; //rpm
 }
