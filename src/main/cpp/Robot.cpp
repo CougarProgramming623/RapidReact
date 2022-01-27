@@ -18,6 +18,7 @@ Robot::Robot() {
 
 void Robot::RobotInit() {
   DebugOutF("Robot Init");
+   
   m_LED.SetLength(140);
 
   for (int i = 0; i < 140; i++)
@@ -34,6 +35,9 @@ void Robot::RobotInit() {
 
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
+
+  Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1);
+  
   GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_SPEED).SetDouble(GetShooter().FlywheelSpeed());
   GetCOB().GetTable().GetEntry(COB_KEY_FOD).SetBoolean(GetDriveTrain().m_FOD);
 }
