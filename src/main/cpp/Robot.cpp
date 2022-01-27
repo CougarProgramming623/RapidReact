@@ -36,6 +36,11 @@ void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
   GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_SPEED).SetDouble(GetShooter().FlywheelSpeed());
   GetCOB().GetTable().GetEntry(COB_KEY_FOD).SetBoolean(GetDriveTrain().m_FOD);
+  if (GetCOB().GetTable().GetEntry(COB_KEY_NAVX_RESET).GetBoolean(false) == true) {
+    GetNavX().ZeroYaw();
+    GetCOB().GetTable().GetEntry(COB_KEY_NAVX_RESET).SetBoolean(false);
+  }
+  GetCOB().GetTable().GetEntry(COB_KEY_ROBOT_ANGLE).SetDouble(GetNavX().GetYaw());
 }
 
 void Robot::AutonomousInit() {

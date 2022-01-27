@@ -12,7 +12,6 @@ DriveTrain::DriveTrain():
     m_FrontRight(DRIVE_FRONT_RIGHT),
     m_BackLeft(DRIVE_BACK_LEFT),
     m_BackRight(DRIVE_BACK_RIGHT),
-    m_DriveButton(BUTTON_L(1)),
     m_FODToggle([&] {return Robot::GetRobot()->GetJoystick().GetRawButton(1);})
 {
     
@@ -85,19 +84,11 @@ void DriveTrain::DriveInit(){
 
 
 
-    m_DriveButton.WhileHeld(frc2::InstantCommand([&] {
-        Robot::GetRobot()->GetDriveTrain().BaseDrive(.15);
-        DebugOutF("Forward");
-    }));
-    m_DriveButton.WhenReleased(frc2::InstantCommand([&] {
-        Robot::GetRobot()->GetDriveTrain().BaseDrive(0);
-        DebugOutF("Stop");
-    }));
-
     BreakMode(true);
 
     m_FODToggle.WhenPressed([&] {
         m_FOD = !m_FOD;
+        Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_DRIVE_MODE).SetString(m_FOD ? "Field" : "Robot");
     });
     
 }
