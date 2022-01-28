@@ -26,6 +26,11 @@ public:
 
     void DriveToPosition(double x);
 
+    inline TalonFX& GetFrontL(){return m_FrontLeft;}
+    inline TalonFX& GetFrontR(){return m_FrontRight;}
+    inline TalonFX& GetBackL(){return m_BackLeft;}
+    inline TalonFX& GetBackR(){return m_BackRight;}
+
 
 private:
     TalonFX m_FrontLeft;
