@@ -3,6 +3,7 @@
 #include "ID.h"
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <frc/drive/Vector2d.h>
+#include "commands/DriveWithJoystick.h"
 
 using ctre::phoenix::motorcontrol::ControlMode;
 using ctre::phoenix::motorcontrol::NeutralMode;
@@ -82,9 +83,9 @@ void DriveTrain::DriveInit(){
     m_BackRight.SetInverted(true);
     m_FrontRight.SetInverted(true);
 
-
-
     BreakMode(true);
+
+    SetDefaultCommand(Drive());
 
     m_FODToggle.WhenPressed([&] {
         m_FOD = !m_FOD;

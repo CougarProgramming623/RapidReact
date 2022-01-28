@@ -4,10 +4,14 @@
 #include <frc2/command/button/Button.h>
 #include <frc2/command/InstantCommand.h>
 #include "Util.h"
+#include <frc2/command/Command.h>
+#include <frc2/command/SubsystemBase.h>
+#include "./commands/DriveWithJoystick.h"
+#include "./Util.h"
 
 using ctre::phoenix::motorcontrol::can::TalonFX;
 
-class DriveTrain {
+class DriveTrain : public frc2::SubsystemBase {
 public: 
     DriveTrain();
     void BaseDrive(double power);
@@ -25,5 +29,4 @@ private:
 
     frc2::Button m_DriveButton;
     frc2::Button m_FODToggle;
-
 };
