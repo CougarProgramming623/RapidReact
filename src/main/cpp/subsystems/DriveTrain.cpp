@@ -136,6 +136,8 @@ void DriveTrain::DriveInit(){
     m_FODToggle.WhenPressed([&] {
         m_FOD = !m_FOD;
     });
+
+    UseVelocityPID();
     
 }
 
