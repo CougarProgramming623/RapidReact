@@ -13,12 +13,14 @@ class Shooter {
         void FeederButton();
         void FlywheelButton();
         double FlywheelSpeed();
+        void ShootTime();
 
     private:
 
         frc2::Button m_FeederButton;
         frc2::Button m_FlywheelToggle;
         frc2::Button m_FlywheelDial;
+        frc2::Button m_ShootTime;
 
         ctre::phoenix::motorcontrol::can::TalonFX m_FlywheelFront;
         ctre::phoenix::motorcontrol::can::TalonFX m_FlywheelBack;
