@@ -134,8 +134,8 @@ void DriveTrain::DriveInit(){
 }
 
 void DriveTrain::BaseDrive(double power){
-    m_FrontLeft.Set(ControlMode::PercentOutput, power);
-    m_FrontRight.Set(ControlMode::PercentOutput, power);
-    m_BackLeft.Set(ControlMode::PercentOutput, power);
-    m_BackRight.Set(ControlMode::PercentOutput, power);
+    m_FrontLeft.Set(ControlMode::Velocity, power * kMAX_VELOCITY);
+    m_FrontRight.Set(ControlMode::Velocity, power * kMAX_VELOCITY);
+    m_BackLeft.Set(ControlMode::Velocity, power * kMAX_VELOCITY);
+    m_BackRight.Set(ControlMode::Velocity, power * kMAX_VELOCITY);
 }
