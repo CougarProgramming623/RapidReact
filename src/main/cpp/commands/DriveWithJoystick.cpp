@@ -18,7 +18,3 @@ void Drive::Execute(){
         r->GetNavX().GetYaw()
     );
 }
-
-// std::unique_ptr<frc2::Command> Drive::TransferOwnership() && {
-//         return std::unique_ptr<frc2::Command>(this);
-// }

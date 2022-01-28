@@ -9,8 +9,4 @@ public:
 
      void Initialize() override;
      void Execute() override;
-
-private:
-
-   
 };
