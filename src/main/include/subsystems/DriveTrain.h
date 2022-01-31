@@ -22,7 +22,9 @@ public:
     bool m_FOD = true;
 
     void UseVelocityPID();
+    void UseMagicPID();
     void SetPID(double E, double P, double I, double D, double F);
+    
 
     void DriveToPosition(double x);
 
