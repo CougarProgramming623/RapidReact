@@ -7,7 +7,7 @@
 class DriveToPos : public frc2::CommandHelper<frc2::CommandBase, DriveToPos>{
 public:
 
-    explicit DriveToPos(int x, int y, double a);
+    DriveToPos(double x, double y, double a);
 
     void Initialize() override;
     void Execute() override;
@@ -16,7 +16,7 @@ public:
 
 private:
 
-    std::vector<int> m_InitialTicks;
+    int m_InitialTicks[4];
 
     int m_XTicks;
     int m_Yticks;

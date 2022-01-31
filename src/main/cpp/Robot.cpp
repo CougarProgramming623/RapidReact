@@ -4,8 +4,10 @@
 
 #include "Robot.h"
 #include <wpi/raw_ostream.h>
+#include <frc2/command/InstantCommand.h>
 #include <frc/Errors.h>
 #include "Util.h"
+#include "commands/DriveToPosition.h"
 
 #include <subsystems/DriveTrain.h>
 
@@ -51,6 +53,9 @@ void Robot::AutonomousInit() {
   DebugOutF("Auto Init");
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
+
+  frc2::CommandScheduler::GetInstance().Schedule(new DriveToPos(.5, 0, 0));
+  
 }
 void Robot::AutonomousPeriodic() {
   

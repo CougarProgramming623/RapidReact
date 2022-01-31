@@ -83,6 +83,11 @@ void DriveTrain::UseVelocityPID(){
     SetPID(50, 0.0, 0.0, 0.0, 0.05);
 }
 
+void DriveTrain::UseMagicPID(){
+    SetPID(0, 10.0, 0.0, 0.0, 0.0);
+}
+
+
 void DriveTrain::SetPID(double E, double P, double I, double D, double F){
 
     m_FrontLeft.ConfigAllowableClosedloopError(0.0, E, 0.0);
