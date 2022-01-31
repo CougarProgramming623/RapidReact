@@ -3,9 +3,9 @@
 
 using ctre::phoenix::motorcontrol::ControlMode;
 
-const int kTICKS_PER_ROTATION = -1;  //(!) FINISH (!)
+const int kTICKS_PER_ROTATION = 2048;  //(!) FINISH (!)
 const int kCM_PER_ROTATION = -1;     //(!) FINISH (!)
-const int kCOUNT_THREASHOLD = 1000;  //How close to the exact number the encoders need to be (!) Should be tested (!)
+const int kCOUNT_THREASHOLD = 204.8;  //How close to the exact number the encoders need to be (!) Should be tested (!)
 
 DriveToPos::DriveToPos(int x, int y, double a){
 
