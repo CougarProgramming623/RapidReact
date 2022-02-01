@@ -5,7 +5,7 @@ using ctre::phoenix::motorcontrol::ControlMode;
 
 const int kTICKS_PER_ROTATION = 2048;  //(!) FINISH (!)
 const double kMETERS_PER_ROTATION = (8.0 * 2.54) * 3.1415926 / 100.0;     //(!) FINISH (!)
-const double kCOUNT_THREASHOLD = 204.8;  //How close to the exact number the encoders need to be (!) Should be tested (!)
+const double kCOUNT_THRESHOLD = 1024;  //How close to the exact number the encoders need to be (!) Should be tested (!)
 
 DriveToPos::DriveToPos(double xx, double y, double a){
     double x = 0.5;
@@ -36,15 +36,15 @@ void DriveToPos::Initialize(){
     m_InitialTicks[3] = Robot::GetRobot()->GetDriveTrain().GetBackR().GetSelectedSensorPosition();
 
     Robot::GetRobot()->GetDriveTrain().BreakMode(false);
-    Robot::GetRobot()->GetDriveTrain().UseMagicPID();
+    //Robot::GetRobot()->GetDriveTrain().UseMagicPID();
 }
 
 bool DriveToPos::IsFinished(){
     return  
-        abs(Robot::GetRobot()->GetDriveTrain().GetFrontL().GetSelectedSensorPosition() - (m_InitialTicks[0] + m_XTicks)) <= kCOUNT_THREASHOLD &&
-        abs(Robot::GetRobot()->GetDriveTrain().GetFrontR().GetSelectedSensorPosition() - (m_InitialTicks[1] + m_XTicks)) <= kCOUNT_THREASHOLD &&
-        abs(Robot::GetRobot()->GetDriveTrain().GetBackL().GetSelectedSensorPosition() - (m_InitialTicks[2] + m_XTicks)) <= kCOUNT_THREASHOLD &&
-        abs(Robot::GetRobot()->GetDriveTrain().GetBackR().GetSelectedSensorPosition() - (m_InitialTicks[3] + m_XTicks)) <= kCOUNT_THREASHOLD;
+        abs(Robot::GetRobot()->GetDriveTrain().GetFrontL().GetSelectedSensorPosition() - (m_InitialTicks[0] + m_XTicks)) <= kCOUNT_THRESHOLD &&
+        abs(Robot::GetRobot()->GetDriveTrain().GetFrontR().GetSelectedSensorPosition() - (m_InitialTicks[1] + m_XTicks)) <= kCOUNT_THRESHOLD &&
+        abs(Robot::GetRobot()->GetDriveTrain().GetBackL().GetSelectedSensorPosition() - (m_InitialTicks[2] + m_XTicks)) <= kCOUNT_THRESHOLD &&
+        abs(Robot::GetRobot()->GetDriveTrain().GetBackR().GetSelectedSensorPosition() - (m_InitialTicks[3] + m_XTicks)) <= kCOUNT_THRESHOLD;
 }
 
 void DriveToPos::Execute(){
@@ -63,5 +63,4 @@ void DriveToPos::End(){
     Robot::GetRobot()->GetDriveTrain().GetBackL().Set(ControlMode::PercentOutput, 0);
     Robot::GetRobot()->GetDriveTrain().GetBackR().Set(ControlMode::PercentOutput, 0);
 
-   
 }
