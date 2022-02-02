@@ -23,10 +23,12 @@ public:
 
     void UseVelocityPID();
     void UseMagicPID();
+    void UsePostionPID();
     void SetPID(double E, double P, double I, double D, double F);
     
 
     void DriveToPosition(double x);
+
 
     inline TalonFX& GetFrontL(){return m_FrontLeft;}
     inline TalonFX& GetFrontR(){return m_FrontRight;}

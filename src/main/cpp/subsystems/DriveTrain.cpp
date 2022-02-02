@@ -82,7 +82,9 @@ void DriveTrain::CartesianDrive(double y, double x, double rotation, double angl
 void DriveTrain::UseVelocityPID(){
     SetPID(50, 0.0, 0.0, 0.0, 0.05);
 }
-
+void DriveTrain::UsePostionPID(){
+    SetPID(50, 0.05, 0.0, 0.0, 0.0);
+}
 void DriveTrain::UseMagicPID(){
     SetPID(0, 10.0, 0.0, 0.0, 0.0);
 }
@@ -98,22 +100,22 @@ void DriveTrain::SetPID(double E, double P, double I, double D, double F){
     m_FrontLeft.Config_kP(0.0, P, 0.0);
     m_FrontRight.Config_kP(0.0, P, 0.0);
     m_BackLeft.Config_kP(0.0, P, 0.0);
-    m_FrontRight.Config_kP(0.0, P, 0.0);
+    m_BackRight.Config_kP(0.0, P, 0.0);
 
     m_FrontLeft.Config_kI(0.0, I, 0.0);
     m_FrontRight.Config_kI(0.0, I, 0.0);
     m_BackLeft.Config_kI(0.0, I, 0.0);
-    m_FrontRight.Config_kI(0.0, I, 0.0);
+    m_BackRight.Config_kI(0.0, I, 0.0);
 
     m_FrontLeft.Config_kD(0.0, D, 0.0); 
     m_FrontRight.Config_kD(0.0, D, 0.0);
     m_BackLeft.Config_kD(0.0, D, 0.0);
-    m_FrontRight.Config_kD(0.0, D, 0.0);
+    m_BackRight.Config_kD(0.0, D, 0.0);
 
     m_FrontLeft.Config_kF(0.0, F, 0.0);
     m_FrontRight.Config_kF(0.0, F, 0.0);
     m_BackLeft.Config_kF(0.0, F, 0.0);
-    m_FrontRight.Config_kF(0.0, F, 0.0);
+    m_BackRight.Config_kF(0.0, F, 0.0);
 }
 
 //void DriveTrain::DriveToPosition(double x){
