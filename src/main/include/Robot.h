@@ -14,6 +14,7 @@
 #include <AHRS.h>
 #include <frc/SPI.h>
 #include "COB.h"
+#include <frc2/command/SubsystemBase.h>
 
 class Robot : public frc::TimedRobot {
  public:
