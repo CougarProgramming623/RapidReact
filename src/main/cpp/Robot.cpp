@@ -6,6 +6,8 @@
 #include <wpi/raw_ostream.h>
 #include <frc/Errors.h>
 #include "Util.h"
+#include <math.h>
+#define _USE_MATH_DEFINES
 
 #include <subsystems/DriveTrain.h>
 
@@ -36,8 +38,8 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
 
-  Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1);
-  
+  //Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1);
+  PushDistance();
   GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_SPEED).SetDouble(GetShooter().FlywheelSpeed());
   GetCOB().GetTable().GetEntry(COB_KEY_FOD).SetBoolean(GetDriveTrain().m_FOD);
 }
@@ -69,6 +71,12 @@ void Robot::DisabledPeriodic() {}
 
 void Robot::TestInit() {}
 void Robot::TestPeriodic() {}
+
+void Robot::PushDistance(){
+  GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).SetDouble(
+    ((TARGET_HEIGHT - LIMELIGHT_HEIGHT) / tan((LIMELIGHT_ANGLE * (M_1_PI / 180)) + GetCOB().GetTable().GetEntry("/limelight/ty").GetDouble(0) * (M_1_PI / 180))) / 10
+  );
+}
 
 #ifndef RUNNING_FRC_TESTS
 int main() {

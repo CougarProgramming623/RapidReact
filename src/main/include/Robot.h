@@ -48,6 +48,8 @@ class Robot : public frc::TimedRobot {
 
   inline COB& GetCOB() {return m_COB; }
 
+  void PushDistance();
+
   private:
   
   static Robot* s_Instance;
