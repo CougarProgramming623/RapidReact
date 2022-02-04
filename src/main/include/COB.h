@@ -13,6 +13,10 @@
 #define LIMELIGHT_HEIGHT 69
 #define TARGET_HEIGHT 104
 #define LIMELIGHT_ANGLE  5
+#define COB_KEY_NAVX_RESET "/COB/navXReset"
+#define COB_KEY_ROBOT_ANGLE "/COB/robotAngle"
+#define COB_KEY_DRIVE_MODE "/COB/driveMode"
+
 
 class COB
 {
