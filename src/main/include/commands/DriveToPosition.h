@@ -19,6 +19,8 @@ private:
 
     int m_InitialTicks[4];
     int m_FinalTicks[4];
+    
+
 
     int m_XTicks;
     int m_Yticks;

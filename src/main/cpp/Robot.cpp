@@ -54,7 +54,7 @@ void Robot::AutonomousInit() {
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
 
-  frc2::CommandScheduler::GetInstance().Schedule(new DriveToPos(10, 0, 0));
+  frc2::CommandScheduler::GetInstance().Schedule(new DriveToPos(2, 0, 0));
   
 }
 void Robot::AutonomousPeriodic() {
