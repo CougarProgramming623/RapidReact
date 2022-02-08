@@ -4,8 +4,13 @@
 
 #include "Robot.h"
 #include <wpi/raw_ostream.h>
+#include <frc2/command/InstantCommand.h>
 #include <frc/Errors.h>
 #include "Util.h"
+
+#include <math.h>
+#define _USE_MATH_DEFINES
+#include "commands/DriveToPosition.h"
 
 #include <subsystems/DriveTrain.h>
 
@@ -36,16 +41,26 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
 
-  Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1);
+  //Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1);
+
+  PushDistance();
   
   GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_SPEED).SetDouble(GetShooter().FlywheelSpeed());
   GetCOB().GetTable().GetEntry(COB_KEY_FOD).SetBoolean(GetDriveTrain().m_FOD);
+  if (GetCOB().GetTable().GetEntry(COB_KEY_NAVX_RESET).GetBoolean(false) == true) {
+    GetNavX().ZeroYaw();
+    GetCOB().GetTable().GetEntry(COB_KEY_NAVX_RESET).SetBoolean(false);
+  }
+  GetCOB().GetTable().GetEntry(COB_KEY_ROBOT_ANGLE).SetDouble(GetNavX().GetYaw());
 }
 
 void Robot::AutonomousInit() {
   DebugOutF("Auto Init");
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
+
+  frc2::CommandScheduler::GetInstance().Schedule(new DriveToPos(2, 0, 0));
+  
 }
 void Robot::AutonomousPeriodic() {
   
@@ -58,7 +73,7 @@ void Robot::TeleopInit() {
 
 }
 void Robot::TeleopPeriodic() {
-  GetDriveTrain().CartesianDrive(-m_Joystick.GetRawAxis(1), m_Joystick.GetRawAxis(0), m_Joystick.GetRawAxis(2), GetNavX().GetYaw());
+  
 }
 
 void Robot::DisabledInit() {
@@ -69,6 +84,12 @@ void Robot::DisabledPeriodic() {}
 
 void Robot::TestInit() {}
 void Robot::TestPeriodic() {}
+
+void Robot::PushDistance(){
+  GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).SetDouble(
+    ((TARGET_HEIGHT - LIMELIGHT_HEIGHT) / tan((LIMELIGHT_ANGLE * (M_1_PI / 180)) + GetCOB().GetTable().GetEntry("/limelight/ty").GetDouble(0) * (M_1_PI / 180))) / 10
+  );
+}
 
 #ifndef RUNNING_FRC_TESTS
 int main() {

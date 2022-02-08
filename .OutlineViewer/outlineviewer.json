@@ -1,0 +1,11 @@
+{
+  "Connections": {
+    "open": true
+  },
+  "NetworkTables Settings": {
+    "listenAddress": "0.0.0.0",
+    "mode": "Server",
+    "serverTeam": "10.6.23.2"
+  },
+  "connections": true
+}

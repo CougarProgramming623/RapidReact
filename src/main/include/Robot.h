@@ -14,6 +14,7 @@
 #include <AHRS.h>
 #include <frc/SPI.h>
 #include "COB.h"
+#include <frc2/command/SubsystemBase.h>
 
 class Robot : public frc::TimedRobot {
  public:
@@ -47,6 +48,8 @@ class Robot : public frc::TimedRobot {
   inline AHRS& GetNavX() {return m_NavX; }
 
   inline COB& GetCOB() {return m_COB; }
+
+  void PushDistance();
 
   private:
   
