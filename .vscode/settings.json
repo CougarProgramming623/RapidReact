@@ -17,7 +17,10 @@
   "C_Cpp.default.configurationProvider": "vscode-wpilib",
   "files.associations": {
     "*.inc": "cpp",
-    "numbers": "cpp"
+    "numbers": "cpp",
+    "*.tcc": "cpp",
+    "deque": "cpp",
+    "vector": "cpp"
   },
   "C_Cpp.errorSquiggles": "Enabled"
 }
