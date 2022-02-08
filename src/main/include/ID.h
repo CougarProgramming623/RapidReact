@@ -18,6 +18,8 @@
 #define FEEDER_BUTTON 2
 #define FLYWHEEL_BUTTON 4
 #define FLYWHEEL_DIAL -1
+#define SHOOTTIME 14
+#define TESTBUTTON -1
 
 #endif
 
