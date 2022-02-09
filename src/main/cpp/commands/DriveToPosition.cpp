@@ -12,8 +12,8 @@ const int kGEARBOX_RATIO = 12;
 const int kTICKS_PER_ROTATION = 2048;     //(!) FINISH (!)
 const double kMETERS_PER_ROTATION = (8.0 * 2.54) * 3.1415926 / 100.0;     //(!) FINISH (!)
 const double kCOUNT_THRESHOLD = 500;      //How close to the exact number the encoders need to be (!) Should be tested (!)
-const double kDERIVATIVE_THRESHOLD = .01; //(!) Test (!)
-const double kTIME_THRESHOLD = 3;         //(!) TEST (!)
+const double kDERIVATIVE_THRESHOLD = .1; //(!) Test (!)
+const double kTIME_THRESHOLD = 1;         //(!) TEST (!)
 
 DriveToPos::DriveToPos(double x, double y, double a){
     m_XTicks = x / kMETERS_PER_ROTATION * kTICKS_PER_ROTATION * kGEARBOX_RATIO;
@@ -68,10 +68,10 @@ bool DriveToPos::IsFinished(){
         abs(m_DriveTrain.GetBackL().GetSelectedSensorPosition()  - (m_InitialTicks[2] + m_XTicks)) <= kCOUNT_THRESHOLD &&
         abs(m_DriveTrain.GetBackR().GetSelectedSensorPosition()  - (m_InitialTicks[3] + m_XTicks)) <= kCOUNT_THRESHOLD) ||
        (m_Clock.Get() >= (units::time::second_t) kTIME_THRESHOLD &&
-       (m_DriveTrain.GetFrontL().GetErrorDerivative() <= kDERIVATIVE_THRESHOLD ||
-        m_DriveTrain.GetFrontR().GetErrorDerivative() <= kDERIVATIVE_THRESHOLD ||
-        m_DriveTrain.GetBackL().GetErrorDerivative() <= kDERIVATIVE_THRESHOLD ||
-        m_DriveTrain.GetBackR().GetErrorDerivative() <= kDERIVATIVE_THRESHOLD));
+       (abs(m_DriveTrain.GetFrontL().GetErrorDerivative()) <= kDERIVATIVE_THRESHOLD ||
+        abs(m_DriveTrain.GetFrontR().GetErrorDerivative()) <= kDERIVATIVE_THRESHOLD ||
+        abs(m_DriveTrain.GetBackL().GetErrorDerivative())  <= kDERIVATIVE_THRESHOLD ||
+        abs(m_DriveTrain.GetBackR().GetErrorDerivative())  <= kDERIVATIVE_THRESHOLD ));
 }
 
 void DriveToPos::Execute(){
