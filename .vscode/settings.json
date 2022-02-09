@@ -34,7 +34,6 @@
     "atomic": "cpp",
     "hash_map": "cpp",
     "hash_set": "cpp",
-    "*.tcc": "cpp",
     "cctype": "cpp",
     "chrono": "cpp",
     "clocale": "cpp",
