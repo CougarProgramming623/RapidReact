@@ -18,6 +18,8 @@
   "files.associations": {
     "*.inc": "cpp",
     "numbers": "cpp",
+    "*.tcc": "cpp",
+    "deque": "cpp",
     "vector": "cpp",
     "future": "cpp",
     "iosfwd": "cpp",
@@ -30,7 +32,6 @@
     "atomic": "cpp",
     "hash_map": "cpp",
     "hash_set": "cpp",
-    "*.tcc": "cpp",
     "cctype": "cpp",
     "chrono": "cpp",
     "clocale": "cpp",
