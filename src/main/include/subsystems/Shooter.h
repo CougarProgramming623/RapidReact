@@ -14,11 +14,13 @@ class Shooter {
         void FlywheelButton();
         double FlywheelSpeed();
         void ShootTime();
+        void ScaleToDistance();
 
     private:
 
         frc2::Button m_FeederButton;
-        frc2::Button m_FlywheelToggle;
+        frc2::Button m_FlywheelToggleByDial;
+        frc2::Button m_FlywheelToggleByDistance;
         frc2::Button m_FlywheelDial;
         frc2::Button m_ShootTime;
 
