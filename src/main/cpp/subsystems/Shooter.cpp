@@ -113,9 +113,14 @@ void Shooter::ScaleToDistance(){
 
     double distance = Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).GetDouble(0); //cm
     double RPM = distance * 4 + 70;
-    Robot::GetRobot()->GetCOB().GetTable().GetEntry("/COB/flywheelSpeedSetpoint").SetDouble(RPM);
 
-    m_FlywheelFront.Set(ControlMode::Velocity, RPM / 600 * 2048);
+    double smoothRPM = runningAverage.Calculate(distance) * 4 + 70;
+
+    
+    Robot::GetRobot()->GetCOB().GetTable().GetEntry("/COB/flywheelSpeedSetpoint").SetDouble(RPM);
+    Robot::GetRobot()->GetCOB().GetTable().GetEntry("/COB/smoothRPM").SetDouble(smoothRPM);
+
+    m_FlywheelFront.Set(ControlMode::Velocity, smoothRPM / 600 * 2048);
 
     
     }, [&] (bool e) { //onEnd
