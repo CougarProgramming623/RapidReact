@@ -20,6 +20,8 @@
     "numbers": "cpp",
     "*.tcc": "cpp",
     "deque": "cpp",
+    "vector": "cpp"
+    "numbers": "cpp",
     "vector": "cpp",
     "future": "cpp",
     "iosfwd": "cpp",

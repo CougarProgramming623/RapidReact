@@ -86,8 +86,11 @@ void Robot::TestInit() {}
 void Robot::TestPeriodic() {}
 
 void Robot::PushDistance(){
+  double h = TARGET_HEIGHT - LIMELIGHT_HEIGHT;
+  double angleFromGroundDeg = LIMELIGHT_ANGLE + GetCOB().GetTable().GetEntry("/limelight/ty").GetDouble(0);
+
   GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).SetDouble(
-    ((TARGET_HEIGHT - LIMELIGHT_HEIGHT) / tan((LIMELIGHT_ANGLE * (M_1_PI / 180)) + GetCOB().GetTable().GetEntry("/limelight/ty").GetDouble(0) * (M_1_PI / 180))) / 10
+    h / tan(angleFromGroundDeg * (M_PI / 180))
   );
 }
 
