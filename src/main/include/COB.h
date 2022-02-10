@@ -10,9 +10,9 @@
 #define COB_KEY_MOTER_SPEED "/COB/moterSpeed"
 #define COB_KEY_DISTANCE "/COB/distance"
 
-#define LIMELIGHT_HEIGHT 69
-#define TARGET_HEIGHT 104
-#define LIMELIGHT_ANGLE  5
+#define LIMELIGHT_HEIGHT 69 //cm
+#define TARGET_HEIGHT 239 //cm
+#define LIMELIGHT_ANGLE  40 //degree
 #define COB_KEY_NAVX_RESET "/COB/navXReset"
 #define COB_KEY_ROBOT_ANGLE "/COB/robotAngle"
 #define COB_KEY_DRIVE_MODE "/COB/driveMode"

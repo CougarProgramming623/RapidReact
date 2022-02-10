@@ -4,6 +4,7 @@
 #include "ctre/phoenix/motorcontrol/can/TalonFX.h"
 #include "ctre/phoenix/motorcontrol/can/TalonSRX.h"
 #include <frc/Joystick.h>
+#include <frc/filter/LinearFilter.h>
 
 class Shooter {
     public:
@@ -14,16 +15,22 @@ class Shooter {
         void FlywheelButton();
         double FlywheelSpeed();
         void ShootTime();
+        void ScaleToDistance();
 
     private:
 
+        frc::LinearFilter<double> runningAverage = frc::LinearFilter<double>::MovingAverage(10);
+
         frc2::Button m_FeederButton;
-        frc2::Button m_FlywheelToggle;
+        frc2::Button m_FlywheelToggleByDial;
+        frc2::Button m_FlywheelToggleByDistance;
         frc2::Button m_FlywheelDial;
         frc2::Button m_ShootTime;
 
         ctre::phoenix::motorcontrol::can::TalonFX m_FlywheelFront;
         ctre::phoenix::motorcontrol::can::TalonFX m_FlywheelBack;
         ctre::phoenix::motorcontrol::can::TalonFX m_Feeder;
+
+        
     
 };
