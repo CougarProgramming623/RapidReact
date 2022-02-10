@@ -13,6 +13,7 @@
 #include "commands/DriveToPosition.h"
 
 #include <subsystems/DriveTrain.h>
+#include "commands/TurnToAngle.h"
 
 Robot* Robot::s_Instance = nullptr;
 
@@ -23,7 +24,7 @@ Robot::Robot() {
 
 void Robot::RobotInit() {
   DebugOutF("Robot Init");
-   
+  
   m_LED.SetLength(140);
 
   for (int i = 0; i < 140; i++)
@@ -59,7 +60,7 @@ void Robot::AutonomousInit() {
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
 
-  frc2::CommandScheduler::GetInstance().Schedule(new DriveToPos(1, 0, 0));
+  frc2::CommandScheduler::GetInstance().Schedule(new TurnToAngle(Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/tx").GetDouble(0), 0.07));
   
 }
 void Robot::AutonomousPeriodic() {

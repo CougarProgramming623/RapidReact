@@ -1,6 +1,5 @@
 #include "commands/TurnToAngle.h"
 #include "Util.h"
-#include "Robot.h"
 
 #define FOR_ALL_MOTORS(operation) m_DriveTrain.GetFrontR()operation;\
                                   m_DriveTrain.GetFrontL()operation;\
@@ -22,13 +21,12 @@ using ctre::phoenix::motorcontrol::ControlMode;
     const double kDERIVATIVE_THRESHOLD = .1;  //(!) Test (!)
     const double kTIME_THRESHOLD = 1;         //(!) TEST (!)
 
-    TurnToAngle::TurnToAngle(double angle){
+    TurnToAngle::TurnToAngle(double angle, double speed){
         m_Angle = angle;
-
-
-
-
+        m_MaxSpeed = speed;
         AddRequirements(&Robot::GetRobot()->GetDriveTrain());
+        
+        m_RotTicks = 2048 / 60 * kGEARBOX_RATIO * angle;
     }
 
     void TurnToAngle::Initialize(){
@@ -36,11 +34,10 @@ using ctre::phoenix::motorcontrol::ControlMode;
 
         FOR_ALL_MOTORS(.Set(ControlMode::PercentOutput, 0))
 
-
         m_FinalTicks[0] = m_DriveTrain.GetFrontL().GetSelectedSensorPosition() + m_RotTicks;
-        m_FinalTicks[1] = m_DriveTrain.GetFrontR().GetSelectedSensorPosition() + m_RotTicks;
+        m_FinalTicks[1] = m_DriveTrain.GetFrontR().GetSelectedSensorPosition() - m_RotTicks;
         m_FinalTicks[2] = m_DriveTrain.GetBackL().GetSelectedSensorPosition()  + m_RotTicks;
-        m_FinalTicks[3] = m_DriveTrain.GetBackR().GetSelectedSensorPosition()  + m_RotTicks;
+        m_FinalTicks[3] = m_DriveTrain.GetBackR().GetSelectedSensorPosition()  - m_RotTicks;
 
         m_InitialTicks[0] = m_DriveTrain.GetFrontL().GetSelectedSensorPosition();
         m_InitialTicks[1] = m_DriveTrain.GetFrontR().GetSelectedSensorPosition();
@@ -50,8 +47,8 @@ using ctre::phoenix::motorcontrol::ControlMode;
         m_DriveTrain.BreakMode(true);
         m_DriveTrain.UsePostionPID();
 
-        FOR_ALL_MOTORS(.ConfigPeakOutputForward(0.3, 0))
-        FOR_ALL_MOTORS(.ConfigPeakOutputReverse(-0.3, 0))
+        FOR_ALL_MOTORS(.ConfigPeakOutputForward(m_MaxSpeed, 0))
+        FOR_ALL_MOTORS(.ConfigPeakOutputReverse(-m_MaxSpeed, 0))
 
         FOR_ALL_MOTORS(.ConfigClosedloopRamp(.06, 0))
 
@@ -62,7 +59,10 @@ using ctre::phoenix::motorcontrol::ControlMode;
     }
 
     void TurnToAngle::Execute(){
-
+        m_DriveTrain.GetFrontL().Set(ControlMode::Position, m_FinalTicks[0]);
+	    m_DriveTrain.GetFrontR().Set(ControlMode::Position, m_FinalTicks[1]);
+	    m_DriveTrain.GetBackL().Set(ControlMode::Position, m_FinalTicks[2]);
+	    m_DriveTrain.GetBackR().Set(ControlMode::Position, m_FinalTicks[3]);
     }
 
     bool TurnToAngle::IsFinished(){
@@ -80,5 +80,7 @@ using ctre::phoenix::motorcontrol::ControlMode;
     }
 
     void TurnToAngle::End(bool end){
-
+        DebugOutF("TurnToAngle Finished");
+        FOR_ALL_MOTORS(.ConfigPeakOutputForward(1, 0))
+        FOR_ALL_MOTORS(.ConfigPeakOutputReverse(-1, 0))
     }
