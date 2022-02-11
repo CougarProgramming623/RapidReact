@@ -137,7 +137,14 @@ void DriveTrain::DriveInit(){
     });
 
     UseVelocityPID();
-    
+    MusicInit();
+}
+
+void DriveTrain::MusicInit(){
+    m_Orch.AddInstrument(m_FrontLeft);
+    m_Orch.AddInstrument(m_FrontRight);
+    m_Orch.AddInstrument(m_BackLeft);
+    m_Orch.AddInstrument(m_BackRight);
 }
 
 void DriveTrain::BaseDrive(double power){

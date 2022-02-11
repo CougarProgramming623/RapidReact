@@ -9,6 +9,10 @@
 #include "./commands/DriveWithJoystick.h"
 #include "./Util.h"
 
+//Music Imports and Defines
+#include "ctre/phoenix/music/Orchestra.h"
+#define MUSIC_PIRATES
+
 using ctre::phoenix::motorcontrol::can::TalonFX;
 
 class DriveTrain : public frc2::SubsystemBase {
@@ -16,6 +20,7 @@ public:
     DriveTrain();
     void BaseDrive(double power);
     void DriveInit();
+    void MusicInit();
     void BreakMode(bool on);
     void CartesianDrive(double y, double x, double rotation, double angle);
 
@@ -45,4 +50,5 @@ private:
     frc2::Button m_DriveButton;
     frc2::Button m_FODToggle;
 
+    ctre::phoenix::music::Orchestra m_Orch{};
 };
