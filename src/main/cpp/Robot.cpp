@@ -58,9 +58,8 @@ void Robot::AutonomousInit() {
   DebugOutF("Auto Init");
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
-
-  frc2::CommandScheduler::GetInstance().Schedule(new DriveToPos(1, 0, 0));
-  
+  GetDriveTrain().GetOrch().LoadMusic("src/main/deploy/Pirates.chrp");
+  GetDriveTrain().GetOrch().Play(); 
 }
 void Robot::AutonomousPeriodic() {
   
