@@ -3,6 +3,7 @@
 #include <frc2/command/CommandHelper.h>
 #include <frc2/command/SubsystemBase.h>
 #include <vector>
+#include <frc/Timer.h>
 #include "./Robot.h"
 
 class DriveToPos : public frc2::CommandHelper<frc2::CommandBase, DriveToPos>{
@@ -20,7 +21,7 @@ private:
     int m_InitialTicks[4];
     int m_FinalTicks[4];
     
-
+    frc::Timer m_Clock = frc::Timer();
 
     int m_XTicks;
     int m_Yticks;
