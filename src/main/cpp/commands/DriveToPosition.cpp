@@ -20,8 +20,6 @@ DriveToPos::DriveToPos(double x, double y, double a){
 
     m_Angle = a;
 
-
-
     AddRequirements(&Robot::GetRobot()->GetDriveTrain());
 
 } //Haven't implemented angle and only uses m_XTicks

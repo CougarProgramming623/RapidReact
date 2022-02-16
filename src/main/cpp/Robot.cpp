@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "Robot.h"
+#include <frc/RobotController.h>
 #include <wpi/raw_ostream.h>
 #include <frc2/command/InstantCommand.h>
 #include <frc/Errors.h>
@@ -40,6 +41,44 @@ void Robot::RobotInit() {
 
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
+
+  // LED color goes from green to red based on batery voltage
+  // Full red below 10v full green above 12v
+  for (int i = 0; i < 140; i++)
+    {
+      int g = (int) sqrt((long double)       ((frc::RobotController::GetBatteryVoltage() - 10) * 255 * 255 / 765));
+      int r = (int) sqrt((long double) (-1 * ((frc::RobotController::GetBatteryVoltage() - 12) * 255 * 255 / 765)));
+      m_ledBuffer[i].SetRGB(r, g, 0);
+    }
+
+  // Flashes red if batery provides less than 10v
+  // if((int) frc::RobotController::GetBatteryVoltage() < 10){
+  //   bool on = false;
+  //   if(on){
+  //     for (int i = 0; i < 140; i++)
+  //       {
+  //         m_ledBuffer[i].SetRGB(0, 0, 0);
+  //       }
+  //     on = !on;
+  //   } else{
+  //     for (int i = 0; i < 140; i++)
+  //       {
+  //         m_ledBuffer[i].SetRGB(255, 0, 0);
+  //       }
+  //     on = !on;
+  //   }
+  // }
+
+  // Has a red and blue line go around if batery provides less than 10v
+  // if((int) frc::RobotController::GetBatteryVoltage() < 10){
+  //   m_ledBuffer[m_LEDIndex].SetRGB(255, 0, 0);
+  //   if(m_LEDIndex - 10 > 0)
+  //     m_ledBuffer[m_LEDIndex - 10].SetRGB(0, 255, 0);
+  //   else
+  //     m_ledBuffer[140 - 10 + m_LEDIndex].SetRGB(0,255,0);
+  //   m_LEDIndex++;
+  // }
+
 
   //Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1);
 

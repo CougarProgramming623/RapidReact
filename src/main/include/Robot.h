@@ -67,4 +67,6 @@ class Robot : public frc::TimedRobot {
   DriveTrain m_DriveTrain;
 
   COB m_COB;
+
+  int m_LEDIndex;
 };
