@@ -75,10 +75,10 @@ void Robot::TeleopInit() {
   DebugOutF("Teleop Init");
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
-
+  m_TargetLock.WhenHeld(LockOnTarget());
 }
 void Robot::TeleopPeriodic() {
-  m_TargetLock.WhenHeld(LockOnTarget());
+  
 }
 
 void Robot::DisabledInit() {
