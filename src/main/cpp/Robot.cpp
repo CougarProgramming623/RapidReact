@@ -58,7 +58,7 @@ void Robot::AutonomousInit() {
   DebugOutF("Auto Init");
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
-  GetDriveTrain().GetOrch().LoadMusic("src/main/deploy/Pirates.chrp");
+  GetDriveTrain().GetOrch().LoadMusic("Pirates.chrp");
   GetDriveTrain().GetOrch().Play(); 
 }
 void Robot::AutonomousPeriodic() {

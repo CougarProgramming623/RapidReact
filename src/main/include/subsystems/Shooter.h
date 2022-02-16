@@ -17,6 +17,9 @@ class Shooter {
         void ShootTime();
         void ScaleToDistance();
 
+        inline ctre::phoenix::motorcontrol::can::TalonFX& GetFlyBack() {return m_FlywheelBack;}
+        inline ctre::phoenix::motorcontrol::can::TalonFX& GetFlyFront() {return m_FlywheelFront;}
+
     private:
 
         frc::LinearFilter<double> runningAverage = frc::LinearFilter<double>::MovingAverage(10);

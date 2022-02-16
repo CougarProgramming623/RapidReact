@@ -4,6 +4,7 @@
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <frc/drive/Vector2d.h>
 #include "commands/DriveWithJoystick.h"
+#include "subsystems/Shooter.h"
 
 const int kMAX_VELOCITY = 6380/60/10*2048;//RPM->Convert to RPS->Convert to RP100MS->Convert to TP100MS
 
@@ -129,7 +130,7 @@ void DriveTrain::DriveInit(){
 
     BreakMode(true);
 
-    SetDefaultCommand(Drive());
+   // SetDefaultCommand(Drive());
 
     m_FODToggle.WhenPressed([&] {
         m_FOD = !m_FOD;
@@ -145,6 +146,9 @@ void DriveTrain::MusicInit(){
     m_Orch.AddInstrument(m_FrontRight);
     m_Orch.AddInstrument(m_BackLeft);
     m_Orch.AddInstrument(m_BackRight);
+    m_Orch.AddInstrument(Robot::GetRobot()->GetShooter().GetFlyBack());
+    m_Orch.AddInstrument(Robot::GetRobot()->GetShooter().GetFlyFront());
+
 }
 
 void DriveTrain::BaseDrive(double power){
