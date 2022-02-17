@@ -75,13 +75,14 @@ void Robot::RobotPeriodic() {
   //Has two lines charse eachother around if looking at the target
   if(abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(28)) / 27 <= 1){
     int numLED = 70;
+    int tailLength = 10;
     if(m_LEDIndex > numLED - 1)
       m_LEDIndex = 0;
 
     m_ledBuffer[m_LEDIndex].SetRGB(0, 255, 0);
-    m_ledBuffer[(numLED + m_LEDIndex - 10) % numLED].SetLED(m_AllianceColor);
+    m_ledBuffer[(numLED + m_LEDIndex - tailLength) % numLED].SetLED(m_AllianceColor);
     m_ledBuffer[numLED - m_LEDIndex].SetRGB(0, 255, 0);
-    m_ledBuffer[(numLED - m_LEDIndex - 10) % numLED].SetLED(m_AllianceColor);
+    m_ledBuffer[(numLED + numLED - m_LEDIndex - tailLength) % numLED].SetLED(m_AllianceColor);
 
     m_LEDIndex++;
     m_LED.SetData(m_ledBuffer);
@@ -89,10 +90,11 @@ void Robot::RobotPeriodic() {
   // Has a red and blue line go around if batery provides less than 10v
   if((int) frc::RobotController::GetBatteryVoltage() < 10){
     int numLED = 70;
+    int tailLength = 10;
     if(m_LEDIndex > numLED - 1)
       m_LEDIndex = 0;
     m_ledBuffer[m_LEDIndex].SetRGB(255, 215, 0);
-    m_ledBuffer[(numLED + m_LEDIndex - 10) % numLED].SetLED(m_AllianceColor);
+    m_ledBuffer[(numLED + m_LEDIndex - tailLength) % numLED].SetLED(m_AllianceColor);
     m_LEDIndex++;
     m_LED.SetData(m_ledBuffer);
   } 

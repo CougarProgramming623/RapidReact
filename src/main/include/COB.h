@@ -10,6 +10,7 @@
 #define COB_KEY_MOTER_SPEED "/COB/moterSpeed"
 #define COB_KEY_DISTANCE "/COB/distance"
 #define COB_KEY_IS_RED "/FMSInfo/IsRedAlliance"
+#define COB_KEY_LIME_LIGHT_TX "/limelight/tx" // [-27,27]
 
 #define LIMELIGHT_HEIGHT 69 //cm
 #define TARGET_HEIGHT 239 //cm
