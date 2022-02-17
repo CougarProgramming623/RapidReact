@@ -37,6 +37,12 @@ void Robot::RobotInit() {
 
   GetDriveTrain().DriveInit();
   m_Shooter.ShooterInit();
+
+  if( GetCOB().GetTable().GetEntry(COB_KEY_IS_RED)){
+    m_AllianceColor.red = 1;
+  } else {
+    m_AllianceColor.blue = 1;
+  }
 }
 
 void Robot::RobotPeriodic() {
@@ -44,41 +50,39 @@ void Robot::RobotPeriodic() {
 
   // LED color goes from green to red based on batery voltage
   // Full red below 10v full green above 12v
-  for (int i = 0; i < 140; i++)
-    {
-      int g = (int) sqrt((long double)       ((frc::RobotController::GetBatteryVoltage() - 10) * 255 * 255 / 765));
-      int r = (int) sqrt((long double) (-1 * ((frc::RobotController::GetBatteryVoltage() - 12) * 255 * 255 / 765)));
-      m_ledBuffer[i].SetRGB(r, g, 0);
-    }
+  // for (int i = 0; i < 140; i++)
+  //   {
+  //     int g = (int) sqrt((long double)       (((int) frc::RobotController::GetBatteryVoltage() - 10) * 255 * 255 / 765));
+  //     int r = (int) sqrt((long double) (-1 * (((int) frc::RobotController::GetBatteryVoltage() - 12) * 255 * 255 / 765)));
+  //     m_ledBuffer[i].SetRGB(r, g, 0);
+  //   }
 
   // Flashes red if batery provides less than 10v
-  // if((int) frc::RobotController::GetBatteryVoltage() < 10){
+  // if((int) frc::RobotController::GetBatteryVoltage() < 13){
   //   bool on = false;
   //   if(on){
-  //     for (int i = 0; i < 140; i++)
-  //       {
+  //     for (int i = 0; i < 140; i++){
   //         m_ledBuffer[i].SetRGB(0, 0, 0);
   //       }
-  //     on = !on;
-  //   } else{
-  //     for (int i = 0; i < 140; i++)
-  //       {
+  //   } else {
+  //     for (int i = 0; i < 140; i++){
   //         m_ledBuffer[i].SetRGB(255, 0, 0);
   //       }
-  //     on = !on;
   //   }
+  //   on = !on;
   // }
+  
 
   // Has a red and blue line go around if batery provides less than 10v
-  // if((int) frc::RobotController::GetBatteryVoltage() < 10){
-  //   m_ledBuffer[m_LEDIndex].SetRGB(255, 0, 0);
-  //   if(m_LEDIndex - 10 > 0)
-  //     m_ledBuffer[m_LEDIndex - 10].SetRGB(0, 255, 0);
-  //   else
-  //     m_ledBuffer[140 - 10 + m_LEDIndex].SetRGB(0,255,0);
-  //   m_LEDIndex++;
-  // }
-
+  if((int) frc::RobotController::GetBatteryVoltage() < 13){
+    int numLED = 70;
+    if(m_LEDIndex > numLED - 1)
+      m_LEDIndex = 0;
+    m_ledBuffer[m_LEDIndex].SetRGB(255, 215, 0);
+    m_ledBuffer[(numLED + m_LEDIndex - 10) % numLED].SetLED(m_AllianceColor);
+    m_LEDIndex++;
+    m_LED.SetData(m_ledBuffer);
+  } 
 
   //Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1);
 

@@ -69,4 +69,6 @@ class Robot : public frc::TimedRobot {
   COB m_COB;
 
   int m_LEDIndex;
+
+  frc::Color m_AllianceColor;
 };
