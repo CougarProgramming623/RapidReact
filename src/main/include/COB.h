@@ -6,7 +6,7 @@
 
 #define COB_KEY_ENABLED "/COB/enabled"
 #define COB_KEY_FOD "/COB/FOD"
-#define COB_KEY_FLYWHEEL_SPEED "/COB/flywheelSpeed"
+#define COB_KEY_FLYWHEEL_RPM "/COB/flywheelRPM"
 #define COB_KEY_MOTER_SPEED "/COB/moterSpeed"
 #define COB_KEY_DISTANCE "/COB/distance"
 

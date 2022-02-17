@@ -51,7 +51,7 @@ void Robot::RobotPeriodic() {
 
   PushDistance();
   
-  GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_SPEED).SetDouble(GetShooter().FlywheelSpeed());
+  GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_RPM).SetDouble(GetShooter().FlywheelRPM());
   //GetCOB().GetTable().GetEntry(COB_KEY_FOD).SetBoolean(GetDriveTrain().m_FOD);
   if (GetCOB().GetTable().GetEntry(COB_KEY_NAVX_RESET).GetBoolean(false) == true) {
     GetNavX().ZeroYaw();
@@ -59,15 +59,17 @@ void Robot::RobotPeriodic() {
   }
   GetCOB().GetTable().GetEntry(COB_KEY_ROBOT_ANGLE).SetDouble(GetNavX().GetYaw());
   GetCOB().GetTable().GetEntry(COB_KEY_MATCH_TIME).SetDouble(frc::Timer::GetMatchTime().to<double>());
+
 }
 
 void Robot::AutonomousInit() {
+  /*
   DebugOutF("Auto Init");
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
 
   frc2::CommandScheduler::GetInstance().Schedule(new DriveToPos(1, 0, 0));
-  
+  */
 }
 void Robot::AutonomousPeriodic() {
   
@@ -78,6 +80,7 @@ void Robot::TeleopInit() {
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
   m_TargetLock.WhenHeld(LockOnTarget());
+
 }
 void Robot::TeleopPeriodic() {
   
