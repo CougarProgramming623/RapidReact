@@ -67,4 +67,7 @@ class Robot : public frc::TimedRobot {
   DriveTrain m_DriveTrain;
 
   COB m_COB;
+
+  frc2::Button m_TargetLock;
+
 };
