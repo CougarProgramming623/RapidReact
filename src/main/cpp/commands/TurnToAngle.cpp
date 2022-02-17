@@ -17,21 +17,27 @@ using ctre::phoenix::motorcontrol::ControlMode;
     const int kGEARBOX_RATIO = 12;
     const int kTICKS_PER_ROTATION = 2048;     
     const double kMETERS_PER_ROTATION = (8.0 * 2.54) * 3.1415926 / 100.0;     //(!) FINISH (!)
-    const double kCOUNT_THRESHOLD = 500;      //How close to the exact number the encoders need to be (!) Should be tested (!)
-    const double kDERIVATIVE_THRESHOLD = .1;  //(!) Test (!)
+    const double kCOUNT_THRESHOLD = 200;      //How close to the exact number the encoders need to be (!) Should be tested (!)
+    const double kDERIVATIVE_THRESHOLD = .05;  //(!) Test (!)
     const double kTIME_THRESHOLD = 1;         //(!) TEST (!)
 
-    TurnToAngle::TurnToAngle(double angle, double speed){
+    TurnToAngle::TurnToAngle(std::function<double()> angle, double speed){
         m_Angle = angle;
         m_MaxSpeed = speed;
         AddRequirements(&Robot::GetRobot()->GetDriveTrain());
-        
-        m_RotTicks = 2048 / 60 * kGEARBOX_RATIO * angle;
+    }
+
+    TurnToAngle::TurnToAngle(double angle, double speed){
+        m_Angle = [angle] { return angle; };
+        m_MaxSpeed = speed;
+        AddRequirements(&Robot::GetRobot()->GetDriveTrain());
     }
 
     void TurnToAngle::Initialize(){
-        DebugOutF("TurnToAngle Initialize");
 
+        DebugOutF("TurnToAngle Initialize");
+        m_RotTicks = 2048 / 60 * kGEARBOX_RATIO * m_Angle();
+        m_TargetAngle = m_Angle() + Robot::GetRobot()->GetNavX().GetYaw();
         FOR_ALL_MOTORS(.Set(ControlMode::PercentOutput, 0))
 
         m_FinalTicks[0] = m_DriveTrain.GetFrontL().GetSelectedSensorPosition() + m_RotTicks;
@@ -75,7 +81,8 @@ using ctre::phoenix::motorcontrol::ControlMode;
             (abs(m_DriveTrain.GetFrontL().GetErrorDerivative()) <= kDERIVATIVE_THRESHOLD ||
              abs(m_DriveTrain.GetFrontR().GetErrorDerivative()) <= kDERIVATIVE_THRESHOLD ||
              abs(m_DriveTrain.GetBackL().GetErrorDerivative())  <= kDERIVATIVE_THRESHOLD ||
-             abs(m_DriveTrain.GetBackR().GetErrorDerivative())  <= kDERIVATIVE_THRESHOLD ));
+             abs(m_DriveTrain.GetBackR().GetErrorDerivative())  <= kDERIVATIVE_THRESHOLD )) ||
+            (abs(Robot::GetRobot()->GetNavX().GetYaw() - m_TargetAngle) <= 5);
 
     }
 
@@ -83,4 +90,13 @@ using ctre::phoenix::motorcontrol::ControlMode;
         DebugOutF("TurnToAngle Finished");
         FOR_ALL_MOTORS(.ConfigPeakOutputForward(1, 0))
         FOR_ALL_MOTORS(.ConfigPeakOutputReverse(-1, 0))
+        m_DriveTrain.BreakMode(false);
+    }
+
+    TurnToAngle TurnToAngle::TurnToTarget() {
+        return TurnToAngle([&]{return Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/tx").GetDouble(0);} , 0.07);
+    }
+
+    double TurnToAngle::Target(){
+        return Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/tx").GetDouble(0);
     }

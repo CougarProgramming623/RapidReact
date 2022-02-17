@@ -14,6 +14,7 @@
 
 #include <subsystems/DriveTrain.h>
 #include "commands/TurnToAngle.h"
+#include <frc2/command/SequentialCommandGroup.h>
 
 Robot* Robot::s_Instance = nullptr;
 
@@ -60,7 +61,13 @@ void Robot::AutonomousInit() {
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
 
-  frc2::CommandScheduler::GetInstance().Schedule(new TurnToAngle(Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/tx").GetDouble(0), 0.07));
+  frc2::CommandScheduler::GetInstance().Schedule(
+    new frc2::SequentialCommandGroup(
+      TurnToAngle(15, 0.5),
+      TurnToAngle::TurnToTarget()
+      //TurnToAngle(TurnToAngle::Target(), 0.07)
+    )
+  );
   
 }
 void Robot::AutonomousPeriodic() {
