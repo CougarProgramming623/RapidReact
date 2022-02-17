@@ -14,6 +14,7 @@
 #include "commands/DriveToPosition.h"
 
 #include <subsystems/DriveTrain.h>
+#include <frc/Timer.h>
 
 Robot* Robot::s_Instance = nullptr;
 
@@ -57,6 +58,7 @@ void Robot::RobotPeriodic() {
     GetCOB().GetTable().GetEntry(COB_KEY_NAVX_RESET).SetBoolean(false);
   }
   GetCOB().GetTable().GetEntry(COB_KEY_ROBOT_ANGLE).SetDouble(GetNavX().GetYaw());
+  GetCOB().GetTable().GetEntry(COB_KEY_MATCH_TIME).SetDouble(frc::Timer::GetMatchTime().to<double>());
 }
 
 void Robot::AutonomousInit() {
