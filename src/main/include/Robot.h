@@ -71,4 +71,5 @@ class Robot : public frc::TimedRobot {
   int m_LEDIndex;
 
   frc::Color m_AllianceColor;
+  frc::Color m_AllianceEndGameColor;
 };

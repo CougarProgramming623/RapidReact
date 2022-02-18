@@ -8,6 +8,7 @@
 #include <frc2/command/InstantCommand.h>
 #include <frc/Errors.h>
 #include "Util.h"
+#include "frc/timer.h"
 
 #include <math.h>
 #define _USE_MATH_DEFINES
@@ -40,8 +41,10 @@ void Robot::RobotInit() {
 
   if( GetCOB().GetTable().GetEntry(COB_KEY_IS_RED)){
     m_AllianceColor.red = 1;
+    m_AllianceEndGameColor.red = .8;
   } else {
     m_AllianceColor.blue = 1;
+    m_AllianceEndGameColor.blue = .8;
   }
 }
 
@@ -77,28 +80,40 @@ void Robot::RobotPeriodic() {
 
   //
   if(abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0)) < 2 && GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
+    DebugOutF("Locked On");
     for (int i = 0; i < 140; i++)
       m_ledBuffer[i].SetRGB(0, 255, 0);
-    m_LED.SetData(m_ledBuffer);
   }else
   //Has two lines charse eachother around if it sees a target
   if(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
     //DebugOutF("On Target" + std::to_string(limeLightTX));
+    DebugOutF("Can See");
     int numLED = 70;
     int tailLength = 10;
     if(m_LEDIndex > numLED - 1)
       m_LEDIndex = 0;
-
     m_ledBuffer[m_LEDIndex].SetRGB(0, 255, 0);
     m_ledBuffer[(numLED + m_LEDIndex - tailLength) % numLED].SetLED(m_AllianceColor);
     m_ledBuffer[numLED - m_LEDIndex].SetRGB(0, 255, 0);
     m_ledBuffer[(numLED + numLED - m_LEDIndex - tailLength) % numLED].SetLED(m_AllianceColor);
 
     m_LEDIndex++;
-    m_LED.SetData(m_ledBuffer);
   } else
+  // If endgame
+  if(frc::Timer::GetMatchTime().to<double>() <= 180){
+    DebugOutF("End Game");
+    int numLED = 70;
+    int tailLength = 3;
+    if(m_LEDIndex > numLED - 1 )
+      m_LEDIndex = 0;
+    for(int i = 0; i < 7; i++){
+      m_ledBuffer[(m_LEDIndex + (i * 10)) % numLED].SetRGB(255, 255, 255);
+      m_ledBuffer[(numLED + m_LEDIndex - tailLength + (i * 10)) % numLED].SetLED(m_AllianceColor);
+    } 
+    m_LEDIndex++;
+  }else
   // Has a red and blue line go around if batery provides less than 10v
-  if((int) frc::RobotController::GetBatteryVoltage() < 10){
+  if((int) frc::RobotController::GetBatteryVoltage() < 10.5){
     DebugOutF("Low Battery");
     int numLED = 70;
     int tailLength = 10;
@@ -107,13 +122,12 @@ void Robot::RobotPeriodic() {
     m_ledBuffer[m_LEDIndex].SetRGB(255, 215, 0);
     m_ledBuffer[(numLED + m_LEDIndex - tailLength) % numLED].SetLED(m_AllianceColor);
     m_LEDIndex++;
-    m_LED.SetData(m_ledBuffer);
   } else { //Sets LED to m_AllianceColor if no other parterns are aplicable
     DebugOutF("LED Alliance Colors");
     for (int i = 0; i < 140; i++)
       m_ledBuffer[i].SetLED(m_AllianceColor);
-    m_LED.SetData(m_ledBuffer);
   }
+  m_LED.SetData(m_ledBuffer);
 
   //Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1);
 
@@ -133,7 +147,7 @@ void Robot::AutonomousInit() {
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
 
-  frc2::CommandScheduler::GetInstance().Schedule(new DriveToPos(1, 0, 0));
+  //frc2::CommandScheduler::GetInstance().Schedule(new DriveToPos(1, 0, 0));
   
 }
 void Robot::AutonomousPeriodic() {
