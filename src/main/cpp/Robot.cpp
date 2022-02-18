@@ -39,7 +39,7 @@ void Robot::RobotInit() {
   GetDriveTrain().DriveInit();
   m_Shooter.ShooterInit();
 
-  if( GetCOB().GetTable().GetEntry(COB_KEY_IS_RED)){
+  if(GetCOB().GetTable().GetEntry(COB_KEY_IS_RED).GetBoolean(false)){
     m_AllianceColor.red = 1;
     m_AllianceEndGameColor.red = .8;
   } else {
@@ -78,6 +78,14 @@ void Robot::RobotPeriodic() {
   //Has two lines charse eachother around if looking at the target
   //double limeLightTX = GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0);
 
+  if( GetCOB().GetTable().GetEntry(COB_KEY_IS_RED).GetBoolean(false)){
+    m_AllianceColor.red = 1;
+    m_AllianceEndGameColor.red = .8;
+  } else {
+    m_AllianceColor.blue = 1;
+    m_AllianceEndGameColor.blue = .8;
+  }
+
   //
   if(abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0)) < 2 && GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
     DebugOutF("Locked On");
@@ -100,7 +108,7 @@ void Robot::RobotPeriodic() {
     m_LEDIndex++;
   } else
   // If endgame
-  if(frc::Timer::GetMatchTime().to<double>() <= 180){
+  if(frc::Timer::GetMatchTime().to<double>() <= 30){
     DebugOutF("End Game");
     int numLED = 70;
     int tailLength = 3;
