@@ -16,6 +16,7 @@ class Shooter {
         double FlywheelSpeed();
         void ShootTime();
         void ScaleToDistance();
+        void ShootOnReady();
 
         inline ctre::phoenix::motorcontrol::can::TalonFX& GetFlyBack() {return m_FlywheelBack;}
         inline ctre::phoenix::motorcontrol::can::TalonFX& GetFlyFront() {return m_FlywheelFront;}
@@ -29,11 +30,9 @@ class Shooter {
         frc2::Button m_FlywheelToggleByDistance;
         frc2::Button m_FlywheelDial;
         frc2::Button m_ShootTime;
+        frc2::Button m_ReadyShoot;
 
         ctre::phoenix::motorcontrol::can::TalonFX m_FlywheelFront;
         ctre::phoenix::motorcontrol::can::TalonFX m_FlywheelBack;
         ctre::phoenix::motorcontrol::can::TalonFX m_Feeder;
-
-        
-    
 };

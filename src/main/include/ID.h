@@ -21,6 +21,7 @@
 #define FLYWHEEL_DIAL -1
 #define SHOOTTIME 14
 #define TESTBUTTON -1
+#define READYSHOOT 3
 
 #endif
 
