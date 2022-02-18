@@ -71,9 +71,19 @@ void Robot::RobotPeriodic() {
   //   }
   //   on = !on;
   // }
-  
+  // if(GetCOB().GetTable().GetEntry(COB_KEY_DRIVE_MODE).GetString())
   //Has two lines charse eachother around if looking at the target
-  if(abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(28)) / 27 <= 1){
+  //double limeLightTX = GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0);
+
+  //
+  if(abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0)) < 2 && GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
+    for (int i = 0; i < 140; i++)
+      m_ledBuffer[i].SetRGB(0, 255, 0);
+    m_LED.SetData(m_ledBuffer);
+  }else
+  //Has two lines charse eachother around if it sees a target
+  if(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
+    //DebugOutF("On Target" + std::to_string(limeLightTX));
     int numLED = 70;
     int tailLength = 10;
     if(m_LEDIndex > numLED - 1)
@@ -89,6 +99,7 @@ void Robot::RobotPeriodic() {
   } else
   // Has a red and blue line go around if batery provides less than 10v
   if((int) frc::RobotController::GetBatteryVoltage() < 10){
+    DebugOutF("Low Battery");
     int numLED = 70;
     int tailLength = 10;
     if(m_LEDIndex > numLED - 1)
@@ -97,7 +108,12 @@ void Robot::RobotPeriodic() {
     m_ledBuffer[(numLED + m_LEDIndex - tailLength) % numLED].SetLED(m_AllianceColor);
     m_LEDIndex++;
     m_LED.SetData(m_ledBuffer);
-  } 
+  } else { //Sets LED to m_AllianceColor if no other parterns are aplicable
+    DebugOutF("LED Alliance Colors");
+    for (int i = 0; i < 140; i++)
+      m_ledBuffer[i].SetLED(m_AllianceColor);
+    m_LED.SetData(m_ledBuffer);
+  }
 
   //Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1);
 
