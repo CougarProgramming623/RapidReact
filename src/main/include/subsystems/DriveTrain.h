@@ -9,10 +9,6 @@
 #include "./commands/DriveWithJoystick.h"
 #include "./Util.h"
 
-//Music Imports and Defines
-#include "ctre/phoenix/music/Orchestra.h"
-#define MUSIC_PIRATES "../deploy/"
-
 using ctre::phoenix::motorcontrol::can::TalonFX;
 
 class DriveTrain : public frc2::SubsystemBase {
@@ -38,7 +34,6 @@ public:
     inline TalonFX& GetFrontR(){return m_FrontRight;}
     inline TalonFX& GetBackL(){return m_BackLeft;}
     inline TalonFX& GetBackR(){return m_BackRight;}
-    inline ctre::phoenix::music::Orchestra& GetOrch(){return m_Orch;}
 
 private:
     TalonFX m_FrontLeft;
@@ -49,5 +44,4 @@ private:
     frc2::Button m_DriveButton;
     frc2::Button m_FODToggle;
 
-    ctre::phoenix::music::Orchestra m_Orch{};
 };

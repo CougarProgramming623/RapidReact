@@ -133,7 +133,7 @@ void DriveTrain::DriveInit(){
 
     BreakMode(true);
 
-   // SetDefaultCommand(Drive());
+    SetDefaultCommand(Drive());
 
     // m_FODToggle.WhenPressed([&] {
     //     m_FOD = !m_FOD;
@@ -141,18 +141,9 @@ void DriveTrain::DriveInit(){
     // });
 
     UseVelocityPID();
-    MusicInit();
 }
 
-void DriveTrain::MusicInit(){
-    m_Orch.AddInstrument(m_FrontLeft);
-    m_Orch.AddInstrument(m_FrontRight);
-    m_Orch.AddInstrument(m_BackLeft);
-    m_Orch.AddInstrument(m_BackRight);
-    m_Orch.AddInstrument(Robot::GetRobot()->GetShooter().GetFlyBack());
-    m_Orch.AddInstrument(Robot::GetRobot()->GetShooter().GetFlyFront());
 
-}
 
 void DriveTrain::BaseDrive(double power){
     m_FrontLeft.Set(ControlMode::Velocity, power * kMAX_VELOCITY);

@@ -8,6 +8,7 @@
 #include "commands/LockOnTarget.h"
 #include <frc/Errors.h>
 #include "Util.h"
+#include "commands/Music.h"
 
 #include <math.h>
 #define _USE_MATH_DEFINES
@@ -63,8 +64,7 @@ void Robot::AutonomousInit() {
   DebugOutF("Auto Init");
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
-  GetDriveTrain().GetOrch().LoadMusic("Pirates.chrp");
-  GetDriveTrain().GetOrch().Play(); 
+  frc2::CommandScheduler::GetInstance().Schedule(new Music("Pirates.chrp"));
 }
 void Robot::AutonomousPeriodic() {
   
