@@ -6,7 +6,7 @@
 #include <frc/Timer.h>
 #include "./Robot.h"
 
-class DriveToPos : public frc2::CommandHelper<frc2::CommandBase, DriveToPos>{
+class DriveToPos : public frc2::CommandHelper<frc2::CommandBase, DriveToPos> {
 public:
 
     DriveToPos(double x, double y, double a);
