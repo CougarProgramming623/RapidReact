@@ -5,6 +5,7 @@
 #include "Robot.h"
 #include <wpi/raw_ostream.h>
 #include <frc2/command/InstantCommand.h>
+#include "commands/LockOnTarget.h"
 #include <frc/Errors.h>
 #include "Util.h"
 
@@ -16,7 +17,11 @@
 
 Robot* Robot::s_Instance = nullptr;
 
-Robot::Robot() {
+Robot::Robot() :
+
+  m_TargetLock([&] { return Robot::GetRobot()->GetJoystick().GetRawButton(1); })
+
+{
   s_Instance = this;
   
 }
@@ -40,13 +45,13 @@ void Robot::RobotInit() {
 
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
-
+  
   //Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1);
 
   PushDistance();
   
   GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_SPEED).SetDouble(GetShooter().FlywheelSpeed());
-  GetCOB().GetTable().GetEntry(COB_KEY_FOD).SetBoolean(GetDriveTrain().m_FOD);
+  //GetCOB().GetTable().GetEntry(COB_KEY_FOD).SetBoolean(GetDriveTrain().m_FOD);
   if (GetCOB().GetTable().GetEntry(COB_KEY_NAVX_RESET).GetBoolean(false) == true) {
     GetNavX().ZeroYaw();
     GetCOB().GetTable().GetEntry(COB_KEY_NAVX_RESET).SetBoolean(false);
@@ -69,7 +74,7 @@ void Robot::TeleopInit() {
   DebugOutF("Teleop Init");
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
-
+  m_TargetLock.WhenHeld(LockOnTarget());
 }
 void Robot::TeleopPeriodic() {
   

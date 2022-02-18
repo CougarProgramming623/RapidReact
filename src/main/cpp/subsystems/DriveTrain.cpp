@@ -16,7 +16,7 @@ DriveTrain::DriveTrain():
     m_FrontRight(DRIVE_FRONT_RIGHT),
     m_BackLeft(DRIVE_BACK_LEFT),
     m_BackRight(DRIVE_BACK_RIGHT),
-    m_FODToggle([&] {return Robot::GetRobot()->GetJoystick().GetRawButton(1);})
+    m_FODToggle([&] { return false; }) //Robot::GetRobot()->GetJoystick().GetRawButton(-1);})
 {
     
 };
@@ -44,7 +44,7 @@ void Normalize(std::vector<double> wheelSpeeds) {
 	}
 } //Normalize()
 
-void DriveTrain::CartesianDrive(double y, double x, double rotation, double angle) {
+void DriveTrain::CartesianDrive(double y, double x, double rotation, double angle, bool FOD) {
 	//source: WPILib
 	//same code found in CartesianDrive in the WPI Library but adapted for being used in Velocity Mode
 	frc::Vector2d input{x, y};
@@ -60,7 +60,10 @@ void DriveTrain::CartesianDrive(double y, double x, double rotation, double angl
     const int kBACK_LEFT = 2;
     const int kBACK_RIGHT = 3;
 
-    if (m_FOD){ input.Rotate(angle); }
+
+    Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_DRIVE_MODE).SetString(FOD ? "Field" : "Robot");
+    
+    if (FOD){ input.Rotate(angle); }
 
     x = abs(x) <= 0.05f ? 0 : x;
 	y = abs(y) <= 0.05f ? 0 : y;
@@ -132,10 +135,10 @@ void DriveTrain::DriveInit(){
 
    // SetDefaultCommand(Drive());
 
-    m_FODToggle.WhenPressed([&] {
-        m_FOD = !m_FOD;
-        Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_DRIVE_MODE).SetString(m_FOD ? "Field" : "Robot");
-    });
+    // m_FODToggle.WhenPressed([&] {
+    //     m_FOD = !m_FOD;
+    //     Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_DRIVE_MODE).SetString(m_FOD ? "Field" : "Robot");
+    // });
 
     UseVelocityPID();
     MusicInit();

@@ -22,9 +22,8 @@ public:
     void DriveInit();
     void MusicInit();
     void BreakMode(bool on);
-    void CartesianDrive(double y, double x, double rotation, double angle);
+    void CartesianDrive(double y, double x, double rotation, double angle, bool FOD);
 
-    bool m_FOD = true;
 
     void UseVelocityPID();
     void UseMagicPID();
