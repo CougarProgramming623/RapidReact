@@ -27,7 +27,8 @@ m_FlywheelToggleByDistance(BUTTON_L(FLYWHEEL_BUTTON_BY_DISTANCE)),
 m_ShootTime(BUTTON_L(SHOOTTIME)),
 m_FlywheelFront(FLYWHEEL_FRONT), //master
 m_FlywheelBack(FLYWHEEL_BACK), //slave
-m_Feeder(FEEDER)
+m_Feeder(FEEDER),
+m_ReadyShoot(BUTTON_L(READYSHOOT))
 {}
 
 void Shooter::ShooterInit(){
@@ -36,9 +37,31 @@ void Shooter::ShooterInit(){
     FlywheelButton();
     ScaleToDistance();
     ShootTime();
+    ShootOnReady();
     m_FlywheelBack.Set(ControlMode::Follower, FLYWHEEL_FRONT);
     m_FlywheelBack.SetInverted(ctre::phoenix::motorcontrol::InvertType::OpposeMaster);
 
+}
+
+void Shooter::ShootOnReady(){
+    m_ReadyShoot.WhileHeld(frc2::FunctionalCommand(
+        [&]{DebugOutF("Shooting when ready");}, //OnInit
+        [&]{
+            double setpoint = m_FlywheelFront.GetClosedLoopTarget();
+            //DebugOutF(std::to_string(abs(m_FlywheelFront.GetSelectedSensorVelocity() - setpoint) * 600 / 2048));
+            if (abs(m_FlywheelFront.GetSelectedSensorVelocity() - setpoint) * 600 / 2048 <= 70
+                && m_FlywheelFront.GetSelectedSensorVelocity() * 600 / 2048 >= 100
+                && setpoint * 600 / 2048 >= 100){
+                m_Feeder.Set(ControlMode::PercentOutput, 0.5);
+                //DebugOutF("Shooting");
+            } else {
+                m_Feeder.Set(ControlMode::PercentOutput, 0);
+                //DebugOutF("Not shooting");
+            }
+        },
+        [&](bool e){m_Feeder.Set(ControlMode::PercentOutput, 0);},
+        [&]{return false;}
+    ));
 }
 
 void Shooter::FeederButton(){
@@ -82,6 +105,9 @@ void Shooter::FlywheelButton(){
         m_FlywheelFront.Set(ControlMode::PercentOutput, 0);
     }));
 }
+
+
+
 
 double Shooter::FlywheelSpeed(){
     return m_FlywheelFront.GetSelectedSensorVelocity() * 600 / 2048; //rpm
