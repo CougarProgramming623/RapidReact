@@ -106,13 +106,9 @@ void Shooter::FlywheelButton(){
     }));
 }
 
-
-
-
-double Shooter::FlywheelSpeed(){
+double Shooter::FlywheelRPM(){
     return m_FlywheelFront.GetSelectedSensorVelocity() * 600 / 2048; //rpm
 }
-
 void Shooter::ShootTime(){ //button ID 13
     m_ShootTime.WhenPressed(frc2::ParallelRaceGroup(frc2::FunctionalCommand( [&]{}, [&]{ //onExecute
             double dialSpeed = ((int)((Robot::GetRobot()->GetButtonBoard().GetRawAxis(0) + 1)  / 2 * 6001)); //rpm
@@ -144,7 +140,6 @@ void Shooter::ScaleToDistance(){
 
     
     Robot::GetRobot()->GetCOB().GetTable().GetEntry("/COB/flywheelSpeedSetpoint").SetDouble(RPM);
-    Robot::GetRobot()->GetCOB().GetTable().GetEntry("/COB/smoothRPM").SetDouble(smoothRPM);
 
     m_FlywheelFront.Set(ControlMode::Velocity, smoothRPM / 600 * 2048);
 

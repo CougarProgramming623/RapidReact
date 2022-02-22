@@ -13,7 +13,7 @@ class Shooter {
         void ShooterInit();
         void FeederButton();
         void FlywheelButton();
-        double FlywheelSpeed();
+        double FlywheelRPM();
         void ShootTime();
         void ScaleToDistance();
         void ShootOnReady();
