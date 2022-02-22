@@ -16,6 +16,7 @@ class Shooter {
         double FlywheelRPM();
         void ShootTime();
         void ScaleToDistance();
+        void ShootOnReady();
 
     private:
 
@@ -26,11 +27,9 @@ class Shooter {
         frc2::Button m_FlywheelToggleByDistance;
         frc2::Button m_FlywheelDial;
         frc2::Button m_ShootTime;
+        frc2::Button m_ReadyShoot;
 
         ctre::phoenix::motorcontrol::can::TalonFX m_FlywheelFront;
         ctre::phoenix::motorcontrol::can::TalonFX m_FlywheelBack;
         ctre::phoenix::motorcontrol::can::TalonFX m_Feeder;
-
-        
-    
 };
