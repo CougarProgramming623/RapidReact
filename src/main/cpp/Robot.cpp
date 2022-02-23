@@ -44,6 +44,7 @@ void Robot::RobotInit() {
 
   GetDriveTrain().DriveInit();
   m_Shooter.ShooterInit();
+  m_OI.Init();
 
   if( GetCOB().GetTable().GetEntry(COB_KEY_IS_RED).GetBoolean(false)){
     m_AllianceColor.red = 1;
