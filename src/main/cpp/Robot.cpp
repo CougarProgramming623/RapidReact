@@ -63,7 +63,7 @@ void Robot::RobotPeriodic() {
   if(abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0)) < 2 && GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
     for (int i = 0; i < 140; i++)
       m_ledBuffer[i].SetRGB(0, 255, 0);
-  }else if(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
+  } else if(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
     if(m_LEDIndex > m_NumLED - 1)
       m_LEDIndex = 0;
     CanSee(m_AllianceColor, m_NumLED, 10, m_LEDIndex, m_ledBuffer);
@@ -73,7 +73,7 @@ void Robot::RobotPeriodic() {
       m_LEDIndex = 0;
     EndGame(m_AllianceColor, m_NumLED, 3, m_LEDIndex, m_ledBuffer);
     m_LEDIndex++;
-  }else if((int) frc::RobotController::GetBatteryVoltage() < 10.5){
+  } else if((int) frc::RobotController::GetBatteryVoltage() < 10.5){
     if(m_LEDIndex > m_NumLED - 1)
       m_LEDIndex = 0;
     LowBattery(m_AllianceColor, m_NumLED, 10, m_LEDIndex, m_ledBuffer);
