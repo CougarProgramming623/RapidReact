@@ -14,6 +14,7 @@
 #include <AHRS.h>
 #include <frc/SPI.h>
 #include "COB.h"
+#include "LEDFunction.h"
 #include <frc2/command/SubsystemBase.h>
 
 class Robot : public frc::TimedRobot {
@@ -67,4 +68,11 @@ class Robot : public frc::TimedRobot {
   DriveTrain m_DriveTrain;
 
   COB m_COB;
+
+  int m_LEDIndex;
+  int m_NumLED;
+
+  frc::Color m_AllianceColor;
+
+  frc2::Button m_TargetLock;
 };
