@@ -15,6 +15,7 @@
 #include <frc/SPI.h>
 #include "COB.h"
 #include <frc2/command/SubsystemBase.h>
+#include "subsystems/Climb.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -49,6 +50,8 @@ class Robot : public frc::TimedRobot {
 
   inline COB& GetCOB() {return m_COB; }
 
+  inline Climb& GetClimb() {return m_Climb; }
+
   void PushDistance();
 
   private:
@@ -69,5 +72,7 @@ class Robot : public frc::TimedRobot {
   COB m_COB;
 
   frc2::Button m_TargetLock;
+
+  Climb m_Climb;
 
 };
