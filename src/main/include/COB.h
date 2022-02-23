@@ -18,6 +18,7 @@
 #define COB_KEY_DRIVE_MODE "/COB/driveMode"
 
 #define COB_KEY_MATCH_TIME "/COB/matchTime"
+#define COB_KEY_TICKS "/COB/ticks"
 
 
 class COB
