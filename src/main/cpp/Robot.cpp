@@ -61,10 +61,10 @@ void Robot::AutonomousInit() {
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
 
+
   frc2::CommandScheduler::GetInstance().Schedule(
     new frc2::SequentialCommandGroup(
-      TurnToAngle(15, 0.5),
-      TurnToAngle::TurnToTarget()
+      TurnToAngle(180, 0.2)
       //TurnToAngle(TurnToAngle::Target(), 0.07)
     )
   );

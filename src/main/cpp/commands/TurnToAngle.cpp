@@ -17,8 +17,8 @@ using ctre::phoenix::motorcontrol::ControlMode;
     const int kGEARBOX_RATIO = 12;
     const int kTICKS_PER_ROTATION = 2048;     
     const double kMETERS_PER_ROTATION = (8.0 * 2.54) * 3.1415926 / 100.0;     //(!) FINISH (!)
-    const double kCOUNT_THRESHOLD = 200;      //How close to the exact number the encoders need to be (!) Should be tested (!)
-    const double kDERIVATIVE_THRESHOLD = .05;  //(!) Test (!)
+    const double kCOUNT_THRESHOLD = 50;      //How close to the exact number the encoders need to be (!) Should be tested (!)
+    const double kDERIVATIVE_THRESHOLD = .04;  //(!) Test (!)
     const double kTIME_THRESHOLD = 1;         //(!) TEST (!)
 
     TurnToAngle::TurnToAngle(std::function<double()> angle, double speed){
@@ -36,7 +36,7 @@ using ctre::phoenix::motorcontrol::ControlMode;
     void TurnToAngle::Initialize(){
 
         DebugOutF("TurnToAngle Initialize");
-        m_RotTicks = 2048 / 60 * kGEARBOX_RATIO * m_Angle();
+        m_RotTicks = 2048.0 / 60 * kGEARBOX_RATIO * m_Angle() * 9 / 10 * 1.028;
         m_TargetAngle = m_Angle() + Robot::GetRobot()->GetNavX().GetYaw();
         FOR_ALL_MOTORS(.Set(ControlMode::PercentOutput, 0))
 
@@ -72,17 +72,17 @@ using ctre::phoenix::motorcontrol::ControlMode;
     }
 
     bool TurnToAngle::IsFinished(){
-        return  
-            (abs(m_DriveTrain.GetFrontL().GetSelectedSensorPosition() - (m_FinalTicks[0])) <= kCOUNT_THRESHOLD &&
-             abs(m_DriveTrain.GetFrontR().GetSelectedSensorPosition() - (m_FinalTicks[1])) <= kCOUNT_THRESHOLD &&
-             abs(m_DriveTrain.GetBackL().GetSelectedSensorPosition()  - (m_FinalTicks[2])) <= kCOUNT_THRESHOLD &&
-             abs(m_DriveTrain.GetBackR().GetSelectedSensorPosition()  - (m_FinalTicks[3])) <= kCOUNT_THRESHOLD) ||
-            (m_Clock.Get() >= (units::time::second_t) kTIME_THRESHOLD &&
-            (abs(m_DriveTrain.GetFrontL().GetErrorDerivative()) <= kDERIVATIVE_THRESHOLD ||
-             abs(m_DriveTrain.GetFrontR().GetErrorDerivative()) <= kDERIVATIVE_THRESHOLD ||
-             abs(m_DriveTrain.GetBackL().GetErrorDerivative())  <= kDERIVATIVE_THRESHOLD ||
-             abs(m_DriveTrain.GetBackR().GetErrorDerivative())  <= kDERIVATIVE_THRESHOLD )) ||
-            (abs(Robot::GetRobot()->GetNavX().GetYaw() - m_TargetAngle) <= 5);
+        return  false;
+            // (abs(m_DriveTrain.GetFrontL().GetSelectedSensorPosition() - (m_FinalTicks[0])) <= kCOUNT_THRESHOLD &&
+            //  abs(m_DriveTrain.GetFrontR().GetSelectedSensorPosition() - (m_FinalTicks[1])) <= kCOUNT_THRESHOLD &&
+            //  abs(m_DriveTrain.GetBackL().GetSelectedSensorPosition()  - (m_FinalTicks[2])) <= kCOUNT_THRESHOLD &&
+            //  abs(m_DriveTrain.GetBackR().GetSelectedSensorPosition()  - (m_FinalTicks[3])) <= kCOUNT_THRESHOLD) ||
+            // (m_Clock.Get() >= (units::time::second_t) kTIME_THRESHOLD &&
+            // (abs(m_DriveTrain.GetFrontL().GetErrorDerivative()) <= kDERIVATIVE_THRESHOLD ||
+            //  abs(m_DriveTrain.GetFrontR().GetErrorDerivative()) <= kDERIVATIVE_THRESHOLD ||
+            //  abs(m_DriveTrain.GetBackL().GetErrorDerivative())  <= kDERIVATIVE_THRESHOLD ||
+            //  abs(m_DriveTrain.GetBackR().GetErrorDerivative())  <= kDERIVATIVE_THRESHOLD )) ||
+            // (abs(Robot::GetRobot()->GetNavX().GetYaw() - m_TargetAngle) <= 3);
 
     }
 
