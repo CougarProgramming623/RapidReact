@@ -58,6 +58,15 @@ void DriveToPos::Initialize(){
     m_Clock.Start();
 }
 
+void DriveToPos::Execute(){
+
+    Robot::GetRobot()->GetCOB().GetTable().GetEntry("/COB/currentCommand").SetString("DriveToPosition");
+
+    m_DriveTrain.GetFrontL().Set(ControlMode::Position, m_InitialTicks[0] + m_XTicks);
+	m_DriveTrain.GetFrontR().Set(ControlMode::Position, m_InitialTicks[1] + m_XTicks );
+	m_DriveTrain.GetBackL().Set(ControlMode::Position, m_InitialTicks[2] + m_XTicks );
+	m_DriveTrain.GetBackR().Set(ControlMode::Position, m_InitialTicks[3] + m_XTicks );
+}
 
 bool DriveToPos::IsFinished(){
     return  
@@ -70,14 +79,6 @@ bool DriveToPos::IsFinished(){
         abs(m_DriveTrain.GetFrontR().GetErrorDerivative()) <= kDERIVATIVE_THRESHOLD ||
         abs(m_DriveTrain.GetBackL().GetErrorDerivative())  <= kDERIVATIVE_THRESHOLD ||
         abs(m_DriveTrain.GetBackR().GetErrorDerivative())  <= kDERIVATIVE_THRESHOLD ));
-}
-
-void DriveToPos::Execute(){
-
-    m_DriveTrain.GetFrontL().Set(ControlMode::Position, m_InitialTicks[0] + m_XTicks);
-	m_DriveTrain.GetFrontR().Set(ControlMode::Position, m_InitialTicks[1] + m_XTicks );
-	m_DriveTrain.GetBackL().Set(ControlMode::Position, m_InitialTicks[2] + m_XTicks );
-	m_DriveTrain.GetBackR().Set(ControlMode::Position, m_InitialTicks[3] + m_XTicks );
 }
 
 void DriveToPos::End(bool end){

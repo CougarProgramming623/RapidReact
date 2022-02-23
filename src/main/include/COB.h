@@ -21,6 +21,8 @@
 #define COB_KEY_ROBOT_ANGLE "/COB/robotAngle"
 #define COB_KEY_DRIVE_MODE "/COB/driveMode"
 
+#define COB_KEY_MATCH_TIME "/COB/matchTime"
+
 
 class COB
 {

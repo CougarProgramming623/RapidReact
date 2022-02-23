@@ -73,4 +73,6 @@ class Robot : public frc::TimedRobot {
   int m_NumLED;
 
   frc::Color m_AllianceColor;
+
+  frc2::Button m_TargetLock;
 };
