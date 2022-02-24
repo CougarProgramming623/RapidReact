@@ -24,7 +24,7 @@ Shooter::Shooter() :
 m_FeederButton(BUTTON_L(FEEDER_BUTTON)),
 m_FlywheelToggleByDial(BUTTON_L(FLYWHEEL_BUTTON_BY_DIAL)),
 m_FlywheelToggleByDistance(BUTTON_L(FLYWHEEL_BUTTON_BY_DISTANCE)),
-m_ShootTime(BUTTON_L(SHOOTTIME)),
+m_ShootTime(BUTTON_L(16)),
 m_FlywheelFront(FLYWHEEL_FRONT), //master
 m_FlywheelBack(FLYWHEEL_BACK), //slave
 m_Feeder(FEEDER),
