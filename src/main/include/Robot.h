@@ -8,6 +8,7 @@
 #include <frc/AddressableLED.h>
 #include <frc2/command/PrintCommand.h>
 #include "subsystems/Shooter.h"
+#include "OI.h"
 
 #include <frc/Joystick.h>
 #include "subsystems/DriveTrain.h"
@@ -49,6 +50,7 @@ class Robot : public frc::TimedRobot {
   inline AHRS& GetNavX() {return m_NavX; }
 
   inline COB& GetCOB() {return m_COB; }
+  inline OI& GetOI() {return m_OI; }
 
   void PushDistance();
 
@@ -68,6 +70,7 @@ class Robot : public frc::TimedRobot {
   DriveTrain m_DriveTrain;
 
   COB m_COB;
+  OI m_OI;
 
   int m_LEDIndex;
   int m_NumLED;
@@ -75,4 +78,6 @@ class Robot : public frc::TimedRobot {
   frc::Color m_AllianceColor;
 
   frc2::Button m_TargetLock;
+  frc2::Button m_LimeLightToggle;
+
 };

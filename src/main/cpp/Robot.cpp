@@ -10,6 +10,7 @@
 #include <frc/Errors.h>
 #include "Util.h"
 #include "frc/timer.h"
+#include "ID.h"
 
 #include <math.h>
 #define _USE_MATH_DEFINES
@@ -26,7 +27,9 @@ Robot* Robot::s_Instance = nullptr;
 
 Robot::Robot() :
 
-  m_TargetLock([&] { return Robot::GetRobot()->GetJoystick().GetRawButton(1); })
+  m_TargetLock([&] { return Robot::GetRobot()->GetJoystick().GetRawButton(1); }),
+  
+  m_LimeLightToggle(BUTTON_L(14)) 
 
 {
   s_Instance = this;
@@ -36,6 +39,9 @@ Robot::Robot() :
 void Robot::RobotInit() {
   DebugOutF("Robot Init");
   
+
+  m_NumLED = 70;
+
   m_LED.SetLength(140);
 
   for (int i = 0; i < 140; i++)
@@ -48,6 +54,7 @@ void Robot::RobotInit() {
 
   GetDriveTrain().DriveInit();
   m_Shooter.ShooterInit();
+  m_OI.Init();
 
   if( GetCOB().GetTable().GetEntry(COB_KEY_IS_RED).GetBoolean(false)){
     m_AllianceColor.red = 1;
@@ -56,7 +63,15 @@ void Robot::RobotInit() {
     m_AllianceColor.blue = 1;
     m_AllianceColor.red = 0;
   }
-  m_NumLED = 70;
+  
+
+  m_LimeLightToggle.WhenPressed([&] {
+    DebugOutF("Limelight Toggle");
+    if(Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").GetDouble(2) == 1)
+      Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(0);
+    else
+      Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1); 
+  });
 }
 
 void Robot::RobotPeriodic() {
@@ -95,7 +110,15 @@ void Robot::RobotPeriodic() {
   }
   m_LED.SetData(m_ledBuffer);
 
-  //Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1);
+  
+
+  if(frc::RobotController::GetUserButton()){
+    if(Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").GetDouble(2) == 1)
+      Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(0);
+    else
+      Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1);  
+  }
+  
 
   PushDistance();
   
@@ -115,7 +138,6 @@ void Robot::AutonomousInit() {
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
   GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(false);
-
 }
 void Robot::AutonomousPeriodic() {
   

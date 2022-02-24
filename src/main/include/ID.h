@@ -22,6 +22,7 @@
 #define SHOOTTIME 14
 #define TESTBUTTON -1
 #define READYSHOOT 3
+#define LIMELIGHT_TOGGLE 14
 
 #endif
 
