@@ -2,9 +2,8 @@
 
 #pragma once
 
-#define ROBOT_SABER
-//#define ROBOT_GEORGE
-
+//#define ROBOT_SABER
+#define ROBOT_GEORGE
 
 #ifdef ROBOT_SABER
 
@@ -28,6 +27,19 @@
 
 #ifdef ROBOT_GEORGE
 
-#define DRIVE_FRONT_LEFT -1
+#define DRIVE_FRONT_LEFT 53
+#define DRIVE_FRONT_RIGHT 54
+#define DRIVE_BACK_LEFT 51
+#define DRIVE_BACK_RIGHT 52
+#define FLYWHEEL_FRONT -1
+#define FLYWHEEL_BACK -1
+#define FEEDER -1
+#define FEEDER_BUTTON -1
+#define FLYWHEEL_BUTTON_BY_DIAL -1
+#define FLYWHEEL_BUTTON_BY_DISTANCE -1
+#define FLYWHEEL_DIAL -1
+#define SHOOTTIME -1
+#define TESTBUTTON -1
+#define READYSHOOT -1
 
 #endif
