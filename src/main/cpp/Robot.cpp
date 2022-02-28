@@ -41,6 +41,7 @@ void Robot::RobotInit() {
   m_LED.Start();
 
   GetDriveTrain().DriveInit();
+  GetClimb().ClimbInit();
   m_Shooter.ShooterInit();
 }
 

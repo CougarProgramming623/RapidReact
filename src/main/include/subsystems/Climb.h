@@ -18,7 +18,7 @@ public:
 
     frc2::FunctionalCommand ManualClimb();
 
-    bool isMainUnocked();
+    bool isMainUnlocked();
     bool isManualUnlocked();
 
     // boolean pastcurrentstep(n) {

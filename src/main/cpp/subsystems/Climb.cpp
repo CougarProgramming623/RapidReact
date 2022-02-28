@@ -1,11 +1,15 @@
 #include "subsystems/Climb.h"
 #include "Robot.h"
 #include <ctre/phoenix/motorcontrol/NeutralMode.h>
+#include <ctre/phoenix/motorcontrol/ControlMode.h>
 
 Climb::Climb() :
     m_PivotArm(CLIMBPIVOT),
     m_PullUpArm(CLIMBPULLUP)
 {}
+
+bool Climb::isMainUnlocked() { return Robot::GetRobot()->GetButtonBoard().GetRawButton(18); }
+bool Climb::isManualUnlocked() { return Robot::GetRobot()->GetButtonBoard().GetRawButton(11); }
 
 frc2::FunctionalCommand Climb::ManualClimb() {
     return frc2::FunctionalCommand(
@@ -13,8 +17,13 @@ frc2::FunctionalCommand Climb::ManualClimb() {
             
         }, //On Init
         [&]{
-            if (Climb::isMainUnocked() && Climb::isManualUnlocked()) {
-                DebugOutF("Unlocked");
+            if (Climb::isMainUnlocked() && Climb::isManualUnlocked()) {
+                m_PullUpArm.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, Robot::GetRobot()->GetJoystick().GetRawAxis(1));
+                if(Robot::GetRobot()->GetButtonBoard().GetRawButton(13)){
+                    m_PivotArm.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 1);
+                } else {
+                    m_PivotArm.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+                }
             }
         }, //On Excute
         [&](bool e){
@@ -26,7 +35,7 @@ frc2::FunctionalCommand Climb::ManualClimb() {
 }
 
 void Climb::ClimbInit(){
-
+    SetDefaultCommand(Climb::ManualClimb());
 }
 
 void Climb::BreakMode(bool on){
@@ -38,6 +47,3 @@ void Climb::BreakMode(bool on){
         m_PivotArm.SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
     }
 } 
-
-bool isMainUnocked() { return Robot::GetRobot()->GetButtonBoard().GetRawButton(18); }
-bool isManualUnlocked() { return Robot::GetRobot()->GetButtonBoard().GetRawButton(11); }
