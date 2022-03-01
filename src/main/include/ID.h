@@ -7,7 +7,7 @@
 
 #ifdef ROBOT_SABER
 
-#define DRIVE_FRONT_LEFT 31
+#define DRIVE_FRONT_LEFT -1 //31
 #define DRIVE_FRONT_RIGHT 32
 #define DRIVE_BACK_LEFT 34
 #define DRIVE_BACK_RIGHT 33
@@ -22,6 +22,8 @@
 #define TESTBUTTON -1
 #define READYSHOOT 3
 #define LIMELIGHT_TOGGLE 14
+#define CLIMBPULLUP 31 //Conflict with drive
+#define CLIMBPIVOT 3
 
 #endif
 
@@ -41,5 +43,7 @@
 #define SHOOTTIME -1
 #define TESTBUTTON -1
 #define READYSHOOT -1
+#define CLIMBPULLUP 30
+#define CLIMBPIVOT -1
 
 #endif
