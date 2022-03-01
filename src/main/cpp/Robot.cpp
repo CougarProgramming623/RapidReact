@@ -6,6 +6,7 @@
 #include <frc/RobotController.h>
 #include <wpi/raw_ostream.h>
 #include <frc2/command/InstantCommand.h>
+#include <frc/RobotBase.h>
 #include "commands/LockOnTarget.h"
 #include <frc/Errors.h>
 #include "Util.h"
@@ -85,8 +86,11 @@ void Robot::RobotPeriodic() {
     m_AllianceColor.blue = 1;
     m_AllianceColor.red = 0;
   }
-  
-  if(abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0)) < 2 && GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
+
+  if(frc::RobotBase::IsDisabled()){
+    for (int i = 0; i < 140; i++)
+      m_ledBuffer[i].SetRGB(255, 0, 255);
+  } else if(abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0)) < 2 && GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
     for (int i = 0; i < 140; i++)
       m_ledBuffer[i].SetRGB(0, 255, 0);
   } else if(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
