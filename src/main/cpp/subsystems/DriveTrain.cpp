@@ -132,7 +132,7 @@ void DriveTrain::DriveInit(){
 
     BreakMode(true);
 
-    //SetDefaultCommand(Drive());
+    SetDefaultCommand(Drive());
 
     // m_FODToggle.WhenPressed([&] {
     //     m_FOD = !m_FOD;

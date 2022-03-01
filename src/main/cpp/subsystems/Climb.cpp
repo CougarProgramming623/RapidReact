@@ -17,13 +17,13 @@ frc2::FunctionalCommand Climb::ManualClimb() {
             
         }, //On Init
         [&]{
-            if (Climb::isMainUnlocked() && Climb::isManualUnlocked()) {
+            if (Climb::isMainUnlocked()/* && Climb::isManualUnlocked()*/) { //DISABLED TEMPORARILY
                 m_PullUpArm.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, Robot::GetRobot()->GetJoystick().GetRawAxis(1));
-                if(Robot::GetRobot()->GetButtonBoard().GetRawButton(13)){
-                    m_PivotArm.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 1);
-                } else {
-                    m_PivotArm.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
-                }
+                // if(Robot::GetRobot()->GetButtonBoard().GetRawButton(13)){
+                //     m_PivotArm.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 1);
+                // } else {
+                //     m_PivotArm.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 0);
+                // }
             }
         }, //On Excute
         [&](bool e){
@@ -35,6 +35,7 @@ frc2::FunctionalCommand Climb::ManualClimb() {
 }
 
 void Climb::ClimbInit(){
+    BreakMode(true);
     SetDefaultCommand(Climb::ManualClimb());
 }
 
