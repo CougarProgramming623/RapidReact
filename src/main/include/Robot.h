@@ -39,7 +39,7 @@ class Robot : public frc::TimedRobot {
   void TestInit() override;
   void TestPeriodic() override;
 
-  inline DriveTrain& GetDriveTrain(){return m_DriveTrain;}
+  // inline DriveTrain& GetDriveTrain(){return m_DriveTrain;}
 
   static Robot* GetRobot(){ return s_Instance; }
 
@@ -70,7 +70,7 @@ class Robot : public frc::TimedRobot {
   
   AHRS m_NavX {frc::SPI::Port::kMXP};
 
-  DriveTrain m_DriveTrain;
+  // DriveTrain m_DriveTrain;
 
   COB m_COB;
   OI m_OI;

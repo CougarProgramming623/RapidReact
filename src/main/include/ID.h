@@ -5,6 +5,8 @@
 //#define ROBOT_SABER
 #define ROBOT_GEORGE
 
+#define LIMELIGHT_TOGGLE 14
+
 #ifdef ROBOT_SABER
 
 #define DRIVE_FRONT_LEFT -1 //31
@@ -21,8 +23,7 @@
 #define SHOOTTIME 14
 #define TESTBUTTON -1
 #define READYSHOOT 3
-#define LIMELIGHT_TOGGLE 14
-#define CLIMBPULLUP 31 //Conflict with drive
+#define CLIMBPULLUP 31
 #define CLIMBPIVOT 3
 
 #endif
@@ -36,14 +37,15 @@
 #define FLYWHEEL_FRONT 39
 #define FLYWHEEL_BACK 38
 #define FEEDER 11
-#define FEEDER_BUTTON -1
-#define FLYWHEEL_BUTTON_BY_DIAL -1
-#define FLYWHEEL_BUTTON_BY_DISTANCE -1
+#define FEEDER_BUTTON 2
+#define FLYWHEEL_BUTTON_BY_DIAL 4
+#define FLYWHEEL_BUTTON_BY_DISTANCE 5
 #define FLYWHEEL_DIAL -1
-#define SHOOTTIME -1
+#define SHOOTTIME 14
 #define TESTBUTTON -1
-#define READYSHOOT -1
-#define CLIMBPULLUP 30
+#define READYSHOOT 3
+#define CLIMBPULLUP 35
 #define CLIMBPIVOT -1
+
 
 #endif
