@@ -3,10 +3,13 @@
 #include "Util.h"
 #include "Robot.h"
 
+#include <ctre/phoenix/motorcontrol/SupplyCurrentLimitConfiguration.h>
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
+
 
 #define standardUpDownSpeed 0.1 //standard moves up
 #define standardInOutSpeed 0.1 //standard moves in
+#define voltageThreshhold 1 //voltage to stop the UpDownMotor from moving further down
 
 
 using ctre::phoenix::motorcontrol::ControlMode;
@@ -32,7 +35,14 @@ void Intake::IntakeInit() {
 
 void Intake::setUpDownButtons() {
 	m_moveUp.WhileHeld([&]   { m_motorUpDown.Set(ControlMode::PercentOutput, -standardInOutSpeed); });
-	m_moveDown.WhileHeld([&] { m_motorUpDown.Set(ControlMode::PercentOutput, standardInOutSpeed);  });
+	m_moveDown.WhileHeld([&] { 
+		double voltage = m_motorUpDown.GetMotorOutputVoltage();
+		m_motorUpDown.Set(ControlMode::PercentOutput, standardInOutSpeed);
+
+		if 		(voltage > voltageThreshhold)  m_motorUpDown.Set(ControlMode::PercentOutput, 0);
+		else if (voltage <= voltageThreshhold) m_motorUpDown.Set(ControlMode::PercentOutput, standardInOutSpeed);
+
+	});
 }
 
 void Intake::setInOutButtons() {
