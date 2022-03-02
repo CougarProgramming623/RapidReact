@@ -103,6 +103,8 @@ void Robot::RobotPeriodic() {
   }
   GetCOB().GetTable().GetEntry(COB_KEY_ROBOT_ANGLE).SetDouble(GetNavX().GetYaw());
   GetCOB().GetTable().GetEntry(COB_KEY_MATCH_TIME).SetDouble(frc::Timer::GetMatchTime().to<double>());
+  GetCOB().GetTable().GetEntry(COB_KEY_TICKS).SetDouble(GetCOB().GetTable().GetEntry(COB_KEY_TICKS).GetDouble(0) + 1);
+
 
 }
 
