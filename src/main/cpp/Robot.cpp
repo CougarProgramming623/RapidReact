@@ -44,6 +44,7 @@ void Robot::RobotInit() {
 
   GetDriveTrain().DriveInit();
   m_Shooter.ShooterInit();
+  m_Intake.IntakeInit();
 
   if( GetCOB().GetTable().GetEntry(COB_KEY_IS_RED).GetBoolean(false)){
     m_AllianceColor.red = 1;
@@ -109,7 +110,7 @@ void Robot::RobotPeriodic() {
 }
 
 void Robot::AutonomousInit() {
-  /*
+  
   DebugOutF("Auto Init");
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);

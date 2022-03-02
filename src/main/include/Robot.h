@@ -8,6 +8,7 @@
 #include <frc/AddressableLED.h>
 #include <frc2/command/PrintCommand.h>
 #include "subsystems/Shooter.h"
+#include "subsystems/Intake.h"
 
 #include <frc/Joystick.h>
 #include "subsystems/DriveTrain.h"
@@ -45,6 +46,8 @@ class Robot : public frc::TimedRobot {
   inline frc::Joystick& GetJoystick() { return m_Joystick; }
 
   inline Shooter& GetShooter(){ return m_Shooter; }
+  
+  inline Intake& GetIntake(){ return m_Intake; }
 
   inline AHRS& GetNavX() {return m_NavX; }
 
@@ -59,6 +62,7 @@ class Robot : public frc::TimedRobot {
   std::array<frc::AddressableLED::LEDData, 140> m_ledBuffer;
 
   Shooter m_Shooter;
+  Intake m_Intake;
 
   frc::Joystick m_ButtonBoard = frc::Joystick(0);
   frc::Joystick m_Joystick = frc::Joystick(1);

@@ -23,6 +23,14 @@
 #define TESTBUTTON -1
 #define READYSHOOT 3
 
+#define INTAKE_BUTTON_UP -1
+#define INTAKE_BUTTON_DOWN -1
+#define INTAKE_BUTTON_IN -1
+#define INTAKE_BUTTON_OUT -1
+#define INTAKE_UP_DOWN -1
+#define INTAKE_IN_OUT -1
+
+
 #endif
 
 #ifdef ROBOT_GEORGE
