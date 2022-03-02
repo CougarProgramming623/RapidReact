@@ -21,15 +21,16 @@ const double F = 0.05;
 const double I = 0;
 
 Shooter::Shooter() :
+m_FlywheelFront(FLYWHEEL_FRONT), //master
+m_FlywheelBack(FLYWHEEL_BACK), //slave
+m_Feeder(FEEDER),
 m_FeederButton(BUTTON_L(FEEDER_BUTTON)),
 m_FlywheelToggleByDial(BUTTON_L(FLYWHEEL_BUTTON_BY_DIAL)),
 m_FlywheelToggleByDistance(BUTTON_L(FLYWHEEL_BUTTON_BY_DISTANCE)),
 m_ShootTime(BUTTON_L(16)),
-m_FlywheelFront(FLYWHEEL_FRONT), //master
-m_FlywheelBack(FLYWHEEL_BACK), //slave
-m_Feeder(FEEDER),
 m_ReadyShoot(BUTTON_L(READYSHOOT))
 {}
+
 
 void Shooter::ShooterInit(){
     DebugOutF("Shooter Init");
@@ -40,7 +41,6 @@ void Shooter::ShooterInit(){
     ShootOnReady();
     m_FlywheelBack.Set(ControlMode::Follower, FLYWHEEL_FRONT);
     m_FlywheelBack.SetInverted(ctre::phoenix::motorcontrol::InvertType::OpposeMaster);
-
 }
 
 void Shooter::ShootOnReady(){

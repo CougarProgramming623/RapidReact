@@ -6,7 +6,7 @@
 #include <frc/RobotController.h>
 #include <wpi/raw_ostream.h>
 #include <frc2/command/InstantCommand.h>
-// #include "commands/LockOnTarget.h"
+#include "commands/LockOnTarget.h"
 #include <frc/Errors.h>
 #include "Util.h"
 #include "frc/timer.h"
@@ -14,11 +14,11 @@
 
 #include <math.h>
 #define _USE_MATH_DEFINES
-// #include "commands/DriveToPosition.h"
+#include "commands/DriveToPosition.h"
 
 #include <subsystems/DriveTrain.h>
 
-// #include "commands/TurnToAngle.h"
+#include "commands/TurnToAngle.h"
 #include <frc2/command/SequentialCommandGroup.h>
 #include <frc/Timer.h>
 
@@ -52,7 +52,7 @@ void Robot::RobotInit() {
   m_LED.SetData(m_ledBuffer);
   m_LED.Start();
 
-  // GetDriveTrain().DriveInit();
+  GetDriveTrain().DriveInit();
   GetClimb().ClimbInit();
   m_Shooter.ShooterInit();
   m_OI.Init();
@@ -136,7 +136,7 @@ void Robot::RobotPeriodic() {
 
 void Robot::AutonomousInit() {
   DebugOutF("Auto Init");
-  // GetDriveTrain().BreakMode(true);
+  GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
   GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(false);
 }
@@ -146,17 +146,17 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() {
   DebugOutF("Teleop Init");
-  // GetDriveTrain().BreakMode(true);
+  GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
   GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(true);
-  // m_TargetLock.WhenHeld(LockOnTarget());
+  m_TargetLock.WhenHeld(LockOnTarget());
 }
 void Robot::TeleopPeriodic() {
   
 }
 
 void Robot::DisabledInit() {
-  // GetDriveTrain().BreakMode(false);
+  GetDriveTrain().BreakMode(false);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(false);
   GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(false);
 

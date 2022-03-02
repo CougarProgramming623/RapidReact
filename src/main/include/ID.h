@@ -44,7 +44,7 @@
 #define SHOOTTIME 14
 #define TESTBUTTON -1
 #define READYSHOOT 3
-#define CLIMBPULLUP 35
+#define CLIMBPULLUP 30
 #define CLIMBPIVOT -1
 
 

@@ -21,15 +21,14 @@ class Shooter {
     private:
 
         frc::LinearFilter<double> runningAverage = frc::LinearFilter<double>::MovingAverage(10);
-
-        frc2::Button m_FeederButton;
-        frc2::Button m_FlywheelToggleByDial;
-        frc2::Button m_FlywheelToggleByDistance;
-        frc2::Button m_FlywheelDial;
-        frc2::Button m_ShootTime;
-        frc2::Button m_ReadyShoot;
-
         ctre::phoenix::motorcontrol::can::TalonFX m_FlywheelFront;
         ctre::phoenix::motorcontrol::can::TalonFX m_FlywheelBack;
         ctre::phoenix::motorcontrol::can::TalonFX m_Feeder;
+        frc2::Button m_FeederButton;
+        frc2::Button m_FlywheelToggleByDial;
+        frc2::Button m_FlywheelToggleByDistance;
+        frc2::Button m_ShootTime;
+        frc2::Button m_ReadyShoot;
+
+
 };
