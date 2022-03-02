@@ -10,6 +10,6 @@ void Init();
 void ToggleLimelight();
 
 private:
-frc2::Button m_limelightToggle;
+//frc2::Button m_limelightToggle;
 
 };

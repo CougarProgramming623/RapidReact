@@ -19,7 +19,7 @@ DriveTrain::DriveTrain():
     m_FODToggle([&] { return false; }) //Robot::GetRobot()->GetJoystick().GetRawButton(-1);})
 {
     
-};
+}
 void DriveTrain::BreakMode(bool on){
     if (on){
         m_FrontRight.SetNeutralMode(NeutralMode::Brake);

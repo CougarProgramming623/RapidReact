@@ -17,6 +17,7 @@
 #include "COB.h"
 #include "LEDFunction.h"
 #include <frc2/command/SubsystemBase.h>
+#include "subsystems/Climb.h"
 
 class Robot : public frc::TimedRobot {
  public:
@@ -52,6 +53,8 @@ class Robot : public frc::TimedRobot {
   inline COB& GetCOB() {return m_COB; }
   inline OI& GetOI() {return m_OI; }
 
+  inline Climb& GetClimb() {return m_Climb; }
+
   void PushDistance();
 
   private:
@@ -79,5 +82,7 @@ class Robot : public frc::TimedRobot {
 
   frc2::Button m_TargetLock;
   frc2::Button m_LimeLightToggle;
+
+  Climb m_Climb;
 
 };
