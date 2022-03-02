@@ -4,6 +4,7 @@
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <frc/drive/Vector2d.h>
 #include "commands/DriveWithJoystick.h"
+#include "commands/TurnToAngle.h"
 
 const int kMAX_VELOCITY = 6380/60/10*2048;//RPM->Convert to RPS->Convert to RP100MS->Convert to TP100MS
 
@@ -18,7 +19,7 @@ DriveTrain::DriveTrain():
     m_FODToggle([&] { return false; }) //Robot::GetRobot()->GetJoystick().GetRawButton(-1);})
 {
     
-};
+}
 void DriveTrain::BreakMode(bool on){
     if (on){
         m_FrontRight.SetNeutralMode(NeutralMode::Brake);
@@ -140,6 +141,14 @@ void DriveTrain::DriveInit(){
     // });
 
     UseVelocityPID();
+    GetFrontL().ConfigPeakOutputForward(1);
+    GetFrontR().ConfigPeakOutputForward(1);
+    GetBackL().ConfigPeakOutputForward(1);
+    GetBackR().ConfigPeakOutputForward(1);
+    GetFrontL().ConfigPeakOutputReverse(-1);
+    GetFrontR().ConfigPeakOutputReverse(-1);
+    GetBackL().ConfigPeakOutputReverse(-1);
+    GetBackR().ConfigPeakOutputReverse(-1);
     
 }
 

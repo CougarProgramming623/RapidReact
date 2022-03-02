@@ -34,14 +34,14 @@ public:
     inline TalonFX& GetBackL(){return m_BackLeft;}
     inline TalonFX& GetBackR(){return m_BackRight;}
 
-
 private:
     TalonFX m_FrontLeft;
-    TalonFX m_BackLeft;
     TalonFX m_FrontRight;
+    TalonFX m_BackLeft;
     TalonFX m_BackRight;
 
     frc2::Button m_DriveButton;
     frc2::Button m_FODToggle;
+    
 
 };
