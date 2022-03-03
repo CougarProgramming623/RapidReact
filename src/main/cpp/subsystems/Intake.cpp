@@ -6,9 +6,7 @@
 #include <ctre/phoenix/motorcontrol/SupplyCurrentLimitConfiguration.h>
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <frc2/command/ParallelRaceGroup.h>
-#include <frc2/command/InstantCommand.h>
 #include <frc2/command/WaitCommand.h>
-#include <frc2/command/SequentialCommandGroup.h>
 
 
 #define standardUpSpeed 0.75 
@@ -23,44 +21,40 @@ Intake::Intake() :
 	//buttons
 	m_moveUpDownButton(BUTTON_L(INTAKE_BUTTON_UP_DOWN)),
 	
-	m_directionIn(BUTTON_L(INTAKE_BUTTON_IN)),
-	m_directionOut(BUTTON_L(INTAKE_BUTTON_OUT)),
+	m_directionIngest(BUTTON_L(INTAKE_BUTTON_INGEST)),
+	m_directionEject(BUTTON_L(INTAKE_BUTTON_EJECT)),
 
 	//motors
 	m_motorUpDown(INTAKE_UP_DOWN),
-	m_motorInOut(INTAKE_IN_OUT)
+	m_motorInOut(INTAKE_INGEST_EJECT)
 
 {}
 
 void Intake::IntakeInit() {
-	setUpDownButton();
-	setInOutButtons();
+	bindUpDownButton();
+	bindIngestEjectButtons();
 }
 
-void Intake::setUpDownButton() {
-	m_moveUpDownButton.WhileHeld([&] { m_motorUpDown.Set(ControlMode::PercentOutput, standardUpSpeed); });
-	m_moveUpDownButton.WhenReleased([&] {
-		frc2::SequentialCommandGroup( //blip motor down for X seconds
-			frc2::InstantCommand([&] { m_motorUpDown.Set(ControlMode::PercentOutput, standardDownSpeed); }),
-			frc2::InstantCommand([&]{DebugOutF("Before wait");}),
-			frc2::WaitCommand(1.0_s),
-			frc2::InstantCommand([&]{DebugOutF("After wait");}),
-			frc2::InstantCommand([&] { m_motorUpDown.Set(ControlMode::PercentOutput, 0); })
-		);
-	});
+void Intake::bindUpDownButton() {
+	m_moveUpDownButton.WhenHeld(MoveUp());
+	m_moveUpDownButton.WhenReleased(MoveDown());
 }
 
-void Intake::setInOutButtons() {
-	m_directionIn.WhileHeld([&]  { m_motorInOut.Set(ControlMode::PercentOutput, standardInOutSpeed);
-		DebugOutF(std::to_string(m_motorInOut.GetSelectedSensorPosition()));
-	});
-	m_directionOut.WhileHeld([&] { m_motorInOut.Set(ControlMode::PercentOutput, -standardInOutSpeed); });
+frc2::InstantCommand Intake::MoveUp() { return frc2::InstantCommand([&]{ m_motorUpDown.Set(ControlMode::PercentOutput, standardUpSpeed); });}
 
-	m_directionIn.WhenReleased([&]  { m_motorInOut.Set(ControlMode::PercentOutput, 0); });
-	m_directionOut.WhenReleased([&] { m_motorInOut.Set(ControlMode::PercentOutput, 0); });
+frc2::SequentialCommandGroup Intake::MoveDown() { return frc2::SequentialCommandGroup( //blip motor down for X seconds
+		frc2::InstantCommand([&] { m_motorUpDown.Set(ControlMode::PercentOutput, standardDownSpeed); }),
+		frc2::WaitCommand(1.0_s),
+		frc2::InstantCommand([&] { m_motorUpDown.Set(ControlMode::PercentOutput, 0); })
+);}
+
+void Intake::bindIngestEjectButtons() {
+	m_directionIngest.WhenPressed(Ingest());
+	m_directionEject.WhenPressed(Eject());
+
+	m_directionIngest.WhenReleased([&]  { m_motorInOut.Set(ControlMode::PercentOutput, 0); });
+	m_directionEject.WhenReleased([&] { m_motorInOut.Set(ControlMode::PercentOutput, 0); });
 }
 
-bool Intake::checkCurrentLimit() {
-	//check if currentlimit is reached
-	return false;
-}
+frc2::InstantCommand Intake::Ingest() { return frc2::InstantCommand([&] { m_motorInOut.Set(ControlMode::PercentOutput, standardInOutSpeed); }); }
+frc2::InstantCommand Intake::Eject() { return frc2::InstantCommand([&] {m_motorInOut.Set(ControlMode::PercentOutput, -standardInOutSpeed); }); }

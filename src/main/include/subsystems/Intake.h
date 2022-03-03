@@ -2,6 +2,10 @@
 
 #include <frc2/command/button/Button.h>
 #include <ctre/phoenix/motorcontrol/can/TalonSRX.h>
+#include <frc2/command/InstantCommand.h>
+#include <frc2/command/SequentialCommandGroup.h>
+
+
 
 
 //UP brings the intake to a stowed, vertical position
@@ -15,16 +19,22 @@ class Intake {
 
 	Intake();
 	void IntakeInit();
-	void setUpDownButton();
-	void setInOutButtons();
-	bool checkCurrentLimit();
+
+	void bindUpDownButton();
+	frc2::InstantCommand MoveUp();
+	frc2::SequentialCommandGroup MoveDown();
+
+	void bindIngestEjectButtons();
+	frc2::InstantCommand Ingest();
+	frc2::InstantCommand Eject();
+	
 
 	private:
 
 	frc2::Button m_moveUpDownButton;
 
-	frc2::Button m_directionIn;
-	frc2::Button m_directionOut;
+	frc2::Button m_directionIngest;
+	frc2::Button m_directionEject;
 
 	ctre::phoenix::motorcontrol::can::TalonSRX m_motorUpDown;
 	ctre::phoenix::motorcontrol::can::TalonSRX m_motorInOut;
