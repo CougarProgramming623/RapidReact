@@ -15,13 +15,13 @@ class Intake {
 
 	Intake();
 	void IntakeInit();
-	void setUpDownButtons();
+	void setUpDownButton();
 	void setInOutButtons();
+	bool checkCurrentLimit();
 
 	private:
 
-	frc2::Button m_moveUp;
-	frc2::Button m_moveDown;
+	frc2::Button m_moveUpDownButton;
 
 	frc2::Button m_directionIn;
 	frc2::Button m_directionOut;

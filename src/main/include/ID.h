@@ -26,13 +26,6 @@
 #define CLIMBPULLUP 31
 #define CLIMBPIVOT 3
 
-#define INTAKE_BUTTON_UP -1
-#define INTAKE_BUTTON_DOWN -1
-#define INTAKE_BUTTON_IN -1
-#define INTAKE_BUTTON_OUT -1
-#define INTAKE_UP_DOWN -1
-#define INTAKE_IN_OUT -1
-
 
 #endif
 
@@ -54,6 +47,12 @@
 #define READYSHOOT 3
 #define CLIMBPULLUP 30
 #define CLIMBPIVOT -1
+
+#define INTAKE_BUTTON_UP_DOWN 9
+#define INTAKE_BUTTON_IN 6
+#define INTAKE_BUTTON_OUT 11
+#define INTAKE_UP_DOWN 22
+#define INTAKE_IN_OUT 11
 
 
 #endif
