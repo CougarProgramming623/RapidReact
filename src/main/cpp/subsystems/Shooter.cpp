@@ -44,7 +44,11 @@ void Shooter::ShooterInit(){
 }
 
 void Shooter::ShootOnReady(){
-    m_ReadyShoot.WhileHeld(frc2::FunctionalCommand(
+    m_ReadyShoot.WhileHeld(ShootOnReadyCommand());
+}
+
+frc2::FunctionalCommand Shooter::ShootOnReadyCommand(){
+    return frc2::FunctionalCommand(
         [&]{DebugOutF("Shooting when ready");}, //OnInit
         [&]{
             double setpoint = m_FlywheelFront.GetClosedLoopTarget();
@@ -61,8 +65,9 @@ void Shooter::ShootOnReady(){
         },
         [&](bool e){m_Feeder.Set(ControlMode::PercentOutput, 0);},
         [&]{return false;}
-    ));
+    );
 }
+
 
 void Shooter::FeederButton(){
     m_FeederButton.WhenPressed(frc2::InstantCommand( [&] { 
@@ -129,25 +134,42 @@ void Shooter::ShootTime(){ //button ID 13
 }
 
 void Shooter::ScaleToDistance(){
-    m_FlywheelToggleByDistance.WhenHeld(frc2::FunctionalCommand([&] { //onInit
+    m_FlywheelToggleByDistance.WhenHeld(ScaleToDistanceCommand());
+}
 
-    }, [&]{ //onExecute
+frc2::InstantCommand Shoot(){
+    return frc2::InstantCommand([&]{});
+}
 
-    double distance = Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).GetDouble(0); //cm
-    double RPM = distance * 4 + 70;
+frc2::FunctionalCommand Shooter::ScaleToDistanceCommand(){
+    return frc2::FunctionalCommand([&] { //onInit
 
-    double smoothRPM = runningAverage.Calculate(distance) * 4 + 70;
+        }, [&]{ //onExecute
 
-    
-    Robot::GetRobot()->GetCOB().GetTable().GetEntry("/COB/flywheelSpeedSetpoint").SetDouble(RPM);
+        double distance = Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).GetDouble(0); //cm
+        double RPM = distance * 4 + 70;
 
-    m_FlywheelFront.Set(ControlMode::Velocity, smoothRPM / 600 * 2048);
+        double smoothRPM = runningAverage.Calculate(distance) * 4 + 70;
 
-    
-    }, [&] (bool e) { //onEnd
-    m_FlywheelFront.Set(ControlMode::PercentOutput, 0);
+        
+        Robot::GetRobot()->GetCOB().GetTable().GetEntry("/COB/flywheelSpeedSetpoint").SetDouble(RPM);
 
-    }, [&] {//isFinished
-        return false;
-    }, {}));
+        m_FlywheelFront.Set(ControlMode::Velocity, smoothRPM / 600 * 2048);
+
+        
+        }, [&] (bool e) { //onEnd
+        m_FlywheelFront.Set(ControlMode::PercentOutput, 0);
+
+        }, [&] {//isFinished
+            return false;
+        }
+    );
+}
+
+frc2::ParallelRaceGroup Shooter::ShootingCommand(){
+    return frc2::ParallelRaceGroup(
+        ScaleToDistanceCommand(),
+        ShootOnReadyCommand(),
+        frc2::WaitCommand(4_s)
+    );
 }
