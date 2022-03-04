@@ -18,13 +18,17 @@ public:
 
 private:
 
+
     int m_InitialTicks[4];
     int m_FinalTicks[4];
     
     frc::Timer m_Clock = frc::Timer();
 
+    // const double HORIZONTAL_CALIBRATION = 36.0/31.0; 
+	// const double VERTICAL_CALIBRATION = 36.0/43.0;
+
     int m_XTicks;
-    int m_Yticks;
+    int m_YTicks;
     double m_Angle;
 
     DriveTrain& m_DriveTrain = Robot::GetRobot()->GetDriveTrain();

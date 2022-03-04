@@ -88,7 +88,7 @@ void Robot::RobotPeriodic() {
   }
   
   if(abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0)) < 2 && GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
-    for (int i = 0; i < 140; i++)
+      for (int i = 0; i < 140; i++)
       m_ledBuffer[i].SetRGB(0, 255, 0);
   } else if(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
     if(m_LEDIndex > m_NumLED - 1)
@@ -139,6 +139,7 @@ void Robot::AutonomousInit() {
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
   GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(false);
+  DriveToPos(1,1,0);
 }
 void Robot::AutonomousPeriodic() {
   
