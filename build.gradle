@@ -98,5 +98,5 @@ model {
     }
 }
 nativeUtils.platformConfigs.named("linuxathena").configure {
-   it.cppCompiler.args.add('-Werror') 
+//    it.cppCompiler.args.add('-Werror') 
 }

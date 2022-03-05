@@ -9,6 +9,7 @@ Climb::Climb() :
 {}
 
 bool Climb::isMainUnlocked() { return true; }//return Robot::GetRobot()->GetButtonBoard().GetRawButton(18); }
+
 bool Climb::isManualUnlocked() { return Robot::GetRobot()->GetButtonBoard().GetRawButton(11); }
 
 frc2::FunctionalCommand Climb::ManualClimb() {
