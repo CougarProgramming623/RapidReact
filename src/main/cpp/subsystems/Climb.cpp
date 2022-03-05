@@ -8,7 +8,8 @@ Climb::Climb() :
     m_PullUpArm(CLIMBPULLUP)
 {}
 
-bool Climb::isMainUnlocked() { return true; } // Robot::GetRobot()->GetButtonBoard().GetRawButton(18); }
+bool Climb::isMainUnlocked() { return true; }//return Robot::GetRobot()->GetButtonBoard().GetRawButton(18); }
+
 bool Climb::isManualUnlocked() { return Robot::GetRobot()->GetButtonBoard().GetRawButton(11); }
 
 frc2::FunctionalCommand Climb::ManualClimb() {
@@ -18,7 +19,7 @@ frc2::FunctionalCommand Climb::ManualClimb() {
         }, //On Init
         [&]{
             if (Climb::isMainUnlocked()/* && Climb::isManualUnlocked()*/) { //DISABLED TEMPORARILY
-                m_PullUpArm.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, Robot::GetRobot()->GetJoystick().GetRawAxis(1));
+                // m_PullUpArm.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, Robot::GetRobot()->GetJoystick().GetRawAxis(1));
                 // if(Robot::GetRobot()->GetButtonBoard().GetRawButton(13)){
                 //     m_PivotArm.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, 1);
                 // } else {
