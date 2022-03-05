@@ -76,10 +76,10 @@ void DriveTrain::CartesianDrive(double y, double x, double rotation, double angl
 
 	Normalize(wheelSpeeds);
         
-    m_FrontLeft.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_LEFT] * 3/** kMAX_VELOCITY*/);
-    m_FrontRight.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_RIGHT] * 3/** kMAX_VELOCITY*/);
-    m_BackLeft.Set(ControlMode::PercentOutput, wheelSpeeds[kBACK_LEFT] * 3/** kMAX_VELOCITY*/);
-    m_BackRight.Set(ControlMode::PercentOutput, wheelSpeeds[kBACK_RIGHT] * 3/** kMAX_VELOCITY*/);
+    m_FrontLeft.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_LEFT]/** kMAX_VELOCITY*/);
+    m_FrontRight.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_RIGHT]/** kMAX_VELOCITY*/);
+    m_BackLeft.Set(ControlMode::PercentOutput, wheelSpeeds[kBACK_LEFT]/** kMAX_VELOCITY*/);
+    m_BackRight.Set(ControlMode::PercentOutput, wheelSpeeds[kBACK_RIGHT]/** kMAX_VELOCITY*/);
     Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_MOTER_SPEED).SetDouble(wheelSpeeds[kFRONT_LEFT]);
 }
 
