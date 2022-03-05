@@ -9,6 +9,9 @@
 #include <frc2/command/button/Button.h>
 #include <frc2/command/SubsystemBase.h>
 
+#include <frc/AnalogInput.h>
+#include <frc/DigitalInput.h>
+
 class Climb : public frc2::SubsystemBase {
 public:
     Climb();
@@ -16,10 +19,7 @@ public:
     void ClimbInit();
     void BreakMode(bool on);
 
-    frc2::FunctionalCommand ManualClimb();
-
-    bool isMainUnlocked();
-    bool isManualUnlocked();
+    frc2::FunctionalCommand* ManualClimb();
 
     // boolean pastcurrentstep(n) {
     //     return current dial position >= n
@@ -35,5 +35,13 @@ private:
     ctre::phoenix::motorcontrol::can::TalonSRX m_PivotArm;
     ctre::phoenix::motorcontrol::can::TalonFX m_PullUpArm;
 
+    frc::AnalogInput m_Analog{3};
+    frc::DigitalInput m_LowBound{0};
+
     frc2::Button m_AutoLock;
+    frc2::Button m_MainLock;
+    frc2::Button m_TeleLock;
+
+    double m_MinSensorPosition;
+    
 };
