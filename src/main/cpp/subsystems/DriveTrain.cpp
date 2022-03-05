@@ -4,6 +4,7 @@
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <frc/drive/Vector2d.h>
 #include "commands/DriveWithJoystick.h"
+#include "commands/TurnToAngle.h"
 
 const int kMAX_VELOCITY = 6380/60/10*2048;//RPM->Convert to RPS->Convert to RP100MS->Convert to TP100MS
 
@@ -18,7 +19,7 @@ DriveTrain::DriveTrain():
     m_FODToggle([&] { return false; }) //Robot::GetRobot()->GetJoystick().GetRawButton(-1);})
 {
     
-};
+}
 void DriveTrain::BreakMode(bool on){
     if (on){
         m_FrontRight.SetNeutralMode(NeutralMode::Brake);
@@ -75,10 +76,10 @@ void DriveTrain::CartesianDrive(double y, double x, double rotation, double angl
 
 	Normalize(wheelSpeeds);
         
-    m_FrontLeft.Set(ControlMode::Velocity, wheelSpeeds[kFRONT_LEFT] * kMAX_VELOCITY );
-    m_FrontRight.Set(ControlMode::Velocity, wheelSpeeds[kFRONT_RIGHT] * kMAX_VELOCITY);
-    m_BackLeft.Set(ControlMode::Velocity, wheelSpeeds[kBACK_LEFT] * kMAX_VELOCITY);
-    m_BackRight.Set(ControlMode::Velocity, wheelSpeeds[kBACK_RIGHT] * kMAX_VELOCITY);
+    m_FrontLeft.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_LEFT]/** kMAX_VELOCITY*/);
+    m_FrontRight.Set(ControlMode::PercentOutput, wheelSpeeds[kFRONT_RIGHT]/** kMAX_VELOCITY*/);
+    m_BackLeft.Set(ControlMode::PercentOutput, wheelSpeeds[kBACK_LEFT]/** kMAX_VELOCITY*/);
+    m_BackRight.Set(ControlMode::PercentOutput, wheelSpeeds[kBACK_RIGHT]/** kMAX_VELOCITY*/);
     Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_MOTER_SPEED).SetDouble(wheelSpeeds[kFRONT_LEFT]);
 }
 
@@ -140,6 +141,14 @@ void DriveTrain::DriveInit(){
     // });
 
     UseVelocityPID();
+    GetFrontL().ConfigPeakOutputForward(1);
+    GetFrontR().ConfigPeakOutputForward(1);
+    GetBackL().ConfigPeakOutputForward(1);
+    GetBackR().ConfigPeakOutputForward(1);
+    GetFrontL().ConfigPeakOutputReverse(-1);
+    GetFrontR().ConfigPeakOutputReverse(-1);
+    GetBackL().ConfigPeakOutputReverse(-1);
+    GetBackR().ConfigPeakOutputReverse(-1);
     
 }
 
