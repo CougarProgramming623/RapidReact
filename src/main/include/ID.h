@@ -46,6 +46,7 @@
 #define READYSHOOT 3
 #define CLIMBPULLUP 30
 #define CLIMBPIVOT -1
+#define PHOTOSENSOR -1
 
 
 #endif

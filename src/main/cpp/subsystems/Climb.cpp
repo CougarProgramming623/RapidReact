@@ -8,7 +8,7 @@ Climb::Climb() :
     m_PullUpArm(CLIMBPULLUP)
 {}
 
-bool Climb::isMainUnlocked() { return Robot::GetRobot()->GetButtonBoard().GetRawButton(18); }
+bool Climb::isMainUnlocked() { return true; } // Robot::GetRobot()->GetButtonBoard().GetRawButton(18); }
 bool Climb::isManualUnlocked() { return Robot::GetRobot()->GetButtonBoard().GetRawButton(11); }
 
 frc2::FunctionalCommand Climb::ManualClimb() {
