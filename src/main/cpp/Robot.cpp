@@ -87,10 +87,10 @@ void Robot::RobotPeriodic() {
   }
 
   if(frc::DriverStation::GetInstance().GetAlliance() != frc::DriverStation::Alliance::kRed && frc::DriverStation::GetInstance().GetAlliance() != frc::DriverStation::Alliance::kBlue){
-    for (int i = 0; i < 140; i++)
+    for (int i = 0; i < m_NumLED; i++)
       m_ledBuffer[i].SetRGB(255, 0, 255);
   } else if(abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0)) < 2 && GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
-    for (int i = 0; i < 140; i++)
+    for (int i = 0; i < m_NumLED; i++)
       m_ledBuffer[i].SetRGB(0, 255, 0);
   } else if(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
     if(m_LEDIndex > m_NumLED - 1)
@@ -111,6 +111,8 @@ void Robot::RobotPeriodic() {
     for (int i = 0; i < m_NumLED; i++)
       m_ledBuffer[i].SetLED(m_AllianceColor);
   }
+  //if(InRange())
+  SetCorners(0, m_ledBuffer, 255, 255, 255);
   m_LED.SetData(m_ledBuffer);
 
   
