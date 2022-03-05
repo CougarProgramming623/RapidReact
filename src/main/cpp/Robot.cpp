@@ -31,10 +31,10 @@ Robot::Robot() :
 
 void Robot::RobotInit() {
   DebugOutF("Robot Init");
-   
-  m_LED.SetLength(140);
+  m_NumLED = 125;
+  m_LED.SetLength(m_NumLED);
 
-  for (int i = 0; i < 140; i++)
+  for (int i = 0; i < m_NumLED; i++)
   {
     m_ledBuffer[i].SetRGB(255, 255, 0);
   }
@@ -52,7 +52,7 @@ void Robot::RobotInit() {
     m_AllianceColor.blue = 1;
     m_AllianceColor.red = 0;
   }
-  m_NumLED = 70;
+ 
 }
 
 void Robot::RobotPeriodic() {
@@ -86,7 +86,7 @@ void Robot::RobotPeriodic() {
     LowBattery(m_AllianceColor, m_NumLED, 10, m_LEDIndex, m_ledBuffer);
     m_LEDIndex++;
   } else { 
-    for (int i = 0; i < 140; i++)
+    for (int i = 0; i < m_NumLED; i++)
       m_ledBuffer[i].SetLED(m_AllianceColor);
   }
   m_LED.SetData(m_ledBuffer);
