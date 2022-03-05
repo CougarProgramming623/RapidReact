@@ -10,7 +10,7 @@ public:
     Auto();
     void AutoInit();
 
-    frc2::SequentialCommandGroup StandardFourBall();
+    frc2::SequentialCommandGroup* StandardFourBall();
 
 private:
 

@@ -11,6 +11,7 @@
 #include "Util.h"
 #include "frc/timer.h"
 #include "ID.h"
+#include "Auto.h"
 
 #include <math.h>
 #define _USE_MATH_DEFINES
@@ -139,6 +140,8 @@ void Robot::AutonomousInit() {
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
   GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(false);
+  Auto* m_Auto = new Auto();
+  m_Auto->StandardFourBall()->Schedule();
 }
 void Robot::AutonomousPeriodic() {
   

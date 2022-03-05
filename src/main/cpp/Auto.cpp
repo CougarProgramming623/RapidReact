@@ -10,8 +10,8 @@ void Auto::AutoInit(){
     Robot::GetRobot()->GetNavX().ZeroYaw();
 }
 
-frc2::SequentialCommandGroup Auto::StandardFourBall(){
-    return frc2::SequentialCommandGroup(
+frc2::SequentialCommandGroup* Auto::StandardFourBall(){
+    return new frc2::SequentialCommandGroup(
         //Intake Down and spin
         TurnToAngle(180, 0.5),
         DriveToPos(1.3, 0, 0),
