@@ -74,7 +74,7 @@ void Shooter::FeederButton(){
 }
 void Shooter::FlywheelButton(){
     m_shootSpeed.WhenHeld(frc2::FunctionalCommand( [&]{}, [&]{ //onExecute
-        m_FlywheelFront.Set(ControlMode::PercentOutput, (Robot::GetRobot()->GetButtonBoard().GetRawAxis(0) + 1) * 2);
+        m_FlywheelFront.Set(ControlMode::PercentOutput, (Robot::GetRobot()->GetButtonBoard().GetRawAxis(0) + 1) / 2);
     }, [&](bool e){ //onEnd
             m_FlywheelFront.Set(ControlMode::PercentOutput, 0);
     }, [&]{ return false; }, {})); 
