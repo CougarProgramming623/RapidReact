@@ -46,7 +46,7 @@ frc2::SequentialCommandGroup Intake::MoveUp() { return frc2::SequentialCommandGr
 		}, [&] {//onExecute
 			m_motorUpDown.Set(ControlMode::PercentOutput, standardUpSpeed);
 		}, [&] (bool e) {}, [&] { return false; }, {}), frc2::WaitCommand(0.65_s)),
-	frc2::FunctionalCommand([&]{}, [&] { m_motorUpDown.Set(ControlMode::PercentOutput, .25); }, [&](bool e){}, [&] {return false;}, {})
+	frc2::FunctionalCommand([&]{}, [&] { m_motorUpDown.Set(ControlMode::PercentOutput, standardUpSpeed); }, [&](bool e){}, [&] {return false;}, {})
 );}
 
 frc2::SequentialCommandGroup Intake::MoveDown() { return frc2::SequentialCommandGroup( //blip motor down for X seconds
