@@ -10,6 +10,40 @@ void Auto::AutoInit(){
     Robot::GetRobot()->GetNavX().ZeroYaw();
 }
 
+frc2::ParallelRaceGroup* Auto::DriveForward() {
+
+    frc2::FunctionalCommand driving = frc2::FunctionalCommand([&] { //onInit
+
+        }, [&]{ //onExecute
+            Robot::GetRobot()->GetDriveTrain().CartesianDrive(-.4, 0, 0, 0, false);
+        }, [&] (bool e) { //onEnd
+            Robot::GetRobot()->GetDriveTrain().CartesianDrive(0, 0, 0, 0, false);
+        }, [&] {//isFinished
+            return false;
+        }
+    );
+    driving.AddRequirements(&Robot::GetRobot()->GetDriveTrain());
+    
+    return new frc2::ParallelRaceGroup(frc2::WaitCommand(1_s), driving);
+        
+}
+
+frc2::SequentialCommandGroup* DriveBackAndShoot(){
+    frc2::ParallelRaceGroup drive = frc2::ParallelRaceGroup(
+        frc2::WaitUntilCommand([&]{return Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).GetDouble(0) > 505;}),
+        frc2::FunctionalCommand([&] { //onInit
+
+        }, [&]{ //onExecute
+            Robot::GetRobot()->GetDriveTrain().CartesianDrive(-.4, 0, 0, 0, false);
+        }, [&] (bool e) { //onEnd
+            Robot::GetRobot()->GetDriveTrain().CartesianDrive(0, 0, 0, 0, false);
+        }, [&] {//isFinished
+            return false;
+        })
+    );
+}
+
+
 frc2::SequentialCommandGroup* Auto::StandardFourBall(){
     return new frc2::SequentialCommandGroup(
         //Intake Down and spin

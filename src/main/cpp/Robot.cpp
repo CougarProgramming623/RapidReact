@@ -91,7 +91,7 @@ void Robot::RobotPeriodic() {
   if(frc::DriverStation::GetInstance().GetAlliance() != frc::DriverStation::Alliance::kRed && frc::DriverStation::GetInstance().GetAlliance() != frc::DriverStation::Alliance::kBlue){
     for (int i = 0; i < m_NumLED; i++)
       m_ledBuffer[i].SetRGB(255, 0, 255);
-  } else if(abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0)) < 2 && GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
+  } else if(abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0)) < 1 && abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0)) > 0){
     for (int i = 0; i < m_NumLED; i++)
       m_ledBuffer[i].SetRGB(0, 255, 0);
   } else if(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
@@ -151,7 +151,8 @@ void Robot::AutonomousInit() {
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
   GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(false);
   Auto* m_Auto = new Auto();
-  m_Auto->StandardFourBall()->Schedule();
+  GetNavX().ZeroYaw();
+  m_Auto->DriveForward()->Schedule();
 }
 void Robot::AutonomousPeriodic() {
   

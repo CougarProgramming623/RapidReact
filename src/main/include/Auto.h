@@ -11,6 +11,9 @@ public:
     void AutoInit();
 
     frc2::SequentialCommandGroup* StandardFourBall();
+    frc2::SequentialCommandGroup* CramAuto();
+    frc2::ParallelRaceGroup* DriveForward();
+    frc2::SequentialCommandGroup* DriveBackAndShoot();
 
 private:
 

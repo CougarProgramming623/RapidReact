@@ -93,6 +93,7 @@ frc2::InstantCommand Shoot(){
     return frc2::InstantCommand([&]{});
 }
 
+
 frc2::FunctionalCommand Shooter::ScaleToDistanceCommand() {
     return frc2::FunctionalCommand([&] { //onInit
 
