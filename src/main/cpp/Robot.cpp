@@ -55,6 +55,7 @@ void Robot::RobotInit() {
   GetClimb().ClimbInit();
   m_Shooter.ShooterInit();
   m_OI.Init();
+  m_Intake.IntakeInit();
 
   if( GetCOB().GetTable().GetEntry(COB_KEY_IS_RED).GetBoolean(false)){
     m_AllianceColor.red = 1;
@@ -128,6 +129,7 @@ void Robot::RobotPeriodic() {
   PushDistance();
   
   GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_SPEED).SetDouble(GetShooter().FlywheelRPM());
+  //GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_RPM).SetDouble(GetShooter().FlywheelRPM());
   //GetCOB().GetTable().GetEntry(COB_KEY_FOD).SetBoolean(GetDriveTrain().m_FOD);
   if (GetCOB().GetTable().GetEntry(COB_KEY_NAVX_RESET).GetBoolean(false) == true) {
     GetNavX().ZeroYaw();
@@ -141,6 +143,7 @@ void Robot::RobotPeriodic() {
 }
 
 void Robot::AutonomousInit() {
+  
   DebugOutF("Auto Init");
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
