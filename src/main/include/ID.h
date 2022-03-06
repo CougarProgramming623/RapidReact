@@ -46,7 +46,7 @@
 #define TESTBUTTON -1
 #define READYSHOOT 3
 #define CLIMBPULLUP 30
-#define CLIMBPIVOT -1
+#define CLIMBPIVOT 15
 #define PHOTOSENSOR -1
 
 #define INTAKE_BUTTON_UP_DOWN 6
