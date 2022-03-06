@@ -24,7 +24,7 @@ frc2::ParallelRaceGroup* Auto::DriveForward() {
     );
     driving.AddRequirements(&Robot::GetRobot()->GetDriveTrain());
     
-    return new frc2::ParallelRaceGroup(frc2::WaitCommand(1_s), driving);
+    return new frc2::ParallelRaceGroup(frc2::WaitCommand(2_s), driving);
         
 }
 

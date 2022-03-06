@@ -44,9 +44,9 @@ frc2::SequentialCommandGroup Intake::MoveUp() { return frc2::SequentialCommandGr
 	frc2::ParallelRaceGroup(frc2::FunctionalCommand([&]{
 			m_motorUpDown.SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
 		}, [&] {//onExecute
-			m_motorUpDown.Set(ControlMode::PercentOutput, standardUpSpeed);
-		}, [&] (bool e) {}, [&] { return false; }, {}), frc2::WaitCommand(0.65_s)),
-	frc2::FunctionalCommand([&]{}, [&] { m_motorUpDown.Set(ControlMode::PercentOutput, standardUpSpeed); }, [&](bool e){}, [&] {return false;}, {})
+			m_motorUpDown.Set(ControlMode::PercentOutput, - standardUpSpeed);
+		}, [&] (bool e) {}, [&] { return false; }, {}), frc2::WaitCommand(2_s)),
+	frc2::FunctionalCommand([&]{}, [&] { m_motorUpDown.Set(ControlMode::PercentOutput, -0.25); }, [&](bool e){}, [&] {return false;}, {})
 );}
 
 frc2::SequentialCommandGroup Intake::MoveDown() { return frc2::SequentialCommandGroup( //blip motor down for X seconds
@@ -54,7 +54,7 @@ frc2::SequentialCommandGroup Intake::MoveDown() { return frc2::SequentialCommand
 		frc2::FunctionalCommand([&] {//onInit
 				m_motorUpDown.SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
 			}, [&]{//onExecute
-				m_motorUpDown.Set(ControlMode::PercentOutput, standardDownSpeed); 
+				m_motorUpDown.Set(ControlMode::PercentOutput, -standardDownSpeed); 
 			}, [&](bool e){}, [&]{ return false; }, {}),
 		frc2::WaitCommand(0.65_s)
 	),
