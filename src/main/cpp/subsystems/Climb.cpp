@@ -16,8 +16,10 @@ Climb::Climb() :
     m_MainLock(BUTTON_L(9))
 {}
 
+
 frc2::FunctionalCommand* Climb::ManualClimb() {
     return new frc2::FunctionalCommand(
+
         [&]{
             m_PullUpArm.Set(ControlMode::PercentOutput,0);
             m_PivotArm.Set(ControlMode::PercentOutput,0);
