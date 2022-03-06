@@ -112,8 +112,9 @@ void Robot::RobotPeriodic() {
     for (int i = 0; i < m_NumLED; i++)
       m_ledBuffer[i].SetLED(m_AllianceColor);
   }
-  //if(InRange())
-  SetCorners(0, m_ledBuffer, 255, 255, 255);
+  if(InRange()){
+    SetCorners(0, m_ledBuffer, 255, 255, 255);
+  }
   m_LED.SetData(m_ledBuffer);
 
   
@@ -182,6 +183,10 @@ void Robot::PushDistance(){
   GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).SetDouble(
     h / tan(angleFromGroundDeg * (M_PI / 180))
   );
+}
+
+bool Robot::InRange(){
+  return GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).GetDouble(0) >= 500 && GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).GetDouble(0) <= 530;
 }
 
 #ifndef RUNNING_FRC_TESTS
