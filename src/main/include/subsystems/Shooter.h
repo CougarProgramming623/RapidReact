@@ -5,6 +5,10 @@
 #include "ctre/phoenix/motorcontrol/can/TalonSRX.h"
 #include <frc/Joystick.h>
 #include <frc/filter/LinearFilter.h>
+#include <frc2/command/FunctionalCommand.h>
+#include <frc2/command/InstantCommand.h>
+#include <frc2/command/ParallelRaceGroup.h>
+
 
 class Shooter {
     public:
@@ -16,6 +20,9 @@ class Shooter {
 
         double FlywheelRPM();
         
+        frc2::FunctionalCommand ShootOnReadyCommand();
+        frc2::FunctionalCommand ScaleToDistanceCommand();
+        frc2::ParallelRaceGroup ShootingCommand();
 
     private:
 
