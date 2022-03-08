@@ -56,6 +56,7 @@ class Robot : public frc::TimedRobot {
   inline Climb& GetClimb() {return m_Climb; }
 
   void PushDistance();
+  bool InRange();
 
   private:
   
