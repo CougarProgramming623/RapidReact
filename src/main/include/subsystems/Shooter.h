@@ -5,6 +5,10 @@
 #include "ctre/phoenix/motorcontrol/can/TalonSRX.h"
 #include <frc/Joystick.h>
 #include <frc/filter/LinearFilter.h>
+#include <frc2/command/FunctionalCommand.h>
+#include <frc2/command/InstantCommand.h>
+#include <frc2/command/ParallelRaceGroup.h>
+
 
 class Shooter {
     public:
@@ -13,10 +17,12 @@ class Shooter {
         void ShooterInit();
         void FeederButton();
         void FlywheelButton();
-        double FlywheelSpeed();
-        void ShootTime();
-        void ScaleToDistance();
-        void ShootOnReady();
+
+        double FlywheelRPM();
+        
+        frc2::FunctionalCommand ShootOnReadyCommand();
+        frc2::FunctionalCommand ScaleToDistanceCommand();
+        frc2::ParallelRaceGroup ShootingCommand();
 
         inline ctre::phoenix::motorcontrol::can::TalonFX& GetFlyBack() {return m_FlywheelBack;}
         inline ctre::phoenix::motorcontrol::can::TalonFX& GetFlyFront() {return m_FlywheelFront;}
@@ -24,15 +30,12 @@ class Shooter {
     private:
 
         frc::LinearFilter<double> runningAverage = frc::LinearFilter<double>::MovingAverage(10);
-
-        frc2::Button m_FeederButton;
-        frc2::Button m_FlywheelToggleByDial;
-        frc2::Button m_FlywheelToggleByDistance;
-        frc2::Button m_FlywheelDial;
-        frc2::Button m_ShootTime;
-        frc2::Button m_ReadyShoot;
-
         ctre::phoenix::motorcontrol::can::TalonFX m_FlywheelFront;
         ctre::phoenix::motorcontrol::can::TalonFX m_FlywheelBack;
         ctre::phoenix::motorcontrol::can::TalonFX m_Feeder;
+        
+        frc2::Button m_feederButton;
+        frc2::Button m_speedDial;
+        frc2::Button m_shootSpeed;
+
 };

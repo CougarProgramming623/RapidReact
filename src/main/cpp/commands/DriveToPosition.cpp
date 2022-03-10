@@ -20,16 +20,13 @@ DriveToPos::DriveToPos(double x, double y, double a){
 
     m_Angle = a;
 
-
-
     AddRequirements(&Robot::GetRobot()->GetDriveTrain());
 
 } //Haven't implemented angle and only uses m_XTicks
 
 void DriveToPos::Initialize(){
     DebugOutF("Initialize DriveToPosition Command");
-    DriveTrain& drivetrain = Robot::GetRobot()->GetDriveTrain();
-    
+        
     FOR_ALL_MOTORS(.Set(ControlMode::PercentOutput, 0))
 
     m_FinalTicks[0] = m_DriveTrain.GetFrontL().GetSelectedSensorPosition() + m_XTicks;

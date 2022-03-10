@@ -37,11 +37,12 @@ public:
 
 private:
     TalonFX m_FrontLeft;
-    TalonFX m_BackLeft;
     TalonFX m_FrontRight;
+    TalonFX m_BackLeft;
     TalonFX m_BackRight;
 
     frc2::Button m_DriveButton;
     frc2::Button m_FODToggle;
+    
 
 };
