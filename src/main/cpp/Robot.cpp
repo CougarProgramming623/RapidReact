@@ -150,14 +150,11 @@ void Robot::AutonomousInit() {
   DebugOutF("Auto Init");
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
-<<<<<<< HEAD
-  frc2::CommandScheduler::GetInstance().Schedule(new Music("Pirates.chrp"));
-=======
-  GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(false);
+  frc2::CommandScheduler::GetInstance().Schedule(new Music("Moonlight.chrp"));
+  /*GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(false);
   Auto* m_Auto = new Auto();
   GetNavX().ZeroYaw();
-  m_Auto->DriveForward()->Schedule();
->>>>>>> master
+  m_Auto->DriveForward()->Schedule();*/
 }
 void Robot::AutonomousPeriodic() {
   
