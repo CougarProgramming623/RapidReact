@@ -16,6 +16,7 @@ public:
     DriveTrain();
     void BaseDrive(double power);
     void DriveInit();
+    void MusicInit();
     void BreakMode(bool on);
     void CartesianDrive(double y, double x, double rotation, double angle, bool FOD);
 

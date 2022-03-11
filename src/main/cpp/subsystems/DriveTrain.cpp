@@ -4,6 +4,7 @@
 #include <ctre/phoenix/motorcontrol/ControlMode.h>
 #include <frc/drive/Vector2d.h>
 #include "commands/DriveWithJoystick.h"
+#include "subsystems/Shooter.h"
 #include "commands/TurnToAngle.h"
 
 const int kMAX_VELOCITY = 6380/60/10*2048;//RPM->Convert to RPS->Convert to RP100MS->Convert to TP100MS
@@ -151,6 +152,8 @@ void DriveTrain::DriveInit(){
     GetBackR().ConfigPeakOutputReverse(-1);
     
 }
+
+
 
 void DriveTrain::BaseDrive(double power){
     m_FrontLeft.Set(ControlMode::Velocity, power * kMAX_VELOCITY);
