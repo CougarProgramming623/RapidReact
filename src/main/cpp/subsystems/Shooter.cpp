@@ -41,7 +41,7 @@ void Shooter::ShooterInit(){
     m_FlywheelFront.ConfigVoltageCompSaturation(kSaturationMax);
 
 
-    const double kP = 0.087797;
+    const double kP = 0.46437; //.067627; //0.087797;
     const double kD = 0;
     const double kI = 0;
 
@@ -55,9 +55,9 @@ void Shooter::ShooterInit(){
 }
 
 void Shooter::SetRPM(double rpm) {
-    const double kS = 0.52041;
-    const double kV = 0.10875;
-    const double kA = 0.0043097;
+    const double kS = 0.48939; //0.52041;
+    const double kV = 0.10902; //0.10875;
+    const double kA = 0.0048056; //0.0043097;
     
     double ticksPer100ms = rpm / 600 * 2048;
     double rps = rpm / 60;
@@ -66,6 +66,7 @@ void Shooter::SetRPM(double rpm) {
 
     m_FlywheelFront.Set(ControlMode::Velocity, ticksPer100ms, DemandType::DemandType_ArbitraryFeedForward, feedForwardVoltage/kSaturationMax);
     Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_SETPOINT).SetDouble(rpm);
+    Robot::GetRobot()->GetCOB().GetTable().GetEntry("COB/RPMError").SetDouble(rpm - FlywheelRPM());
 }
 
 frc2::FunctionalCommand Shooter::ShootOnReadyCommand(){
