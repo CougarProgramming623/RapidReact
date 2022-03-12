@@ -13,12 +13,8 @@
 #include <ctre/phoenix/motorcontrol/InvertType.h>
 
 using ctre::phoenix::motorcontrol::ControlMode;
+using ctre::phoenix::motorcontrol::DemandType;
 
-const double P = 0.25;
-const double E = 0;
-const double D = 0;
-const double F = 0.05;
-const double I = 0;
 
 Shooter::Shooter() :
 m_FlywheelFront(FLYWHEEL_FRONT), //master
@@ -30,6 +26,7 @@ m_speedDial([&] {return Robot::GetRobot()->GetButtonBoard().GetRawAxis(0);}),
 m_shootSpeed(BUTTON_L(FLYWHEEL_BUTTON_BY_SPEED))
 {}
 
+constexpr double kSaturationMax = 11;
 
 void Shooter::ShooterInit(){
     DebugOutF("Shooter Init");
@@ -38,8 +35,38 @@ void Shooter::ShooterInit(){
     
     m_FlywheelBack.Set(ControlMode::Follower, FLYWHEEL_FRONT);
     m_FlywheelBack.SetInverted(ctre::phoenix::motorcontrol::InvertType::OpposeMaster);
+
+    
+    m_FlywheelFront.EnableVoltageCompensation(true);
+    m_FlywheelFront.ConfigVoltageCompSaturation(kSaturationMax);
+
+
+    const double kP = 0.087797;
+    const double kD = 0;
+    const double kI = 0;
+
+    m_FlywheelFront.Config_kP(0, kP);
+    m_FlywheelFront.Config_kD(0, kD);
+    m_FlywheelFront.Config_kI(0, kI);
+    m_FlywheelFront.Config_kF(0, 0);
+    
+    
+
 }
 
+void Shooter::SetRPM(double rpm) {
+    const double kS = 0.52041;
+    const double kV = 0.10875;
+    const double kA = 0.0043097;
+    
+    double ticksPer100ms = rpm / 600 * 2048;
+    double rps = rpm / 60;
+
+    double feedForwardVoltage = kS + kV * rps;
+
+    m_FlywheelFront.Set(ControlMode::Velocity, ticksPer100ms, DemandType::DemandType_ArbitraryFeedForward, feedForwardVoltage/kSaturationMax);
+    Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_SETPOINT).SetDouble(rpm);
+}
 
 frc2::FunctionalCommand Shooter::ShootOnReadyCommand(){
     return frc2::FunctionalCommand(
@@ -74,14 +101,13 @@ void Shooter::FeederButton(){
 }
 void Shooter::FlywheelButton(){
     m_shootSpeed.WhenHeld(frc2::FunctionalCommand( [&]{}, [&]{ //onExecute
-        m_FlywheelFront.Set(ControlMode::PercentOutput, (Robot::GetRobot()->GetButtonBoard().GetRawAxis(0) + 1) / 2);
+        // m_FlywheelFront.Set(ControlMode::PercentOutput, (Robot::GetRobot()->GetButtonBoard().GetRawAxis(0) + 1) / 2);
+        double dialPos = (Robot::GetRobot()->GetButtonBoard().GetRawAxis(0) + 1) / 2;
+        SetRPM(dialPos * 6000);
     }, [&](bool e){ //onEnd
             m_FlywheelFront.Set(ControlMode::PercentOutput, 0);
     }, [&]{ return false; }, {})); 
 
-    m_shootSpeed.WhenReleased(frc2::InstantCommand( [&] { 
-        m_FlywheelFront.Set(ControlMode::PercentOutput, 0);
-    }));
 }
 
 double Shooter::FlywheelRPM() {
