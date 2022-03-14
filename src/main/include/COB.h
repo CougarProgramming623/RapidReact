@@ -8,6 +8,7 @@
 #define COB_KEY_FOD "/COB/FOD"
 #define COB_KEY_IS_TELE "/COB/isTele"
 #define COB_KEY_FLYWHEEL_SPEED "/COB/flywheelRPM"
+#define COB_KEY_FLYWHEEL_SETPOINT "COB/flywheelSetpoint"
 #define COB_KEY_MOTER_SPEED "/COB/moterSpeed"
 #define COB_KEY_DISTANCE "/COB/distance"
 #define COB_KEY_IS_RED "/FMSInfo/IsRedAlliance"

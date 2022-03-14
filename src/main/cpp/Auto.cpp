@@ -41,6 +41,7 @@ frc2::SequentialCommandGroup* DriveBackAndShoot(){
             return false;
         })
     );
+    return NULL;
 }
 
 

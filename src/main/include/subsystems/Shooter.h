@@ -17,6 +17,7 @@ class Shooter {
         void ShooterInit();
         void FeederButton();
         void FlywheelButton();
+        void SetRPM(double rpm);
 
         double FlywheelRPM();
         
