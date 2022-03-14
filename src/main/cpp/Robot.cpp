@@ -6,11 +6,14 @@
 #include <frc/RobotController.h>
 #include <wpi/raw_ostream.h>
 #include <frc2/command/InstantCommand.h>
+#include <frc/RobotBase.h>
+#include <frc/DriverStation.h>
 #include "commands/LockOnTarget.h"
 #include <frc/Errors.h>
 #include "Util.h"
 #include "frc/timer.h"
 #include "ID.h"
+#include "Auto.h"
 
 #include <math.h>
 #define _USE_MATH_DEFINES
@@ -38,13 +41,10 @@ Robot::Robot() :
 
 void Robot::RobotInit() {
   DebugOutF("Robot Init");
-  
+  m_NumLED = 125;
+  m_LED.SetLength(m_NumLED);
 
-  m_NumLED = 70;
-
-  m_LED.SetLength(140);
-
-  for (int i = 0; i < 140; i++)
+  for (int i = 0; i < m_NumLED; i++)
   {
     m_ledBuffer[i].SetRGB(255, 255, 0);
   }
@@ -56,6 +56,7 @@ void Robot::RobotInit() {
   GetClimb().ClimbInit();
   m_Shooter.ShooterInit();
   m_OI.Init();
+  m_Intake.IntakeInit();
 
   if( GetCOB().GetTable().GetEntry(COB_KEY_IS_RED).GetBoolean(false)){
     m_AllianceColor.red = 1;
@@ -87,8 +88,11 @@ void Robot::RobotPeriodic() {
     m_AllianceColor.red = 0;
   }
   
-  if(abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0)) < 2 && GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
-      for (int i = 0; i < 140; i++)
+  if(frc::DriverStation::GetInstance().GetAlliance() != frc::DriverStation::Alliance::kRed && frc::DriverStation::GetInstance().GetAlliance() != frc::DriverStation::Alliance::kBlue){
+    for (int i = 0; i < m_NumLED; i++)
+      m_ledBuffer[i].SetRGB(255, 0, 255);
+  } else if(abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0)) < 1 && abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0)) > 0){
+    for (int i = 0; i < m_NumLED; i++)
       m_ledBuffer[i].SetRGB(0, 255, 0);
   } else if(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
     if(m_LEDIndex > m_NumLED - 1)
@@ -106,8 +110,11 @@ void Robot::RobotPeriodic() {
     LowBattery(m_AllianceColor, m_NumLED, 10, m_LEDIndex, m_ledBuffer);
     m_LEDIndex++;
   } else { 
-    for (int i = 0; i < 140; i++)
+    for (int i = 0; i < m_NumLED; i++)
       m_ledBuffer[i].SetLED(m_AllianceColor);
+  }
+  if(InRange()){
+    SetCorners(0, m_ledBuffer, 255, 255, 255);
   }
   m_LED.SetData(m_ledBuffer);
 
@@ -124,6 +131,7 @@ void Robot::RobotPeriodic() {
   PushDistance();
   
   GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_SPEED).SetDouble(GetShooter().FlywheelRPM());
+  //GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_RPM).SetDouble(GetShooter().FlywheelRPM());
   //GetCOB().GetTable().GetEntry(COB_KEY_FOD).SetBoolean(GetDriveTrain().m_FOD);
   if (GetCOB().GetTable().GetEntry(COB_KEY_NAVX_RESET).GetBoolean(false) == true) {
     GetNavX().ZeroYaw();
@@ -131,15 +139,20 @@ void Robot::RobotPeriodic() {
   }
   GetCOB().GetTable().GetEntry(COB_KEY_ROBOT_ANGLE).SetDouble(GetNavX().GetYaw());
   GetCOB().GetTable().GetEntry(COB_KEY_MATCH_TIME).SetDouble(frc::Timer::GetMatchTime().to<double>());
+  GetCOB().GetTable().GetEntry(COB_KEY_TICKS).SetDouble(GetCOB().GetTable().GetEntry(COB_KEY_TICKS).GetDouble(0) + 1);
+
 
 }
 
 void Robot::AutonomousInit() {
+  
   DebugOutF("Auto Init");
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
   GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(false);
-  DriveToPos(1,1,0);
+  Auto* m_Auto = new Auto();
+  GetNavX().ZeroYaw();
+  m_Auto->DriveForward()->Schedule();
 }
 void Robot::AutonomousPeriodic() {
   
@@ -174,6 +187,10 @@ void Robot::PushDistance(){
   GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).SetDouble(
     h / tan(angleFromGroundDeg * (M_PI / 180))
   );
+}
+
+bool Robot::InRange(){
+  return GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).GetDouble(0) >= 500 && GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).GetDouble(0) <= 530;
 }
 
 #ifndef RUNNING_FRC_TESTS
