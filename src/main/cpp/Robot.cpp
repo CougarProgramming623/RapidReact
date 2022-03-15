@@ -152,7 +152,8 @@ void Robot::AutonomousInit() {
   GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(false);
   Auto* m_Auto = new Auto();
   GetNavX().ZeroYaw();
-  m_Auto->DriveForward()->Schedule();
+  // m_Auto->DriveForward()->Schedule();
+  m_Auto->ShootAndDriveBack()->Schedule();
 }
 void Robot::AutonomousPeriodic() {
   

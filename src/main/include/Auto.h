@@ -14,6 +14,7 @@ public:
     frc2::SequentialCommandGroup* CramAuto();
     frc2::ParallelRaceGroup* DriveForward();
     frc2::SequentialCommandGroup* DriveBackAndShoot();
+    frc2::SequentialCommandGroup* ShootAndDriveBack();
 
 private:
 
