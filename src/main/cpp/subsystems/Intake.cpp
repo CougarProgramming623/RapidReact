@@ -41,12 +41,12 @@ void Intake::bindUpDownButton() {
 }
 
 frc2::SequentialCommandGroup Intake::MoveUp() { return frc2::SequentialCommandGroup(
-	frc2::ParallelRaceGroup(frc2::FunctionalCommand([&]{
+	frc2::ParallelRaceGroup(frc2::FunctionalCommand([&] {
 			m_motorUpDown.SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
 		}, [&] {//onExecute
 			m_motorUpDown.Set(ControlMode::PercentOutput, - standardUpSpeed);
 		}, [&] (bool e) {}, [&] { return false; }, {}), frc2::WaitCommand(2_s)),
-	frc2::FunctionalCommand([&]{}, [&] { m_motorUpDown.Set(ControlMode::PercentOutput, -0.25); }, [&](bool e){}, [&] {return false;}, {})
+	frc2::FunctionalCommand([&]{}, [&] { m_motorUpDown.Set(ControlMode::PercentOutput, -0.1); }, [&](bool e){}, [&] {return false;}, {})
 );}
 
 frc2::SequentialCommandGroup Intake::MoveDown() { return frc2::SequentialCommandGroup( //blip motor down for X seconds
@@ -58,7 +58,7 @@ frc2::SequentialCommandGroup Intake::MoveDown() { return frc2::SequentialCommand
 			}, [&](bool e){}, [&]{ return false; }, {}),
 		frc2::WaitCommand(0.65_s)
 	),
-	frc2::InstantCommand([&] { m_motorUpDown.Set(ControlMode::PercentOutput, 0.2); })
+	frc2::InstantCommand([&] { m_motorUpDown.Set(ControlMode::PercentOutput, -0.2); })
 );}
 
 void Intake::bindIngestEjectButtons() {
