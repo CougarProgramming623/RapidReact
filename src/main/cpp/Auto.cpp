@@ -69,16 +69,16 @@ frc2::SequentialCommandGroup* Auto::StandardFourBall(){
 }
 
 frc2::SequentialCommandGroup* Auto::ShootAndDriveBack() {
-    return new frc2::SequentialCommandGroup(
-        Robot::GetRobot()->GetShooter().ScaleToDistanceCommand()//,
+    // return new frc2::SequentialCommandGroup(
+        Robot::GetRobot()->GetShooter().ScaleToDistanceCommand();//,
         // frc2::ParallelRaceGroup(
         //     frc2::FunctionalCommand([&]{ //onInit
         //             Robot::GetRobot()->GetShooter().GetFeeder().Set(ControlMode::PercentOutput, 1);
         //         }, [&]{}, [&](bool e){ //onEnd
         //             Robot::GetRobot()->GetShooter().GetFeeder().Set(ControlMode::PercentOutput, 0);
         //         }, [&]{return false;}, {}),
-        //     frc2::WaitCommand(2_s)   
+        //     frc2::WaitCommand(2_s)
         // ),
         // DriveToPos(4, 0, 0)
-    );
+    // );
 }
