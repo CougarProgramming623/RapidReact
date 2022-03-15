@@ -23,7 +23,8 @@ m_Feeder(FEEDER),
 
 m_feederButton(BUTTON_L(FEEDER_BUTTON)),
 m_speedDial([&] {return Robot::GetRobot()->GetButtonBoard().GetRawAxis(0);}),
-m_shootSpeed(BUTTON_L(FLYWHEEL_BUTTON_BY_SPEED))
+m_shootSpeed(BUTTON_L(FLYWHEEL_BUTTON_BY_SPEED)),
+m_shootDistance(BUTTON_L(FLYWHEEL_BUTTON_BY_DISTANCE))
 {}
 
 constexpr double kSaturationMax = 11;
@@ -41,7 +42,7 @@ void Shooter::ShooterInit(){
     m_FlywheelFront.ConfigVoltageCompSaturation(kSaturationMax);
 
 
-    const double kP = 0.46437; //.067627; //0.087797;
+    const double kP = 0.067627; //0.46437;  //0.087797;
     const double kD = 0;
     const double kI = 0;
 
@@ -107,7 +108,9 @@ void Shooter::FlywheelButton(){
         SetRPM(dialPos * 6000);
     }, [&](bool e){ //onEnd
             m_FlywheelFront.Set(ControlMode::PercentOutput, 0);
-    }, [&]{ return false; }, {})); 
+    }, [&]{ return false; }, {}));
+
+    m_shootDistance.WhenHeld(ScaleToDistanceCommand());
 
 }
 
@@ -121,20 +124,20 @@ frc2::InstantCommand Shoot(){
 }
 
 
-frc2::FunctionalCommand Shooter::ScaleToDistanceCommand() {
-    return frc2::FunctionalCommand([&] { //onInit
+frc2::FunctionalCommand* Shooter::ScaleToDistanceCommand() {
+    return new frc2::FunctionalCommand([&] { //onInit
 
         }, [&]{ //onExecute
 
-        double distance = Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).GetDouble(0); //cm
-        double RPM = distance * 4 + 70;
+        double distance = Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).GetDouble(0) / 2.54; //cm
+        double RPM = distance * 28.2 + 1831;
 
-        double smoothRPM = runningAverage.Calculate(distance) * 4 + 70;
+        //double smoothRPM = runningAverage.Calculate(distance) * 28.2 + 1831;
 
         
         Robot::GetRobot()->GetCOB().GetTable().GetEntry("/COB/flywheelSpeedSetpoint").SetDouble(RPM);
 
-        m_FlywheelFront.Set(ControlMode::Velocity, smoothRPM / 600 * 2048);
+        SetRPM(RPM);
 
         
         }, [&] (bool e) { //onEnd
@@ -148,7 +151,7 @@ frc2::FunctionalCommand Shooter::ScaleToDistanceCommand() {
 
 frc2::ParallelRaceGroup Shooter::ShootingCommand(){
     return frc2::ParallelRaceGroup(
-        ScaleToDistanceCommand(),
+        *ScaleToDistanceCommand(),
         ShootOnReadyCommand(),
         frc2::WaitCommand(4_s)
     );

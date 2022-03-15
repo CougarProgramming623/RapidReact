@@ -15,7 +15,7 @@
 #define COB_KEY_LIME_LIGHT_TX "/limelight/tx" // [-27,27]
 #define COB_KEY_LIME_LIGHT_TV "/limelight/tv"
 
-#define LIMELIGHT_HEIGHT 71.755 //cm
+#define LIMELIGHT_HEIGHT 77.47 //78.74 //cm
 #define TARGET_HEIGHT 264 //cm
 #define LIMELIGHT_ANGLE  45 //degree
 #define COB_KEY_NAVX_RESET "/COB/navXReset"
