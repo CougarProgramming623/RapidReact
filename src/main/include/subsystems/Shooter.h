@@ -7,8 +7,10 @@
 #include <frc/filter/LinearFilter.h>
 #include <frc2/command/FunctionalCommand.h>
 #include <frc2/command/InstantCommand.h>
+#include <frc/DigitalInput.h>
 #include <frc2/command/ParallelRaceGroup.h>
 #include "ID.h"
+
 
 
 class Shooter {
