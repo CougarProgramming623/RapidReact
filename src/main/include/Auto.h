@@ -15,6 +15,7 @@ public:
     frc2::ParallelRaceGroup* DriveForward();
     frc2::SequentialCommandGroup* DriveBackAndShoot();
     frc2::SequentialCommandGroup* ShootAndDriveBack();
+    frc2::SequentialCommandGroup* ShootDriveIntake();
 
 private:
 

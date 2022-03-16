@@ -40,7 +40,7 @@ void Intake::bindUpDownButton() {
 	m_moveUpDownButton.WhileHeld(MoveUp());
 }
 
-frc2::SequentialCommandGroup Intake::MoveUp() { return frc2::SequentialCommandGroup(
+frc2::SequentialCommandGroup* Intake::MoveUp() { return new frc2::SequentialCommandGroup(
 	frc2::ParallelRaceGroup(frc2::FunctionalCommand([&]{
 			m_motorUpDown.SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
 		}, [&] {//onExecute
@@ -49,7 +49,7 @@ frc2::SequentialCommandGroup Intake::MoveUp() { return frc2::SequentialCommandGr
 	frc2::FunctionalCommand([&]{}, [&] { m_motorUpDown.Set(ControlMode::PercentOutput, -0.25); }, [&](bool e){}, [&] {return false;}, {})
 );}
 
-frc2::SequentialCommandGroup Intake::MoveDown() { return frc2::SequentialCommandGroup( //blip motor down for X seconds
+frc2::SequentialCommandGroup* Intake::MoveDown() { return new frc2::SequentialCommandGroup( //blip motor down for X seconds
 	frc2::ParallelRaceGroup(
 		frc2::FunctionalCommand([&] {//onInit
 				m_motorUpDown.SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Coast);
@@ -62,12 +62,12 @@ frc2::SequentialCommandGroup Intake::MoveDown() { return frc2::SequentialCommand
 );}
 
 void Intake::bindIngestEjectButtons() {
-	m_directionIngest.WhenPressed(Ingest());
-	m_directionEject.WhenPressed(Eject());
+	m_directionIngest.WhenPressed(*Ingest());
+	m_directionEject.WhenPressed(*Eject());
 
 	m_directionIngest.WhenReleased([&]  { m_motorInOut.Set(ControlMode::PercentOutput, 0); });
 	m_directionEject.WhenReleased([&] { m_motorInOut.Set(ControlMode::PercentOutput, 0); });
 }
 
-frc2::InstantCommand Intake::Ingest() { return frc2::InstantCommand([&] { m_motorInOut.Set(ControlMode::PercentOutput, standardInOutSpeed); }); }
-frc2::InstantCommand Intake::Eject() { return frc2::InstantCommand([&] {m_motorInOut.Set(ControlMode::PercentOutput, -standardInOutSpeed); }); }
+frc2::InstantCommand* Intake::Ingest() { return new frc2::InstantCommand([&] { m_motorInOut.Set(ControlMode::PercentOutput, standardInOutSpeed); }); }
+frc2::InstantCommand* Intake::Eject() { return new frc2::InstantCommand([&] {m_motorInOut.Set(ControlMode::PercentOutput, -standardInOutSpeed); }); }

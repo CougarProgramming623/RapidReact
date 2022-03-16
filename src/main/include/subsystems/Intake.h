@@ -19,12 +19,12 @@ class Intake {
 	void IntakeInit();
 
 	void bindUpDownButton();
-	frc2::SequentialCommandGroup MoveUp();
-	frc2::SequentialCommandGroup MoveDown();
+	frc2::SequentialCommandGroup* MoveUp();
+	frc2::SequentialCommandGroup* MoveDown();
 
 	void bindIngestEjectButtons();
-	frc2::InstantCommand Ingest();
-	frc2::InstantCommand Eject();
+	frc2::InstantCommand* Ingest();
+	frc2::InstantCommand* Eject();
 	
 
 	private:

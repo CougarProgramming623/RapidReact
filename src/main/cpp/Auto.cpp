@@ -85,3 +85,24 @@ frc2::SequentialCommandGroup* Auto::ShootAndDriveBack() {
         DriveToPos(2, 0, 0));
     // );
 }
+
+frc2::SequentialCommandGroup* Auto::ShootDriveIntake() {
+    return new frc2::SequentialCommandGroup(
+
+        frc2::ParallelRaceGroup(
+            *Robot::GetRobot()->GetShooter().ScaleToDistanceCommand(),
+            frc2::FunctionalCommand([&]{ //onInit
+                }, [&]{//onExecute
+                    Robot::GetRobot()->GetShooter().GetFeeder().Set(ControlMode::PercentOutput, -1);
+                }, [&](bool e){ //onEnd
+                    Robot::GetRobot()->GetShooter().GetFeeder().Set(ControlMode::PercentOutput, 0);
+                }, [&]{return false;}, {}),
+            frc2::WaitCommand(2_s)
+        ),
+        // *Robot::GetRobot()->GetIntake().MoveDown(),
+        // *Robot::GetRobot()->GetIntake().Ingest(),
+        frc2::WaitCommand(2_s),
+        DriveToPos(2, 0, 0)
+    );
+    // );
+}
