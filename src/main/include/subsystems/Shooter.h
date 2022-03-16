@@ -8,6 +8,7 @@
 #include <frc2/command/FunctionalCommand.h>
 #include <frc2/command/InstantCommand.h>
 #include <frc2/command/ParallelRaceGroup.h>
+#include "ID.h"
 
 
 class Shooter {
@@ -18,7 +19,7 @@ class Shooter {
         void FeederButton();
         void FlywheelButton();
         void SetRPM(double rpm);
-
+        void ShooterPeriotic();
         double FlywheelRPM();
         
         frc2::FunctionalCommand ShootOnReadyCommand();
@@ -36,5 +37,7 @@ class Shooter {
         frc2::Button m_speedDial;
         frc2::Button m_shootSpeed;
         frc2::Button m_shootDistance;
+        frc2::Button m_ShootButton;
+        frc::DigitalInput m_LoadedInput{PHOTOSENSOR};
 
 };

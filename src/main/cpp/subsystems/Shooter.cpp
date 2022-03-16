@@ -21,18 +21,21 @@ m_FlywheelFront(FLYWHEEL_FRONT), //master
 m_FlywheelBack(FLYWHEEL_BACK), //slave
 m_Feeder(FEEDER),
 
-m_feederButton(BUTTON_L(FEEDER_BUTTON)),
+m_feederButton(BUTTON_L(FEED_BUTTON)),
 m_speedDial([&] {return Robot::GetRobot()->GetButtonBoard().GetRawAxis(0);}),
 m_shootSpeed(BUTTON_L(FLYWHEEL_BUTTON_BY_SPEED)),
-m_shootDistance(BUTTON_L(FLYWHEEL_BUTTON_BY_DISTANCE))
+m_shootDistance(BUTTON_L(FLYWHEEL_BUTTON_BY_DISTANCE)),
+m_ShootButton(BUTTON_L(SHOOT_BUTTON))
 {}
 
 constexpr double kSaturationMax = 11;
 
 void Shooter::ShooterInit(){
     DebugOutF("Shooter Init");
-    FeederButton();
+    // FeederButton();
     FlywheelButton();
+    ShooterPeriotic();
+
     
     m_FlywheelBack.Set(ControlMode::Follower, FLYWHEEL_FRONT);
     m_FlywheelBack.SetInverted(ctre::phoenix::motorcontrol::InvertType::OpposeMaster);
@@ -68,6 +71,24 @@ void Shooter::SetRPM(double rpm) {
     m_FlywheelFront.Set(ControlMode::Velocity, ticksPer100ms, DemandType::DemandType_ArbitraryFeedForward, feedForwardVoltage/kSaturationMax);
     Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_SETPOINT).SetDouble(rpm);
     Robot::GetRobot()->GetCOB().GetTable().GetEntry("COB/RPMError").SetDouble(rpm - FlywheelRPM());
+}
+
+void Shooter::ShooterPeriotic(){
+    // if( (Robot::GetRobot()->GetButtonBoard().GetRawButton(SHOOT_BUTTON)                                    &&
+    //     (!Robot::GetRobot()->GetNavX().IsMoving())                                                      &&
+    //     abs(Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0)) < 1    && 
+    //     abs(Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0)) > 0)   ||
+        if(Robot::GetRobot()->GetButtonBoard().GetRawButton(FEED_BUTTON))
+    {
+        DebugOutF("1 Feed");
+        m_Feeder.Set(ControlMode::PercentOutput, -1);
+    } else if(m_LoadedInput.Get()){
+        DebugOutF("2 Feed");
+        m_Feeder.Set(ControlMode::PercentOutput, -1);
+    } else{
+        DebugOutF("Dont Feed");
+        m_Feeder.Set(ControlMode::PercentOutput, 0);
+    }
 }
 
 frc2::FunctionalCommand Shooter::ShootOnReadyCommand(){
@@ -147,7 +168,7 @@ frc2::FunctionalCommand* Shooter::ScaleToDistanceCommand() {
             return false;
         }
     );
-};
+}
 
 frc2::ParallelRaceGroup Shooter::ShootingCommand(){
     return frc2::ParallelRaceGroup(
