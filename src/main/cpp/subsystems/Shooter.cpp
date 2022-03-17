@@ -75,12 +75,13 @@ void Shooter::SetRPM(double rpm) {
 }
 
 void Shooter::ShooterPeriotic(){
-    // if( (Robot::GetRobot()->GetButtonBoard().GetRawButton(SHOOT_BUTTON)                                    &&
-    //     (!Robot::GetRobot()->GetNavX().IsMoving())                                                      &&
-    //     abs(Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0)) < 1    && 
-    //     abs(Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0)) > 0)   ||
-        if(Robot::GetRobot()->GetButtonBoard().GetRawButton(FEED_BUTTON))
-    {
+    bool canSafeShoot = 
+        (!Robot::GetRobot()->GetNavX().IsMoving())  &&
+        abs(Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0)) < 1  && 
+        abs(Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0)) > 0;
+
+    if((Robot::GetRobot()->GetButtonBoard().GetRawButton(SHOOT_BUTTON) && canSafeShoot) ||
+        Robot::GetRobot()->GetButtonBoard().GetRawButton(FEED_BUTTON))    {
         DebugOutF("1 Feed");
         m_Feeder.Set(ControlMode::PercentOutput, -1);
     } else if(m_LoadedInput.Get()){
