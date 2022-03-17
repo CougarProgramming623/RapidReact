@@ -58,7 +58,7 @@ void Shooter::ShooterInit(){
 void Shooter::SetRPM(double rpm) {
     const double kS = 0.48939; //0.52041;
     const double kV = 0.10902; //0.10875;
-    const double kA = 0.0048056; //0.0043097;
+    // const double kA = 0.0048056; //0.0043097; // we don't use this so it's commented out to stop the warning
     
     double ticksPer100ms = rpm / 600 * 2048;
     double rps = rpm / 60;
@@ -148,7 +148,7 @@ frc2::FunctionalCommand* Shooter::ScaleToDistanceCommand() {
             return false;
         }
     );
-};
+}
 
 frc2::ParallelRaceGroup Shooter::ShootingCommand(){
     return frc2::ParallelRaceGroup(
