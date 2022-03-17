@@ -31,7 +31,7 @@ Robot::Robot() :
 
   m_TargetLock([&] { return Robot::GetRobot()->GetJoystick().GetRawButton(1); }),
   
-  m_LimeLightToggle(BUTTON_L(14)) 
+  m_LimeLightToggle(BUTTON_L(LIMELIGHT_TOGGLE)) 
 
 {
   s_Instance = this;
