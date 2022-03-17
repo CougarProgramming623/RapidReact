@@ -50,7 +50,7 @@ frc2::FunctionalCommand* Climb::ManualClimb() {
             pivot = 0.1 > abs(pivot) ? 0 : pivot;
             if(m_Analog.GetValue() > 1250) {
                 m_PivotArm.Set(ControlMode::PercentOutput, pivot);
-            } else if (pivot > 0) {
+            } else if (pivot < 0) {
                 m_PivotArm.Set(ControlMode::PercentOutput, pivot);
             } else {
                 m_PivotArm.Set(ControlMode::PercentOutput,0);

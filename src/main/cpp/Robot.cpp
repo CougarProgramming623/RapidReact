@@ -11,7 +11,6 @@
 #include "commands/LockOnTarget.h"
 #include <frc/Errors.h>
 #include "Util.h"
-#include "frc/timer.h"
 #include "ID.h"
 #include "Auto.h"
 
