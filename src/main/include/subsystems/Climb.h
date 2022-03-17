@@ -39,8 +39,8 @@ private:
     frc::DigitalInput m_LowBound{0};
 
     frc2::Button m_AutoLock;
-    frc2::Button m_MainLock;
     frc2::Button m_TeleLock;
+    frc2::Button m_MainLock;
 
     double m_MinSensorPosition;
     

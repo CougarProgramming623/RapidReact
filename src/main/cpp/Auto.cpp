@@ -1,6 +1,9 @@
 #include "Auto.h"
 #include "subsystems/Shooter.h"
+#include "frc2/command/ParallelDeadlineGroup.h"
 #include "Robot.h"
+
+using ctre::phoenix::motorcontrol::ControlMode;
 
 Auto::Auto(){
 
@@ -64,4 +67,54 @@ frc2::SequentialCommandGroup* Auto::StandardFourBall(){
         TurnToAngle::TurnToTarget(),
         Robot::GetRobot()->GetShooter().ShootingCommand()
     );
+}
+
+frc2::SequentialCommandGroup* Auto::ShootAndDriveBack() {
+    return new frc2::SequentialCommandGroup(
+        frc2::ParallelRaceGroup(
+            *Robot::GetRobot()->GetShooter().ScaleToDistanceCommand(),
+            frc2::FunctionalCommand([&]{ //onInit
+                }, [&]{//onExecute
+                    Robot::GetRobot()->GetShooter().GetFeeder().Set(ControlMode::PercentOutput, -1);
+                }, [&](bool e){ //onEnd
+                    Robot::GetRobot()->GetShooter().GetFeeder().Set(ControlMode::PercentOutput, 0);
+                }, [&]{return false;}, {}),
+            frc2::WaitCommand(2_s)
+        ),
+        DriveToPos(2, 0, 0));
+}
+
+frc2::SequentialCommandGroup* Auto::TwoBallAuto() {
+    frc2::SequentialCommandGroup* group = new frc2::SequentialCommandGroup();
+    group->AddCommands(
+        frc2::ParallelDeadlineGroup(
+            DriveToPos(2.5, 0, 0),
+            std::move(*Robot::GetRobot()->GetIntake().MoveDown()),
+            std::move(*Robot::GetRobot()->GetIntake().Ingest())
+        )
+    );
+    group->AddCommands(
+        frc2::ParallelRaceGroup(
+            DriveToPos(-2.3, 0, 0),
+            std::move(*Robot::GetRobot()->GetIntake().MoveUp())
+        ),
+        TurnToAngle(-90, 0.2),
+        frc2::WaitCommand(1_s),
+        TurnToAngle::TurnToTarget(),
+        frc2::ParallelDeadlineGroup(
+            frc2::WaitCommand(10_s),
+            std::move(*Robot::GetRobot()->GetShooter().ScaleToDistanceCommand()),
+            frc2::SequentialCommandGroup(
+                frc2::WaitCommand(2_s),
+                frc2::FunctionalCommand([&]{ //onInit
+                }, [&]{//onExecute
+                    Robot::GetRobot()->GetShooter().GetFeeder().Set(ControlMode::PercentOutput, -1);
+                }, [&](bool e){ //onEnd
+                    Robot::GetRobot()->GetShooter().GetFeeder().Set(ControlMode::PercentOutput, 0);
+                }, [&]{return false;}, {})
+            )
+            
+        )
+    );
+    return group;
 }
