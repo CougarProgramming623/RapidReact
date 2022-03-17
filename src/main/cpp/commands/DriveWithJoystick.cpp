@@ -7,6 +7,8 @@ Drive::Drive(){
 
 void Drive::Initialize(){
     DebugOutF("Initialize Drive Command");
+    Robot::GetRobot()->GetDriveTrain().UseVelocityPID();
+
 }
 
 double deadFix(double in) {

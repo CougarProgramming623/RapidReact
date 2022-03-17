@@ -62,11 +62,9 @@ frc2::SequentialCommandGroup* Intake::MoveDown() { return new frc2::SequentialCo
 );}
 
 void Intake::bindIngestEjectButtons() {
-	m_directionIngest.WhenPressed(*Ingest());
-	m_directionEject.WhenPressed(*Eject());
+	m_directionIngest.WhileActiveOnce(*Ingest());
+	m_directionEject.WhileActiveOnce(*Eject());
 
-	m_directionIngest.WhenReleased([&]  { m_motorInOut.Set(ControlMode::PercentOutput, 0); });
-	m_directionEject.WhenReleased([&] { m_motorInOut.Set(ControlMode::PercentOutput, 0); });
 }
 
 frc2::FunctionalCommand* Intake::Ingest() {
