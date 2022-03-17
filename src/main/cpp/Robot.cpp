@@ -78,6 +78,7 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
   
+  m_Shooter.ShooterPeriotic();
 
   if( GetCOB().GetTable().GetEntry(COB_KEY_IS_RED).GetBoolean(false)){
     m_AllianceColor.red = 1;
