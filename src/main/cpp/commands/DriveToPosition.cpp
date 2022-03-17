@@ -17,7 +17,7 @@ const double kTIME_THRESHOLD = 1;         //(!) TEST (!)
 
 DriveToPos::DriveToPos(double x, double y, double a){
     m_XTicks = x / kMETERS_PER_ROTATION * kTICKS_PER_ROTATION * kGEARBOX_RATIO;
-
+    m_YTicks = y / kMETERS_PER_ROTATION * kTICKS_PER_ROTATION * kGEARBOX_RATIO;
     m_Angle = a;
 
     AddRequirements(&Robot::GetRobot()->GetDriveTrain());
@@ -29,10 +29,10 @@ void DriveToPos::Initialize(){
         
     FOR_ALL_MOTORS(.Set(ControlMode::PercentOutput, 0))
 
-    m_FinalTicks[0] = m_DriveTrain.GetFrontL().GetSelectedSensorPosition() + m_XTicks;
-    m_FinalTicks[1] = m_DriveTrain.GetFrontR().GetSelectedSensorPosition() + m_XTicks;
-    m_FinalTicks[2] = m_DriveTrain.GetBackL().GetSelectedSensorPosition() + m_XTicks;
-    m_FinalTicks[3] = m_DriveTrain.GetBackR().GetSelectedSensorPosition() + m_XTicks;
+    m_FinalTicks[0] = m_DriveTrain.GetFrontL().GetSelectedSensorPosition() + m_YTicks + m_XTicks;
+    m_FinalTicks[1] = m_DriveTrain.GetFrontR().GetSelectedSensorPosition() + m_YTicks - m_XTicks;
+    m_FinalTicks[2] = m_DriveTrain.GetBackL().GetSelectedSensorPosition() + m_YTicks - m_XTicks;
+    m_FinalTicks[3] = m_DriveTrain.GetBackR().GetSelectedSensorPosition() + m_YTicks + m_XTicks;
 
     // m_XTicks = x / kTICKS_PER_ROTATION * kCM_PER_ROTATION;   
     // m_Yticks = y / kTICKS_PER_ROTATION * kCM_PER_ROTATION;
