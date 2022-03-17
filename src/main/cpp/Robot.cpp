@@ -153,7 +153,7 @@ void Robot::AutonomousInit() {
   Auto* m_Auto = new Auto();
   GetNavX().ZeroYaw();
   // m_Auto->DriveForward()->Schedule();
-  m_Auto->ShootAndDriveBack()->Schedule();
+  m_Auto->TwoBallAuto()->Schedule();
 }
 void Robot::AutonomousPeriodic() {
   

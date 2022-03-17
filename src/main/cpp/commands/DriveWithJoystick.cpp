@@ -9,14 +9,21 @@ void Drive::Initialize(){
     DebugOutF("Initialize Drive Command");
 }
 
+double deadFix(double in) {
+    if(abs(in) < 0.05) {
+        return 0;
+    }
+    return in;
+}
+
 void Drive::Execute(){
     Robot::GetRobot()->GetCOB().GetTable().GetEntry("/COB/currentCommand").SetString("DriveWithJoystick");
-
+    
     Robot *r = Robot::GetRobot();
         r->GetDriveTrain().CartesianDrive(
-        -r->GetJoystick().GetRawAxis(1), 
-        r->GetJoystick().GetRawAxis(0), 
-        r->GetJoystick().GetRawAxis(2), 
+        deadFix(-r->GetJoystick().GetRawAxis(1)), 
+        deadFix(r->GetJoystick().GetRawAxis(0)), 
+        deadFix(r->GetJoystick().GetRawAxis(2)), 
         r->GetNavX().GetYaw(),
         true // TODO before push
     );

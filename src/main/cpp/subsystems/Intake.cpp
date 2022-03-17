@@ -36,8 +36,8 @@ void Intake::IntakeInit() {
 }
 
 void Intake::bindUpDownButton() {
-	m_moveUpDownButton.WhenReleased(MoveDown());
-	m_moveUpDownButton.WhileHeld(MoveUp());
+	// m_moveUpDownButton.WhenReleased(MoveDown());
+	// m_moveUpDownButton.WhenPressed(MoveUp());
 }
 
 frc2::SequentialCommandGroup* Intake::MoveUp() { return new frc2::SequentialCommandGroup(
@@ -46,7 +46,7 @@ frc2::SequentialCommandGroup* Intake::MoveUp() { return new frc2::SequentialComm
 		}, [&] {//onExecute
 			m_motorUpDown.Set(ControlMode::PercentOutput, - standardUpSpeed);
 		}, [&] (bool e) {}, [&] { return false; }, {}), frc2::WaitCommand(2_s)),
-	frc2::FunctionalCommand([&]{}, [&] { m_motorUpDown.Set(ControlMode::PercentOutput, -0.25); }, [&](bool e){}, [&] {return false;}, {})
+	frc2::FunctionalCommand([&]{}, [&] { m_motorUpDown.Set(ControlMode::PercentOutput, 0); }, [&](bool e){}, [&] {return false;}, {})
 );}
 
 frc2::SequentialCommandGroup* Intake::MoveDown() { return new frc2::SequentialCommandGroup( //blip motor down for X seconds
@@ -69,5 +69,23 @@ void Intake::bindIngestEjectButtons() {
 	m_directionEject.WhenReleased([&] { m_motorInOut.Set(ControlMode::PercentOutput, 0); });
 }
 
-frc2::InstantCommand* Intake::Ingest() { return new frc2::InstantCommand([&] { m_motorInOut.Set(ControlMode::PercentOutput, standardInOutSpeed); }); }
-frc2::InstantCommand* Intake::Eject() { return new frc2::InstantCommand([&] {m_motorInOut.Set(ControlMode::PercentOutput, -standardInOutSpeed); }); }
+frc2::FunctionalCommand* Intake::Ingest() {
+	return new frc2::FunctionalCommand([&] {//onInit
+			}, [&]{//onExecute
+				m_motorInOut.Set(ControlMode::PercentOutput, -standardInOutSpeed);
+			}, [&](bool e){
+				m_motorInOut.Set(ControlMode::PercentOutput, 0);
+			}, [&]{ return false; }, {
+
+			});
+}
+frc2::FunctionalCommand* Intake::Eject() {
+	return new frc2::FunctionalCommand([&] {//onInit
+			}, [&]{//onExecute
+				m_motorInOut.Set(ControlMode::PercentOutput, standardInOutSpeed);
+			}, [&](bool e){
+				m_motorInOut.Set(ControlMode::PercentOutput, 0);
+			}, [&]{ return false; }, {
+
+			});
+}

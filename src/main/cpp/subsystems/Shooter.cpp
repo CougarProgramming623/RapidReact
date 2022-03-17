@@ -42,7 +42,7 @@ void Shooter::ShooterInit(){
     m_FlywheelFront.ConfigVoltageCompSaturation(kSaturationMax);
 
 
-    const double kP = 0.067627; //0.46437;  //0.087797;
+    const double kP = 0; // 0.067627; //0.46437;  //0.087797;
     const double kD = 0;
     const double kI = 0;
 
@@ -66,6 +66,7 @@ void Shooter::SetRPM(double rpm) {
     double feedForwardVoltage = kS + kV * rps;
 
     m_FlywheelFront.Set(ControlMode::Velocity, ticksPer100ms, DemandType::DemandType_ArbitraryFeedForward, feedForwardVoltage/kSaturationMax);
+    
     Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_SETPOINT).SetDouble(rpm);
     Robot::GetRobot()->GetCOB().GetTable().GetEntry("COB/RPMError").SetDouble(rpm - FlywheelRPM());
 }

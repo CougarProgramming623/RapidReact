@@ -23,8 +23,8 @@ class Intake {
 	frc2::SequentialCommandGroup* MoveDown();
 
 	void bindIngestEjectButtons();
-	frc2::InstantCommand* Ingest();
-	frc2::InstantCommand* Eject();
+	frc2::FunctionalCommand* Ingest();
+	frc2::FunctionalCommand* Eject();
 	
 
 	private:
