@@ -36,8 +36,8 @@ void Intake::IntakeInit() {
 }
 
 void Intake::bindUpDownButton() {
-	// m_moveUpDownButton.WhenReleased(MoveDown());
-	// m_moveUpDownButton.WhenPressed(MoveUp());
+	m_moveUpDownButton.WhenReleased(MoveDown());
+	m_moveUpDownButton.WhenPressed(MoveUp());
 }
 
 frc2::SequentialCommandGroup* Intake::MoveUp() { return new frc2::SequentialCommandGroup(
