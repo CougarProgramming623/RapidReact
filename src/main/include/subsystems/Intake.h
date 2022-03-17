@@ -5,13 +5,14 @@
 #include <frc2/command/InstantCommand.h>
 #include <frc2/command/FunctionalCommand.h>
 #include <frc2/command/SequentialCommandGroup.h>
+#include <frc2/command/SubsystemBase.h>
 
 //UP brings the intake to a stowed, vertical position
 //DOWN brings the intake to a horizontal, ready-to-intake position
 //INGEST spins the intake to bring balls INTO the robot
 //EJECT spins the intake to push balls AWAY from the robot
 
-class Intake {
+class Intake  : public frc2::SubsystemBase {
 
 	public:
 
