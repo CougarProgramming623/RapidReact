@@ -38,8 +38,6 @@ void DriveToPos::Initialize(){
     // m_Yticks = y / kTICKS_PER_ROTATION * kCM_PER_ROTATION;
     DebugOutF("m_XTicks: " + std::to_string(m_XTicks));
     DebugOutF("Initial Position: " + std::to_string(m_DriveTrain.GetFrontL().GetSelectedSensorPosition()));
-    
-
 
     m_InitialTicks[0] = m_DriveTrain.GetFrontL().GetSelectedSensorPosition();
     m_InitialTicks[1] = m_DriveTrain.GetFrontR().GetSelectedSensorPosition();
@@ -49,8 +47,8 @@ void DriveToPos::Initialize(){
     m_DriveTrain.BreakMode(true);
     m_DriveTrain.UsePostionPID();
 
-    FOR_ALL_MOTORS(.ConfigPeakOutputForward(0.3, 0))
-    FOR_ALL_MOTORS(.ConfigPeakOutputReverse(-0.3, 0))
+    FOR_ALL_MOTORS(.ConfigPeakOutputForward(0.2, 0))
+    FOR_ALL_MOTORS(.ConfigPeakOutputReverse(-0.2, 0))
 
     FOR_ALL_MOTORS(.ConfigClosedloopRamp(.06, 0))
 

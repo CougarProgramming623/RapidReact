@@ -25,6 +25,8 @@ class Shooter {
         frc2::FunctionalCommand* ScaleToDistanceCommand();
         frc2::ParallelRaceGroup ShootingCommand();
 
+        ctre::phoenix::motorcontrol::can::TalonFX& GetFeeder() {return m_Feeder;}
+
     private:
 
         frc::LinearFilter<double> runningAverage = frc::LinearFilter<double>::MovingAverage(10);

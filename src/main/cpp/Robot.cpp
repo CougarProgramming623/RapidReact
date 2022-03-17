@@ -11,7 +11,6 @@
 #include "commands/LockOnTarget.h"
 #include <frc/Errors.h>
 #include "Util.h"
-#include "frc/timer.h"
 #include "ID.h"
 #include "Auto.h"
 
@@ -87,8 +86,8 @@ void Robot::RobotPeriodic() {
     m_AllianceColor.blue = 1;
     m_AllianceColor.red = 0;
   }
-
-  if(frc::DriverStation::GetInstance().GetAlliance() != frc::DriverStation::Alliance::kRed && frc::DriverStation::GetInstance().GetAlliance() != frc::DriverStation::Alliance::kBlue){
+  auto alliance = frc::DriverStation::GetAlliance();
+  if(alliance != frc::DriverStation::Alliance::kRed && alliance != frc::DriverStation::Alliance::kBlue){
     for (int i = 0; i < m_NumLED; i++)
       m_ledBuffer[i].SetRGB(255, 0, 255);
   } else if(abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0)) < 1 && abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0)) > 0){
@@ -152,7 +151,8 @@ void Robot::AutonomousInit() {
   GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(false);
   Auto* m_Auto = new Auto();
   GetNavX().ZeroYaw();
-  m_Auto->DriveForward()->Schedule();
+  // m_Auto->DriveForward()->Schedule();
+  m_Auto->TwoBallAuto()->Schedule();
 }
 void Robot::AutonomousPeriodic() {
   
