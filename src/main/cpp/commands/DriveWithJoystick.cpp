@@ -11,8 +11,8 @@ void Drive::Initialize(){
 
 }
 
-double deadFix(double in) {
-    if(abs(in) < 0.05) {
+double deadFix(double in, double deadband) {
+    if(abs(in) < deadband) {
         return 0;
     }
     return in;
@@ -23,9 +23,9 @@ void Drive::Execute(){
     
     Robot *r = Robot::GetRobot();
         r->GetDriveTrain().CartesianDrive(
-        deadFix(-r->GetJoystick().GetRawAxis(1)), 
-        deadFix(r->GetJoystick().GetRawAxis(0)), 
-        deadFix(r->GetJoystick().GetRawAxis(2)), 
+        deadFix(-r->GetJoystick().GetRawAxis(1), 0.05), 
+        deadFix(r->GetJoystick().GetRawAxis(0), 0.05), 
+        deadFix(r->GetJoystick().GetRawAxis(2), 0.075), 
         r->GetNavX().GetYaw(),
         true // TODO before push
     );

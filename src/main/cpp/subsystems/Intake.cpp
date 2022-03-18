@@ -47,7 +47,7 @@ frc2::SequentialCommandGroup* Intake::MoveUp() {
 		}, [&] {//onExecute
 			m_motorUpDown.Set(ControlMode::PercentOutput, - standardUpSpeed);
 		}, [&] (bool e) {}, [&] { return false; }, {}), frc2::WaitCommand(2_s)),
-	frc2::FunctionalCommand([&]{}, [&] { m_motorUpDown.Set(ControlMode::PercentOutput, 0); }, [&](bool e){}, [&] {return false;}, {})
+	frc2::FunctionalCommand([&]{}, [&] { m_motorUpDown.Set(ControlMode::PercentOutput, -.2); }, [&](bool e){}, [&] {return false;}, {})
 	);
 	command->AddRequirements(this);
 	return command;

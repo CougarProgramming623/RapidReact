@@ -5,7 +5,6 @@
 //#define ROBOT_SABER
 #define ROBOT_GEORGE
 
-#define LIMELIGHT_TOGGLE 14
 
 #ifdef ROBOT_SABER
 
