@@ -22,6 +22,10 @@
 
 #include "commands/TurnToAngle.h"
 #include <frc2/command/SequentialCommandGroup.h>
+#include <frc2/command/ParallelCommandGroup.h>
+#include <frc2/command/ParallelDeadlineGroup.h>
+
+
 #include <frc/Timer.h>
 
 
@@ -155,7 +159,6 @@ void Robot::AutonomousInit() {
   m_Auto->TwoBallAuto()->Schedule();
 }
 void Robot::AutonomousPeriodic() {
-  
 }
 
 void Robot::TeleopInit() {
@@ -165,8 +168,31 @@ void Robot::TeleopInit() {
   GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(true);
   m_TargetLock.WhenHeld(LockOnTarget());
 }
+
+template<typename T> class NTObj {
+  public:
+    void operator=(T t) {
+      // todo
+    }
+    operator T() {
+      return (T)NULL; // todo
+    }
+    NTObj(std::string key) { this->key = key; }
+
+  private:
+    std::string key;
+};
+
+template <typename T> NTObj<T> NT(std::string key) {
+  return NTObj<T>(key);
+}
+
+
+std::string NT_X = "/623/x"; // todo make final
+NTObj<int> nt_x = NTObj<int>("x");
 void Robot::TeleopPeriodic() {
-  
+  int x = nt_x;
+  nt_x = x + 1;
 }
 
 void Robot::DisabledInit() {
