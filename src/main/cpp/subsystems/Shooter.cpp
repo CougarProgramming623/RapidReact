@@ -69,26 +69,23 @@ void Shooter::SetRPM(double rpm) {
     double feedForwardVoltage = kS + kV * rps;
 
     m_FlywheelFront.Set(ControlMode::Velocity, ticksPer100ms, DemandType::DemandType_ArbitraryFeedForward, feedForwardVoltage/kSaturationMax);
-    
+    //m_FlywheelFront.Set(ControlMode::PercentOutput, feedForwardVoltage/kSaturationMax);
     Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_SETPOINT).SetDouble(rpm);
     Robot::GetRobot()->GetCOB().GetTable().GetEntry("COB/RPMError").SetDouble(rpm - FlywheelRPM());
 }
 
 void Shooter::ShooterPeriotic(){
     bool canSafeShoot = 
-        (!Robot::GetRobot()->GetNavX().IsMoving())  &&
+        // (!Robot::GetRobot()->GetNavX().IsMoving())  &&
         abs(Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0)) < 1  && 
         abs(Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0)) > 0;
 
     if((Robot::GetRobot()->GetButtonBoard().GetRawButton(SHOOT_BUTTON) && canSafeShoot) ||
         Robot::GetRobot()->GetButtonBoard().GetRawButton(FEED_BUTTON))    {
-        DebugOutF("1 Feed");
         m_Feeder.Set(ControlMode::PercentOutput, -1);
-    } else if(m_LoadedInput.Get()){
-        DebugOutF("2 Feed");
+    } else if(m_LoadedInput.Get() && false){
         m_Feeder.Set(ControlMode::PercentOutput, -1);
     } else{
-        DebugOutF("Dont Feed");
         m_Feeder.Set(ControlMode::PercentOutput, 0);
     }
 }
@@ -124,6 +121,8 @@ void Shooter::FeederButton(){
         m_Feeder.Set(ControlMode::PercentOutput, 0);
     }));
 }
+
+
 void Shooter::FlywheelButton(){
     m_shootSpeed.WhenHeld(frc2::FunctionalCommand( [&]{}, [&]{ //onExecute
         // m_FlywheelFront.Set(ControlMode::PercentOutput, (Robot::GetRobot()->GetButtonBoard().GetRawAxis(0) + 1) / 2);
@@ -153,7 +152,7 @@ frc2::FunctionalCommand* Shooter::ScaleToDistanceCommand() {
         }, [&]{ //onExecute
 
         double distance = Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).GetDouble(0) / 2.54; //cm
-        double RPM = distance * 28.2 + 1831;
+        double RPM = distance * 28.2 + 1991;
 
         //double smoothRPM = runningAverage.Calculate(distance) * 28.2 + 1831;
 

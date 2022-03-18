@@ -68,10 +68,14 @@ void Robot::RobotInit() {
 
   m_LimeLightToggle.WhenPressed([&] {
     DebugOutF("Limelight Toggle");
-    if(Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").GetDouble(2) == 1)
-      Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(0);
+    if(GetCOB().GetTable().GetEntry("/limelight/ledMode").GetDouble(2) == 1)
+      GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(0);
     else
-      Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1); 
+      GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1); 
+  });
+
+  frc2::Button(BUTTON_L(4)).WhenPressed([&] {
+    GetNavX().ZeroYaw();
   });
 }
 
