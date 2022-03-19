@@ -152,7 +152,7 @@ frc2::FunctionalCommand* Shooter::ScaleToDistanceCommand() {
         }, [&]{ //onExecute
 
         double distance = Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).GetDouble(0) / 2.54; //cm
-        double RPM = distance * 28.2 + 1991;
+        double RPM = distance * 28.2 + 1991 + (500 * Robot::GetRobot()->GetButtonBoard().GetRawAxis(1));
 
         //double smoothRPM = runningAverage.Calculate(distance) * 28.2 + 1831;
 
