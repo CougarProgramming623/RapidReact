@@ -92,7 +92,13 @@ frc2::SequentialCommandGroup* Auto::TwoBallAuto() {
         frc2::ParallelDeadlineGroup(
             DriveToPos(2.5, 0, 0),
             std::move(*Robot::GetRobot()->GetIntake().MoveDown()),
-            std::move(*Robot::GetRobot()->GetIntake().Ingest())
+            frc2::SequentialCommandGroup(
+                frc2::ParallelDeadlineGroup(
+                    frc2::WaitCommand(0.5_s),
+                    std::move(*Robot::GetRobot()->GetIntake().Eject())
+                ),
+                std::move(*Robot::GetRobot()->GetIntake().Ingest())
+            )
         )
     );
     group->AddCommands(

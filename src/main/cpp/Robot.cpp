@@ -40,7 +40,7 @@ Robot::Robot() :
 
 void Robot::RobotInit() {
   DebugOutF("Robot Init");
-  m_NumLED = 125;
+  m_NumLED = 208;
   m_LED.SetLength(m_NumLED);
 
   for (int i = 0; i < m_NumLED; i++)
@@ -104,8 +104,9 @@ void Robot::RobotPeriodic() {
     m_LEDIndex++;
   } else if(frc::Timer::GetMatchTime().to<double>() <= 30 && GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).GetBoolean(false)){
     if(m_LEDIndex > m_NumLED - 1 )
-      m_LEDIndex = 0;
-    EndGame(m_AllianceColor, m_NumLED, 3, m_LEDIndex, m_ledBuffer);
+       m_LEDIndex = 0;
+    // EndGame(m_AllianceColor, m_NumLED, 3, m_LEDIndex, m_ledBuffer);
+    Strobe(m_LEDIndex % 8 >= 4, m_AllianceColor, m_NumLED, 10, m_LEDIndex, m_ledBuffer);
     m_LEDIndex++;
   } else if((int) frc::RobotController::GetBatteryVoltage() < 10.5){
     if(m_LEDIndex > m_NumLED - 1)
@@ -153,17 +154,21 @@ void Robot::AutonomousInit() {
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
   GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(false);
-  Auto* m_Auto = new Auto();
+  Auto* auto1 = new Auto();
   GetNavX().ZeroYaw();
   // m_Auto->DriveForward()->Schedule();
-  m_Auto->TwoBallAuto()->Schedule();
+  m_Auto = auto1->TwoBallAuto();
+  m_Auto->Schedule();
 }
+
+
 void Robot::AutonomousPeriodic() {
   
 }
 
 void Robot::TeleopInit() {
   DebugOutF("Teleop Init");
+  m_Auto->Cancel();
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
   GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(true);
