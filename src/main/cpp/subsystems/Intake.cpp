@@ -9,7 +9,7 @@
 #include <frc2/command/WaitCommand.h>
 
 
-#define standardUpSpeed 1
+#define standardUpSpeed .4
 #define standardDownSpeed -0.25
 #define standardInOutSpeed 1 //standard moves in
 #define voltageThreshhold 1 //voltage to stop the UpDownMotor from moving further down

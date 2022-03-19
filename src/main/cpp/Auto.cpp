@@ -2,6 +2,8 @@
 #include "subsystems/Shooter.h"
 #include "frc2/command/ParallelDeadlineGroup.h"
 #include "Robot.h"
+#include "frc2/command/PrintCommand.h"
+#include  "commands/LockOnTarget.h"
 
 using ctre::phoenix::motorcontrol::ControlMode;
 
@@ -94,20 +96,27 @@ frc2::SequentialCommandGroup* Auto::TwoBallAuto() {
         )
     );
     group->AddCommands(
+        frc2::PrintCommand("Starting race group"),
         frc2::ParallelRaceGroup(
             DriveToPos(-2.3, 0, 0),
             std::move(*Robot::GetRobot()->GetIntake().MoveUp())
         ),
-        TurnToAngle(-90, 0.2),
-        frc2::WaitCommand(1_s),
-        TurnToAngle::TurnToTarget(),
+        frc2::PrintCommand("Finished race group"),
+        //TurnToAngle(-90, 0.2),
+        frc2::PrintCommand("Finished turn"),
+        // TurnToAngle::TurnToTarget(),
+        frc2::ParallelRaceGroup(
+            frc2::WaitCommand(2_s),
+            LockOnTarget()
+        ),
         frc2::ParallelDeadlineGroup(
             frc2::WaitCommand(10_s),
             std::move(*Robot::GetRobot()->GetShooter().ScaleToDistanceCommand()),
             frc2::SequentialCommandGroup(
-                frc2::WaitCommand(2_s),
+                frc2::WaitCommand(1_s),
                 frc2::FunctionalCommand([&]{ //onInit
                 }, [&]{//onExecute
+                    DebugOutF("running feeder");
                     Robot::GetRobot()->GetShooter().GetFeeder().Set(ControlMode::PercentOutput, -1);
                 }, [&](bool e){ //onEnd
                     Robot::GetRobot()->GetShooter().GetFeeder().Set(ControlMode::PercentOutput, 0);
