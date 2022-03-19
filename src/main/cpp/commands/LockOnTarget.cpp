@@ -6,7 +6,7 @@ LockOnTarget::LockOnTarget(){
 }
 
 void LockOnTarget::Initialize(){
-    DebugOutF("Initialize Drive Command");
+    //DebugOutF("Initialize Drive Command");
 }
 
 void LockOnTarget::Execute(){
@@ -18,7 +18,7 @@ void LockOnTarget::Execute(){
     r->GetDriveTrain().CartesianDrive(
         -r->GetJoystick().GetRawAxis(1), 
         r->GetJoystick().GetRawAxis(0), 
-        m_Angle / 27 / 2, 
+        (m_Angle / 27 / 2), 
         r->GetNavX().GetYaw(),
         true
     );
