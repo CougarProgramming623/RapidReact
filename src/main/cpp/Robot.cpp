@@ -40,7 +40,7 @@ Robot::Robot() :
 
 void Robot::RobotInit() {
   DebugOutF("Robot Init");
-  m_NumLED = 80;
+  m_NumLED = 191;
   m_LED.SetLength(m_NumLED);
 
   for (int i = 0; i < m_NumLED; i++)

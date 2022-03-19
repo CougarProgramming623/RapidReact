@@ -5,24 +5,24 @@ const int kSTART_TL = 39;
 const int kSTART_TR = 74;
 const int kSTART_BR = 100;
 
-void CanSee(frc::Color allianceColor, int numLED, int tailLength, int LEDIndex, std::array<frc::AddressableLED::LEDData, 80> &ledBuffer){
+void CanSee(frc::Color allianceColor, int numLED, int tailLength, int LEDIndex, std::array<frc::AddressableLED::LEDData, 190> &ledBuffer){
     ledBuffer[LEDIndex].SetRGB(0, 255, 0);
     ledBuffer[(numLED + LEDIndex - tailLength) % numLED].SetLED(allianceColor);
     ledBuffer[numLED - LEDIndex].SetRGB(0, 255, 0);
     ledBuffer[(numLED + numLED - LEDIndex - tailLength) % numLED].SetLED(allianceColor);
 }
-void EndGame(frc::Color allianceColor, int numLED, int tailLength, int LEDIndex, std::array<frc::AddressableLED::LEDData, 80> &ledBuffer){
+void EndGame(frc::Color allianceColor, int numLED, int tailLength, int LEDIndex, std::array<frc::AddressableLED::LEDData, 190> &ledBuffer){
   for(int i = 0; i < 7; i++){
     ledBuffer[(LEDIndex + (i * 10)) % numLED].SetRGB(255, 255, 255);
     ledBuffer[(numLED + LEDIndex - tailLength + (i * 10)) % numLED].SetLED(allianceColor);
   } 
 }
-void LowBattery(frc::Color allianceColor, int numLED, int tailLength, int LEDIndex, std::array<frc::AddressableLED::LEDData, 80> &ledBuffer){
+void LowBattery(frc::Color allianceColor, int numLED, int tailLength, int LEDIndex, std::array<frc::AddressableLED::LEDData, 190> &ledBuffer){
   ledBuffer[LEDIndex].SetRGB(255, 215, 0);
   ledBuffer[(numLED + LEDIndex - tailLength) % numLED].SetLED(allianceColor);
 }
 
-bool Strobe(bool white, frc::Color allianceColor, int numLED, int tailLength, int LEDIndex, std::array<frc::AddressableLED::LEDData, 80> &ledBuffer){
+bool Strobe(bool white, frc::Color allianceColor, int numLED, int tailLength, int LEDIndex, std::array<frc::AddressableLED::LEDData, 190> &ledBuffer){
   if(white){
     for(int i = 6
     
@@ -51,7 +51,7 @@ bool Strobe(bool white, frc::Color allianceColor, int numLED, int tailLength, in
 }
 
 
-void SetCorners(int tailLength, std::array<frc::AddressableLED::LEDData, 80> &ledBuffer, int R, int B, int G){
+void SetCorners(int tailLength, std::array<frc::AddressableLED::LEDData, 190> &ledBuffer, int R, int B, int G){
   for(int i = kSTART_BL; i < kSTART_BL + 7; i++)
     ledBuffer[i].SetRGB(R, G, B);
   for(int i = kSTART_BR; i < kSTART_BR + 8; i++)
