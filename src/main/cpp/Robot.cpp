@@ -169,26 +169,9 @@ void Robot::TeleopInit() {
   m_TargetLock.WhenHeld(LockOnTarget());
 }
 
-template<typename T> class NTObj {
-  public:
-    void operator=(T t) {
-      // todo
-    }
-    operator T() {
-      return (T)NULL; // todo
-    }
-    NTObj(std::string key) { this->key = key; }
-
-  private:
-    std::string key;
-};
-
-template <typename T> NTObj<T> NT(std::string key) {
-  return NTObj<T>(key);
-}
 
 
-std::string NT_X = "/623/x"; // todo make final
+
 NTObj<int> nt_x = NTObj<int>("x");
 void Robot::TeleopPeriodic() {
   int x = nt_x;
