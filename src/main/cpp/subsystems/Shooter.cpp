@@ -15,7 +15,6 @@
 using ctre::phoenix::motorcontrol::ControlMode;
 using ctre::phoenix::motorcontrol::DemandType;
 
-const units::time::second_t kTIME_THRESHOLD = .5_s;         //(!) TEST (!)
 
 Shooter::Shooter() :
 m_FlywheelFront(FLYWHEEL_FRONT), //master
@@ -88,10 +87,6 @@ void Shooter::ShooterPeriotic(){
         m_Feeder.Set(ControlMode::PercentOutput, -1);
     } else{
         m_Feeder.Set(ControlMode::PercentOutput, 0);
-    }
-
-    if(!m_LoadedInput.Get()){
-        m_Clock.Reset();
     }
 }
 

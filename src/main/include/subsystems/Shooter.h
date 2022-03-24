@@ -44,7 +44,4 @@ class Shooter {
         frc2::Button m_shootDistance;
         frc2::Button m_ShootButton;
         frc::DigitalInput m_LoadedInput{PHOTOSENSOR};
-
-        frc::Timer m_Clock = frc::Timer();
-
 };
