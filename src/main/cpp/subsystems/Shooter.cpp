@@ -81,9 +81,9 @@ void Shooter::ShooterPeriotic(){
         abs(Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0)) > 0;
 
     if((Robot::GetRobot()->GetButtonBoard().GetRawButton(SHOOT_BUTTON) && canSafeShoot) ||
-        Robot::GetRobot()->GetButtonBoard().GetRawButton(FEED_BUTTON))    {
+        Robot::GetRobot()->GetButtonBoard().GetRawButton(FEED_BUTTON)){
         m_Feeder.Set(ControlMode::PercentOutput, -1);
-    } else if(m_LoadedInput.Get() && false){
+    } else if(!m_LoadedInput.Get()){ 
         m_Feeder.Set(ControlMode::PercentOutput, -1);
     } else{
         m_Feeder.Set(ControlMode::PercentOutput, 0);

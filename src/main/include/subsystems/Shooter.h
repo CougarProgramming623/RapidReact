@@ -9,6 +9,7 @@
 #include <frc2/command/InstantCommand.h>
 #include <frc/DigitalInput.h>
 #include <frc2/command/ParallelRaceGroup.h>
+#include <frc/Timer.h>
 #include "ID.h"
 
 
@@ -43,5 +44,4 @@ class Shooter {
         frc2::Button m_shootDistance;
         frc2::Button m_ShootButton;
         frc::DigitalInput m_LoadedInput{PHOTOSENSOR};
-
 };
