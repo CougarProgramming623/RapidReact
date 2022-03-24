@@ -1,20 +1,25 @@
+
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
 #include "Robot.h"
-#include <frc/RobotController.h>
-#include <wpi/raw_ostream.h>
-#include <frc2/command/InstantCommand.h>
-#include <frc/RobotBase.h>
-#include <frc/DriverStation.h>
-#include "commands/LockOnTarget.h"
-#include <frc/Errors.h>
-#include "Util.h"
-#include "ID.h"
-#include "Auto.h"
 
-#include <math.h>
+#include <frc/DriverStation.h>
+#include <frc/Errors.h>
+#include <frc/RobotBase.h>
+#include <frc/RobotController.h>
+#include <frc2/command/InstantCommand.h>
+#include <wpi/raw_ostream.h>
+
+#include <cmath>
+
+#include "Auto.h"
+#include "ID.h"
+#include "Util.h"
+#include "commands/LockOnTarget.h"
+
 #define _USE_MATH_DEFINES
 #include "commands/DriveToPosition.h"
 
@@ -24,18 +29,18 @@
 #include <frc2/command/SequentialCommandGroup.h>
 #include <frc/Timer.h>
 
-
 Robot* Robot::s_Instance = nullptr;
 
-Robot::Robot() :
+Robot::Robot()
+    :
 
-  m_TargetLock([&] { return Robot::GetRobot()->GetJoystick().GetRawButton(1); }),
-  
-  m_LimeLightToggle(BUTTON_L(LIMELIGHT_TOGGLE)) 
+      m_TargetLock(
+          [&] { return Robot::GetRobot()->GetJoystick().GetRawButton(1); }),
+
+      m_LimeLightToggle(BUTTON_L(LIMELIGHT_TOGGLE))
 
 {
   s_Instance = this;
-  
 }
 
 void Robot::RobotInit() {
@@ -43,11 +48,10 @@ void Robot::RobotInit() {
   m_NumLED = 208;
   m_LED.SetLength(m_NumLED);
 
-  for (int i = 0; i < m_NumLED; i++)
-  {
+  for (int i = 0; i < m_NumLED; i++) {
     m_ledBuffer[i].SetRGB(255, 255, 0);
   }
-  
+
   m_LED.SetData(m_ledBuffer);
   m_LED.Start();
 
@@ -57,33 +61,29 @@ void Robot::RobotInit() {
   m_OI.Init();
   m_Intake.IntakeInit();
 
-  if( GetCOB().GetTable().GetEntry(COB_KEY_IS_RED).GetBoolean(false)){
+  if (GetCOB().GetTable().GetEntry(COB_KEY_IS_RED).GetBoolean(false)) {
     m_AllianceColor.red = 1;
     m_AllianceColor.blue = 0;
   } else {
     m_AllianceColor.blue = 1;
     m_AllianceColor.red = 0;
   }
-  
 
   m_LimeLightToggle.WhenPressed([&] {
     DebugOutF("Limelight Toggle");
-    if(GetCOB().GetTable().GetEntry("/limelight/ledMode").GetDouble(2) == 1)
+    if (GetCOB().GetTable().GetEntry("/limelight/ledMode").GetDouble(2) == 1)
       GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(0);
     else
-      GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1); 
+      GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1);
   });
 
-  frc2::Button(BUTTON_L(4)).WhenPressed([&] {
-    GetNavX().ZeroYaw();
-  });
+  frc2::Button(BUTTON_L(4)).WhenPressed([&] { GetNavX().ZeroYaw(); });
 }
 
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
-  
 
-  if( GetCOB().GetTable().GetEntry(COB_KEY_IS_RED).GetBoolean(false)){
+  if (GetCOB().GetTable().GetEntry(COB_KEY_IS_RED).GetBoolean(false)) {
     m_AllianceColor.red = 1;
     m_AllianceColor.blue = 0;
   } else {
@@ -91,65 +91,95 @@ void Robot::RobotPeriodic() {
     m_AllianceColor.red = 0;
   }
   auto alliance = frc::DriverStation::GetAlliance();
-  if(alliance != frc::DriverStation::Alliance::kRed && alliance != frc::DriverStation::Alliance::kBlue){
+  if (alliance != frc::DriverStation::Alliance::kRed &&
+      alliance != frc::DriverStation::Alliance::kBlue) {
     for (int i = 0; i < m_NumLED; i++)
       m_ledBuffer[i].SetRGB(255, 0, 255);
-  } else if(abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0)) < 1 && abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0)) > 0){
+  } else if (std::abs(GetCOB()
+                          .GetTable()
+                          .GetEntry(COB_KEY_LIME_LIGHT_TX)
+                          .GetDouble(0)) < 1 &&
+             std::abs(GetCOB()
+                          .GetTable()
+                          .GetEntry(COB_KEY_LIME_LIGHT_TV)
+                          .GetDouble(0)) > 0) {
     for (int i = 0; i < m_NumLED; i++)
       m_ledBuffer[i].SetRGB(0, 255, 0);
-  } else if(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) > 0){
-    if(m_LEDIndex > m_NumLED - 1)
+  } else if (GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) >
+             0) {
+    if (m_LEDIndex > m_NumLED - 1)
       m_LEDIndex = 0;
     CanSee(m_AllianceColor, m_NumLED, 10, m_LEDIndex, m_ledBuffer);
     m_LEDIndex++;
-  } else if(frc::Timer::GetMatchTime().to<double>() <= 30 && GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).GetBoolean(false)){
-    if(m_LEDIndex > m_NumLED - 1 )
-       m_LEDIndex = 0;
+  } else if (frc::Timer::GetMatchTime().to<double>() <= 30 &&
+             GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).GetBoolean(false)) {
+    if (m_LEDIndex > m_NumLED - 1)
+      m_LEDIndex = 0;
     // EndGame(m_AllianceColor, m_NumLED, 3, m_LEDIndex, m_ledBuffer);
-    Strobe(m_LEDIndex % 8 >= 4, m_AllianceColor, m_NumLED, 10, m_LEDIndex, m_ledBuffer);
+    Strobe(m_LEDIndex % 8 >= 4, m_AllianceColor, m_NumLED, 10, m_LEDIndex,
+           m_ledBuffer);
     m_LEDIndex++;
-  } else if((int) frc::RobotController::GetBatteryVoltage() < 10.5){
-    if(m_LEDIndex > m_NumLED - 1)
+  } else if ((int)frc::RobotController::GetBatteryVoltage() < 10.5) {
+    if (m_LEDIndex > m_NumLED - 1)
       m_LEDIndex = 0;
     LowBattery(m_AllianceColor, m_NumLED, 10, m_LEDIndex, m_ledBuffer);
     m_LEDIndex++;
-  } else { 
+  } else {
     for (int i = 0; i < m_NumLED; i++)
       m_ledBuffer[i].SetLED(m_AllianceColor);
   }
-  if(InRange()){
+  if (InRange()) {
     SetCorners(0, m_ledBuffer, 255, 255, 255);
   }
   m_LED.SetData(m_ledBuffer);
 
-  
-
-  if(frc::RobotController::GetUserButton()){
-    if(Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").GetDouble(2) == 1)
-      Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(0);
+  if (frc::RobotController::GetUserButton()) {
+    if (Robot::GetRobot()
+            ->GetCOB()
+            .GetTable()
+            .GetEntry("/limelight/ledMode")
+            .GetDouble(2) == 1)
+      Robot::GetRobot()
+          ->GetCOB()
+          .GetTable()
+          .GetEntry("/limelight/ledMode")
+          .SetDouble(0);
     else
-      Robot::GetRobot()->GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1);  
+      Robot::GetRobot()
+          ->GetCOB()
+          .GetTable()
+          .GetEntry("/limelight/ledMode")
+          .SetDouble(1);
   }
-  
 
   PushDistance();
-  
-  GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_SPEED).SetDouble(GetShooter().FlywheelRPM());
-  //GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_RPM).SetDouble(GetShooter().FlywheelRPM());
-  //GetCOB().GetTable().GetEntry(COB_KEY_FOD).SetBoolean(GetDriveTrain().m_FOD);
-  if (GetCOB().GetTable().GetEntry(COB_KEY_NAVX_RESET).GetBoolean(false) == true) {
+
+  GetCOB()
+      .GetTable()
+      .GetEntry(COB_KEY_FLYWHEEL_SPEED)
+      .SetDouble(GetShooter().FlywheelRPM());
+  // GetCOB().GetTable().GetEntry(COB_KEY_FLYWHEEL_RPM).SetDouble(GetShooter().FlywheelRPM());
+  // GetCOB().GetTable().GetEntry(COB_KEY_FOD).SetBoolean(GetDriveTrain().m_FOD);
+  if (GetCOB().GetTable().GetEntry(COB_KEY_NAVX_RESET).GetBoolean(false) ==
+      true) {
     GetNavX().ZeroYaw();
     GetCOB().GetTable().GetEntry(COB_KEY_NAVX_RESET).SetBoolean(false);
   }
-  GetCOB().GetTable().GetEntry(COB_KEY_ROBOT_ANGLE).SetDouble(GetNavX().GetYaw());
-  GetCOB().GetTable().GetEntry(COB_KEY_MATCH_TIME).SetDouble(frc::Timer::GetMatchTime().to<double>());
-  GetCOB().GetTable().GetEntry(COB_KEY_TICKS).SetDouble(GetCOB().GetTable().GetEntry(COB_KEY_TICKS).GetDouble(0) + 1);
-
-
+  GetCOB()
+      .GetTable()
+      .GetEntry(COB_KEY_ROBOT_ANGLE)
+      .SetDouble(GetNavX().GetYaw());
+  GetCOB()
+      .GetTable()
+      .GetEntry(COB_KEY_MATCH_TIME)
+      .SetDouble(frc::Timer::GetMatchTime().to<double>());
+  GetCOB()
+      .GetTable()
+      .GetEntry(COB_KEY_TICKS)
+      .SetDouble(GetCOB().GetTable().GetEntry(COB_KEY_TICKS).GetDouble(0) + 1);
 }
 
 void Robot::AutonomousInit() {
-  
   DebugOutF("Auto Init");
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
@@ -161,10 +191,7 @@ void Robot::AutonomousInit() {
   m_Auto->Schedule();
 }
 
-
-void Robot::AutonomousPeriodic() {
-  
-}
+void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {
   DebugOutF("Teleop Init");
@@ -175,31 +202,34 @@ void Robot::TeleopInit() {
   m_TargetLock.WhenHeld(LockOnTarget());
 }
 void Robot::TeleopPeriodic() {
-    m_Shooter.ShooterPeriotic();
+  m_Shooter.ShooterPeriotic();
 }
 
 void Robot::DisabledInit() {
   GetDriveTrain().BreakMode(false);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(false);
   GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(false);
-
 }
 void Robot::DisabledPeriodic() {}
 
 void Robot::TestInit() {}
 void Robot::TestPeriodic() {}
 
-void Robot::PushDistance(){
+void Robot::PushDistance() {
   double h = TARGET_HEIGHT - LIMELIGHT_HEIGHT;
-  double angleFromGroundDeg = LIMELIGHT_ANGLE + GetCOB().GetTable().GetEntry("/limelight/ty").GetDouble(0);
+  double angleFromGroundDeg =
+      LIMELIGHT_ANGLE +
+      GetCOB().GetTable().GetEntry("/limelight/ty").GetDouble(0);
 
-  GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).SetDouble(
-    h / tan(angleFromGroundDeg * (M_PI / 180))
-  );
+  GetCOB()
+      .GetTable()
+      .GetEntry(COB_KEY_DISTANCE)
+      .SetDouble(h / std::tan(angleFromGroundDeg * (M_PI / 180)));
 }
 
-bool Robot::InRange(){
-  return GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).GetDouble(0) >= 500 && GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).GetDouble(0) <= 530;
+bool Robot::InRange() {
+  return GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).GetDouble(0) >= 500 &&
+         GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).GetDouble(0) <= 530;
 }
 
 #ifndef RUNNING_FRC_TESTS

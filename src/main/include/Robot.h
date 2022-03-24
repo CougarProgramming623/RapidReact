@@ -1,28 +1,30 @@
+
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
 #pragma once
 
-#include <frc/TimedRobot.h>
 #include <frc/AddressableLED.h>
-#include <frc2/command/PrintCommand.h>
-#include "subsystems/Shooter.h"
-#include "OI.h"
-#include "subsystems/Intake.h"
-
 #include <frc/Joystick.h>
-#include "subsystems/DriveTrain.h"
-#include <AHRS.h>
 #include <frc/SPI.h>
+#include <frc/TimedRobot.h>
+#include <frc2/command/PrintCommand.h>
+#include <frc2/command/SubsystemBase.h>
+
+#include <AHRS.h>
+
 #include "COB.h"
 #include "LEDFunction.h"
-#include <frc2/command/SubsystemBase.h>
+#include "OI.h"
 #include "subsystems/Climb.h"
+#include "subsystems/DriveTrain.h"
+#include "subsystems/Intake.h"
+#include "subsystems/Shooter.h"
 
 class Robot : public frc::TimedRobot {
  public:
-
   Robot();
 
   void RobotInit() override;
@@ -40,29 +42,28 @@ class Robot : public frc::TimedRobot {
   void TestInit() override;
   void TestPeriodic() override;
 
-  inline DriveTrain& GetDriveTrain(){return m_DriveTrain;}
+  inline DriveTrain& GetDriveTrain() { return m_DriveTrain; }
 
-  static Robot* GetRobot(){ return s_Instance; }
+  static Robot* GetRobot() { return s_Instance; }
 
-  inline frc::Joystick& GetButtonBoard(){ return m_ButtonBoard; }
+  inline frc::Joystick& GetButtonBoard() { return m_ButtonBoard; }
   inline frc::Joystick& GetJoystick() { return m_Joystick; }
 
-  inline Shooter& GetShooter(){ return m_Shooter; }
-  
-  inline Intake& GetIntake(){ return m_Intake; }
+  inline Shooter& GetShooter() { return m_Shooter; }
 
-  inline AHRS& GetNavX() {return m_NavX; }
+  inline Intake& GetIntake() { return m_Intake; }
 
-  inline COB& GetCOB() {return m_COB; }
-  inline OI& GetOI() {return m_OI; }
+  inline AHRS& GetNavX() { return m_NavX; }
 
-  inline Climb& GetClimb() {return m_Climb; }
+  inline COB& GetCOB() { return m_COB; }
+  inline OI& GetOI() { return m_OI; }
+
+  inline Climb& GetClimb() { return m_Climb; }
 
   void PushDistance();
   bool InRange();
 
-  private:
-  
+ private:
   static Robot* s_Instance;
   frc::AddressableLED m_LED{9};
   std::array<frc::AddressableLED::LEDData, 208> m_ledBuffer;
@@ -72,8 +73,8 @@ class Robot : public frc::TimedRobot {
 
   frc::Joystick m_ButtonBoard = frc::Joystick(0);
   frc::Joystick m_Joystick = frc::Joystick(1);
-  
-  AHRS m_NavX {frc::SPI::Port::kMXP};
+
+  AHRS m_NavX{frc::SPI::Port::kMXP};
 
   DriveTrain m_DriveTrain;
 
@@ -90,5 +91,4 @@ class Robot : public frc::TimedRobot {
 
   Climb m_Climb;
   frc2::SequentialCommandGroup* m_Auto;
-
 };
