@@ -15,6 +15,7 @@
 using ctre::phoenix::motorcontrol::ControlMode;
 using ctre::phoenix::motorcontrol::DemandType;
 
+const units::time::second_t kTIME_THRESHOLD = .5_s;         //(!) TEST (!)
 
 Shooter::Shooter() :
 m_FlywheelFront(FLYWHEEL_FRONT), //master
@@ -81,12 +82,16 @@ void Shooter::ShooterPeriotic(){
         abs(Robot::GetRobot()->GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0)) > 0;
 
     if((Robot::GetRobot()->GetButtonBoard().GetRawButton(SHOOT_BUTTON) && canSafeShoot) ||
-        Robot::GetRobot()->GetButtonBoard().GetRawButton(FEED_BUTTON))    {
+        Robot::GetRobot()->GetButtonBoard().GetRawButton(FEED_BUTTON)){
         m_Feeder.Set(ControlMode::PercentOutput, -1);
-    } else if(m_LoadedInput.Get() && false){
+    } else if(!m_LoadedInput.Get()){ 
         m_Feeder.Set(ControlMode::PercentOutput, -1);
     } else{
         m_Feeder.Set(ControlMode::PercentOutput, 0);
+    }
+
+    if(!m_LoadedInput.Get()){
+        m_Clock.Reset();
     }
 }
 
