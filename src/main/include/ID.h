@@ -5,10 +5,8 @@
 //#define ROBOT_SABER
 #define ROBOT_GEORGE
 
-
 #ifdef ROBOT_SABER
-
-#define DRIVE_FRONT_LEFT -1 //31
+#define DRIVE_FRONT_LEFT -1  // 31
 #define DRIVE_FRONT_RIGHT 32
 #define DRIVE_BACK_LEFT 34
 #define DRIVE_BACK_RIGHT 33
@@ -24,12 +22,9 @@
 #define READYSHOOT 3
 #define CLIMBPULLUP 31
 #define CLIMBPIVOT 3
-
-
 #endif
 
 #ifdef ROBOT_GEORGE
-
 #define DRIVE_FRONT_LEFT 53
 #define DRIVE_FRONT_RIGHT 54
 #define DRIVE_BACK_LEFT 51
@@ -45,12 +40,9 @@
 #define PHOTOSENSOR 3
 #define SHOOT_BUTTON 15
 #define LIMELIGHT_TOGGLE 1
-
 #define INTAKE_BUTTON_UP_DOWN 6
 #define INTAKE_BUTTON_INGEST 7
 #define INTAKE_BUTTON_EJECT 8
 #define INTAKE_UP_DOWN 11
 #define INTAKE_INGEST_EJECT 2
-
-
 #endif
