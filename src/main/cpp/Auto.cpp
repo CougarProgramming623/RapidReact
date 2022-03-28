@@ -117,7 +117,7 @@ frc2::SequentialCommandGroup* Auto::TwoBallAuto() {
       // TurnToAngle(-90, 0.2),
       frc2::PrintCommand("Finished turn"),
       // TurnToAngle::TurnToTarget(),
-      frc2::ParallelRaceGroup(frc2::WaitCommand(2_s), LockOnTarget()),
+      frc2::ParallelRaceGroup(frc2::WaitCommand(2_s), TurnToAngle(-10, .2)),
       frc2::ParallelDeadlineGroup(
           frc2::WaitCommand(10_s),
           std::move(*Robot::GetRobot()->GetShooter().ScaleToDistanceCommand()),
@@ -160,7 +160,7 @@ frc2::SequentialCommandGroup* Auto::FourBallAuto() {
       // TurnToAngle(-90, 0.2),
       frc2::PrintCommand("Finished turn"),
       // TurnToAngle::TurnToTarget(),
-      frc2::ParallelRaceGroup(frc2::WaitCommand(2_s), LockOnTarget()),
+      frc2::ParallelRaceGroup(frc2::WaitCommand(2_s), TurnToAngle(-10, .02)),
       frc2::ParallelDeadlineGroup(
           frc2::WaitCommand(10_s),
           std::move(*Robot::GetRobot()->GetShooter().ScaleToDistanceCommand()),
@@ -188,7 +188,7 @@ frc2::SequentialCommandGroup* Auto::FourBallAuto() {
       std::move(*Robot::GetRobot()->GetIntake().MoveUp());
       DriveToPos(6.096, 0, 0);
       TurnToAngle(130, 0.2);
-      frc2::ParallelRaceGroup(frc2::WaitCommand(2_s), LockOnTarget()),
+      frc2::ParallelRaceGroup(frc2::WaitCommand(2_s), TurnToAngle(-10, .2)),
       frc2::ParallelDeadlineGroup(
           frc2::WaitCommand(10_s),
           std::move(*Robot::GetRobot()->GetShooter().ScaleToDistanceCommand()),
