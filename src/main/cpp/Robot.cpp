@@ -29,6 +29,9 @@
 #include <frc2/command/SequentialCommandGroup.h>
 #include <frc/Timer.h>
 
+const int kSTRIP_1_START = 111;
+const int kSTRIP_2_START = 192;
+
 Robot* Robot::s_Instance = nullptr;
 
 Robot::Robot()
@@ -45,7 +48,7 @@ Robot::Robot()
 
 void Robot::RobotInit() {
   DebugOutF("Robot Init");
-  m_NumLED = 208;
+  m_NumLED = 272;
   m_LED.SetLength(m_NumLED);
 
   for (int i = 0; i < m_NumLED; i++) {
@@ -83,6 +86,7 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
 
+  //LED Code
   if (GetCOB().GetTable().GetEntry(COB_KEY_IS_RED).GetBoolean(false)) {
     m_AllianceColor.red = 1;
     m_AllianceColor.blue = 0;
@@ -91,47 +95,31 @@ void Robot::RobotPeriodic() {
     m_AllianceColor.red = 0;
   }
   auto alliance = frc::DriverStation::GetAlliance();
+
+  
+  PaintSolid(m_ledBuffer, m_AllianceColor, 0, m_NumLED);
+
   if (alliance != frc::DriverStation::Alliance::kRed &&
-      alliance != frc::DriverStation::Alliance::kBlue) {
-    for (int i = 0; i < m_NumLED; i++)
-      m_ledBuffer[i].SetRGB(255, 0, 255);
-  } else if (std::abs(GetCOB()
-                          .GetTable()
-                          .GetEntry(COB_KEY_LIME_LIGHT_TX)
-                          .GetDouble(0)) < 1 &&
-             std::abs(GetCOB()
-                          .GetTable()
-                          .GetEntry(COB_KEY_LIME_LIGHT_TV)
-                          .GetDouble(0)) > 0) {
-    for (int i = 0; i < m_NumLED; i++)
-      m_ledBuffer[i].SetRGB(0, 255, 0);
-  } else if (GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0) >
-             0) {
-    if (m_LEDIndex > m_NumLED - 1)
-      m_LEDIndex = 0;
-    CanSee(m_AllianceColor, m_NumLED, 10, m_LEDIndex, m_ledBuffer);
-    m_LEDIndex++;
-  } else if (frc::Timer::GetMatchTime().to<double>() <= 30 &&
-             GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).GetBoolean(false)) {
-    if (m_LEDIndex > m_NumLED - 1)
-      m_LEDIndex = 0;
-    // EndGame(m_AllianceColor, m_NumLED, 3, m_LEDIndex, m_ledBuffer);
-    Strobe(m_LEDIndex % 8 >= 4, m_AllianceColor, m_NumLED, 10, m_LEDIndex,
-           m_ledBuffer);
-    m_LEDIndex++;
-  } else if ((int)frc::RobotController::GetBatteryVoltage() < 10.5) {
-    if (m_LEDIndex > m_NumLED - 1)
-      m_LEDIndex = 0;
-    LowBattery(m_AllianceColor, m_NumLED, 10, m_LEDIndex, m_ledBuffer);
-    m_LEDIndex++;
-  } else {
-    for (int i = 0; i < m_NumLED; i++)
-      m_ledBuffer[i].SetLED(m_AllianceColor);
+        alliance != frc::DriverStation::Alliance::kBlue) {
+    PaintSolid(m_ledBuffer, frc::Color::kPurple, 0, m_NumLED);
+  } else if (std::abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TX).GetDouble(0)) < 1 &&
+             std::abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0)) > 0){
+    PaintSolid(m_ledBuffer, frc::Color::kGreen, kSTRIP_1_START, m_NumLED); 
+  } else if (std::abs(GetCOB().GetTable().GetEntry(COB_KEY_LIME_LIGHT_TV).GetDouble(0)) > 0){
+    CanSee(m_AllianceColor, m_NumLED, m_ledBuffer);
   }
-  if (InRange()) {
-    SetCorners(0, m_ledBuffer, 255, 255, 255);
+
+  if (frc::Timer::GetMatchTime().to<double>() <= 30 &&
+      GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).GetBoolean(false)) {
+    if (m_LEDIndex > m_NumLED - 1)
+      m_LEDIndex = 0;
+    Strobe(m_LEDIndex % 8 >= 4, m_AllianceColor, m_NumLED, m_ledBuffer);
+    m_LEDIndex++;
   }
-  m_LED.SetData(m_ledBuffer);
+
+  m_LED.SetData(m_ledBuffer); 
+  //LED Code end
+  
 
   if (frc::RobotController::GetUserButton()) {
     if (Robot::GetRobot()
