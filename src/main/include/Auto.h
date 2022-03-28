@@ -19,6 +19,7 @@ class Auto {
   frc2::SequentialCommandGroup* DriveBackAndShoot();
   frc2::SequentialCommandGroup* ShootAndDriveBack();
   frc2::SequentialCommandGroup* TwoBallAuto();
+  frc2::SequentialCommandGroup* FourBallAuto();
 
  private:
 };

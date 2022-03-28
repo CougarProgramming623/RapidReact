@@ -140,3 +140,78 @@ frc2::SequentialCommandGroup* Auto::TwoBallAuto() {
               ));
   return group;
 }
+
+frc2::SequentialCommandGroup* Auto::FourBallAuto() {
+  frc2::SequentialCommandGroup* group = new frc2::SequentialCommandGroup();
+  group->AddCommands(frc2::ParallelDeadlineGroup(
+      DriveToPos(2.5, 0, 0),
+      std::move(*Robot::GetRobot()->GetIntake().MoveDown()),
+      frc2::SequentialCommandGroup(
+          frc2::ParallelDeadlineGroup(
+              frc2::WaitCommand(0.5_s),
+              std::move(*Robot::GetRobot()->GetIntake().Eject())),
+          std::move(*Robot::GetRobot()->GetIntake().Ingest()))));
+  group->AddCommands(
+      frc2::PrintCommand("Starting race group"),
+      frc2::ParallelRaceGroup(
+          DriveToPos(-2.3, 0, 0),
+          std::move(*Robot::GetRobot()->GetIntake().MoveUp())),
+      frc2::PrintCommand("Finished race group"),
+      // TurnToAngle(-90, 0.2),
+      frc2::PrintCommand("Finished turn"),
+      // TurnToAngle::TurnToTarget(),
+      frc2::ParallelRaceGroup(frc2::WaitCommand(2_s), LockOnTarget()),
+      frc2::ParallelDeadlineGroup(
+          frc2::WaitCommand(10_s),
+          std::move(*Robot::GetRobot()->GetShooter().ScaleToDistanceCommand()),
+          frc2::SequentialCommandGroup(
+              frc2::WaitCommand(1_s),
+              frc2::FunctionalCommand(
+                  [&] {  // onInit
+                  },
+                  [&] {  // onExecute
+                    DebugOutF("running feeder");
+                    Robot::GetRobot()->GetShooter().GetFeeder().Set(
+                        ControlMode::PercentOutput, -1);
+                  },
+                  [&](bool e) {  // onEnd
+                    Robot::GetRobot()->GetShooter().GetFeeder().Set(
+                        ControlMode::PercentOutput, 0);
+                  },
+                  [&] { return false; }, {}))
+                  
+              )),
+      TurnToAngle(-130, 0.2);
+      std::move(*Robot::GetRobot()->GetIntake().MoveDown());
+      std::move(*Robot::GetRobot()->GetIntake().Ingest());
+      DriveToPos(-6.096, 0, 0);
+      std::move(*Robot::GetRobot()->GetIntake().MoveUp());
+      DriveToPos(6.096, 0, 0);
+      TurnToAngle(130, 0.2);
+      frc2::ParallelRaceGroup(frc2::WaitCommand(2_s), LockOnTarget()),
+      frc2::ParallelDeadlineGroup(
+          frc2::WaitCommand(10_s),
+          std::move(*Robot::GetRobot()->GetShooter().ScaleToDistanceCommand()),
+          frc2::SequentialCommandGroup(
+              frc2::WaitCommand(1_s),
+              frc2::FunctionalCommand(
+                  [&] {  // onInit
+                  },
+                  [&] {  // onExecute
+                    DebugOutF("running feeder");
+                    Robot::GetRobot()->GetShooter().GetFeeder().Set(
+                        ControlMode::PercentOutput, -1);
+                  },
+                  [&](bool e) {  // onEnd
+                    Robot::GetRobot()->GetShooter().GetFeeder().Set(
+                        ControlMode::PercentOutput, 0);
+                  },
+                  [&] { return false; }, {}))
+                  
+              );
+
+
+
+
+  return group;
+}
