@@ -152,14 +152,10 @@ frc2::SequentialCommandGroup* Auto::FourBallAuto() {
               std::move(*Robot::GetRobot()->GetIntake().Eject())),
           std::move(*Robot::GetRobot()->GetIntake().Ingest()))));
   group->AddCommands(
-      frc2::PrintCommand("Starting race group"),
       frc2::ParallelRaceGroup(
           DriveToPos(-2.3, 0, 0),
-          std::move(*Robot::GetRobot()->GetIntake().MoveUp())),
-      frc2::PrintCommand("Finished race group"),
-      // TurnToAngle(-90, 0.2),
-      frc2::PrintCommand("Finished turn"),
-      // TurnToAngle::TurnToTarget(),
+          std::move(*Robot::GetRobot()->GetIntake().MoveUp())
+      ),
       frc2::ParallelRaceGroup(frc2::WaitCommand(2_s), TurnToAngle(-10, .02)),
       frc2::ParallelDeadlineGroup(
           frc2::WaitCommand(10_s),
@@ -170,7 +166,6 @@ frc2::SequentialCommandGroup* Auto::FourBallAuto() {
                   [&] {  // onInit
                   },
                   [&] {  // onExecute
-                    DebugOutF("running feeder");
                     Robot::GetRobot()->GetShooter().GetFeeder().Set(
                         ControlMode::PercentOutput, -1);
                   },
@@ -181,13 +176,15 @@ frc2::SequentialCommandGroup* Auto::FourBallAuto() {
                   [&] { return false; }, {}))
                   
               )),
-      TurnToAngle(-130, 0.2);
-      std::move(*Robot::GetRobot()->GetIntake().MoveDown());
-      std::move(*Robot::GetRobot()->GetIntake().Ingest());
-      DriveToPos(-6.096, 0, 0);
-      std::move(*Robot::GetRobot()->GetIntake().MoveUp());
-      DriveToPos(6.096, 0, 0);
-      TurnToAngle(130, 0.2);
+      TurnToAngle(-130, 0.2),
+          std::move(*Robot::GetRobot()->GetIntake().MoveDown()),
+      frc2::ParallelDeadlineGroup(
+          std::move(*Robot::GetRobot()->GetIntake().Ingest()),
+          DriveToPos(-6.096, 0, 0)
+      ),
+      std::move(*Robot::GetRobot()->GetIntake().MoveUp()),
+      DriveToPos(6.096, 0, 0),
+      TurnToAngle(130, 0.2),
       frc2::ParallelRaceGroup(frc2::WaitCommand(2_s), TurnToAngle(-10, .2)),
       frc2::ParallelDeadlineGroup(
           frc2::WaitCommand(10_s),
