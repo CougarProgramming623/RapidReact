@@ -31,7 +31,7 @@ void Drive::Execute() {
   r->GetDriveTrain().CartesianDrive(
       deadFix(-r->GetJoystick().GetRawAxis(1), 0.05),
       deadFix(r->GetJoystick().GetRawAxis(0), 0.05),
-      deadFix(r->GetJoystick().GetRawAxis(2), 0.075), r->GetNavX().GetYaw(),
+      deadFix(r->GetJoystick().GetRawAxis(2), 0.075), r->GetRealYaw(),
       true  // TODO before push
   );
 }

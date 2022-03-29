@@ -27,5 +27,5 @@ void LockOnTarget::Execute() {
   Robot* r = Robot::GetRobot();
   r->GetDriveTrain().CartesianDrive(
       -r->GetJoystick().GetRawAxis(1), r->GetJoystick().GetRawAxis(0),
-      (m_Angle / 27 / 2), r->GetNavX().GetYaw(), true);
+      (m_Angle / 27 / 2), r->GetRealYaw(), true);
 }

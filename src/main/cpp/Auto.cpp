@@ -13,7 +13,7 @@ using ctre::phoenix::motorcontrol::ControlMode;
 Auto::Auto() {}
 
 void Auto::AutoInit() {
-  Robot::GetRobot()->GetNavX().ZeroYaw();
+  
 }
 
 frc2::ParallelRaceGroup* Auto::DriveForward() {
@@ -69,7 +69,7 @@ frc2::SequentialCommandGroup* Auto::StandardFourBall() {
       TurnToAngle(110, 0.5), TurnToAngle::TurnToTarget(),
       Robot::GetRobot()->GetShooter().ShootingCommand(),
       TurnToAngle(
-          [] { return 165 - (double)Robot::GetRobot()->GetNavX().GetYaw(); },
+          [] { return 165 - (double)Robot::GetRobot()->GetRealYaw(); },
           0.5),
       DriveToPos(1.3, 0, 0), frc2::WaitCommand(2_s), TurnToAngle(150, 0.5),
       // Intake up
