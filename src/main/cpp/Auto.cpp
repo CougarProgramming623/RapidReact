@@ -144,7 +144,7 @@ frc2::SequentialCommandGroup* Auto::TwoBallAuto() {
 frc2::SequentialCommandGroup* Auto::FourBallAuto() {
   frc2::SequentialCommandGroup* group = new frc2::SequentialCommandGroup();
   group->AddCommands(frc2::ParallelDeadlineGroup(
-      DriveToPos(2.5, 0, 0),
+      DriveToPos(2, 0, 0),
       std::move(*Robot::GetRobot()->GetIntake().MoveDown()),
       frc2::SequentialCommandGroup(
           frc2::ParallelDeadlineGroup(
@@ -153,12 +153,12 @@ frc2::SequentialCommandGroup* Auto::FourBallAuto() {
           std::move(*Robot::GetRobot()->GetIntake().Ingest()))));
   group->AddCommands(
       frc2::ParallelRaceGroup(
-          DriveToPos(-2.3, 0, 0),
+          DriveToPos(-2, 0, 0),
           std::move(*Robot::GetRobot()->GetIntake().MoveUp())
       ),
-      frc2::ParallelRaceGroup(frc2::WaitCommand(2_s), TurnToAngle(-10, .02)),
+      frc2::ParallelRaceGroup(frc2::WaitCommand(2_s), TurnToAngle(-30, .02)),
       frc2::ParallelDeadlineGroup(
-          frc2::WaitCommand(10_s),
+          frc2::WaitCommand(4_s),
           std::move(*Robot::GetRobot()->GetShooter().ScaleToDistanceCommand()),
           frc2::SequentialCommandGroup(
               frc2::WaitCommand(1_s),
@@ -175,19 +175,25 @@ frc2::SequentialCommandGroup* Auto::FourBallAuto() {
                   },
                   [&] { return false; }, {}))
                   
-              )),
-      TurnToAngle(-130, 0.2),
+              ),
+      
+      TurnToAngle(40, 0.2),
           std::move(*Robot::GetRobot()->GetIntake().MoveDown()),
       frc2::ParallelDeadlineGroup(
-          std::move(*Robot::GetRobot()->GetIntake().Ingest()),
-          DriveToPos(-6.096, 0, 0)
+          DriveToPos(5.25, 0, 0),
+          std::move(*Robot::GetRobot()->GetIntake().Ingest())
       ),
-      std::move(*Robot::GetRobot()->GetIntake().MoveUp()),
-      DriveToPos(6.096, 0, 0),
-      TurnToAngle(130, 0.2),
-      frc2::ParallelRaceGroup(frc2::WaitCommand(2_s), TurnToAngle(-10, .2)),
       frc2::ParallelDeadlineGroup(
-          frc2::WaitCommand(10_s),
+          DriveToPos(-4.75, 0, 0),
+          std::move(*Robot::GetRobot()->GetIntake().MoveUp())
+      ),
+
+      frc2::ParallelDeadlineGroup(
+          frc2::WaitCommand(1.0_s),
+          LockOnTarget(true)
+      ),
+      frc2::ParallelDeadlineGroup(
+          frc2::WaitCommand(4_s),
           std::move(*Robot::GetRobot()->GetShooter().ScaleToDistanceCommand()),
           frc2::SequentialCommandGroup(
               frc2::WaitCommand(1_s),
@@ -205,7 +211,7 @@ frc2::SequentialCommandGroup* Auto::FourBallAuto() {
                   },
                   [&] { return false; }, {}))
                   
-              );
+              ));
 
 
 

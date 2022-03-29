@@ -187,7 +187,7 @@ void Robot::AutonomousInit() {
   Auto* auto1 = new Auto();
   GetNavX().ZeroYaw();
   // m_Auto->DriveForward()->Schedule();
-  m_Auto = auto1->TwoBallAuto();
+  m_Auto = auto1->FourBallAuto();
   m_Auto->Schedule();
 }
 
@@ -199,7 +199,7 @@ void Robot::TeleopInit() {
   GetDriveTrain().BreakMode(true);
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
   GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(true);
-  m_TargetLock.WhenHeld(LockOnTarget());
+  m_TargetLock.WhenHeld(LockOnTarget(false));
 }
 void Robot::TeleopPeriodic() {
   m_Shooter.ShooterPeriotic();

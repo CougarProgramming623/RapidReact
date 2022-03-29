@@ -4,7 +4,8 @@
 
 #include "Robot.h"
 
-LockOnTarget::LockOnTarget() {
+LockOnTarget::LockOnTarget(bool noJoystick) {
+  m_noJoystick = noJoystick;
   AddRequirements(&Robot::GetRobot()->GetDriveTrain());
 }
 
@@ -25,7 +26,15 @@ void LockOnTarget::Execute() {
       .SetString("LockOnTarget");
 
   Robot* r = Robot::GetRobot();
-  r->GetDriveTrain().CartesianDrive(
-      -r->GetJoystick().GetRawAxis(1), r->GetJoystick().GetRawAxis(0),
-      (m_Angle / 27 / 2), r->GetNavX().GetYaw(), true);
+  
+  double rotationPower = m_Angle / 27 / 2;
+
+  if(!m_noJoystick){
+    r->GetDriveTrain().CartesianDrive(
+        -r->GetJoystick().GetRawAxis(1), r->GetJoystick().GetRawAxis(0),
+        rotationPower, r->GetNavX().GetYaw(), true);
+  } else {
+    r->GetDriveTrain().CartesianDrive(0, 0,
+        rotationPower, r->GetNavX().GetYaw(), true);
+  }
 }

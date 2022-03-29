@@ -8,11 +8,13 @@
 class LockOnTarget
     : public frc2::CommandHelper<frc2::CommandBase, LockOnTarget> {
  public:
-  explicit LockOnTarget();
+  explicit LockOnTarget(bool);
 
   void Initialize() override;
   void Execute() override;
 
  private:
   double m_Angle;
+  bool m_noJoystick;
+
 };
