@@ -60,8 +60,8 @@ void DriveToPos::Initialize() {
   m_DriveTrain.BreakMode(true);
   m_DriveTrain.UsePostionPID();
 
-  FOR_ALL_MOTORS(.ConfigPeakOutputForward(0.4, 0))
-  FOR_ALL_MOTORS(.ConfigPeakOutputReverse(-0.4, 0))
+  FOR_ALL_MOTORS(.ConfigPeakOutputForward(0.2, 0))
+  FOR_ALL_MOTORS(.ConfigPeakOutputReverse(-0.2, 0))
 
   FOR_ALL_MOTORS(.ConfigClosedloopRamp(.06, 0))
 

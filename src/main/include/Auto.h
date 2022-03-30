@@ -13,13 +13,8 @@ class Auto {
   Auto();
   void AutoInit();
 
-  frc2::SequentialCommandGroup* StandardFourBall();
-  frc2::SequentialCommandGroup* CramAuto();
-  frc2::ParallelRaceGroup* DriveForward();
-  frc2::SequentialCommandGroup* DriveBackAndShoot();
-  frc2::SequentialCommandGroup* ShootAndDriveBack();
   frc2::SequentialCommandGroup* TwoBallAuto();
-  frc2::SequentialCommandGroup* FourBallAuto();
+  frc2::SequentialCommandGroup* TwoAndPrep();
 
  private:
 };

@@ -187,7 +187,7 @@ void Robot::AutonomousInit() {
   Auto* auto1 = new Auto();
   GetNavX().ZeroYaw();
   // m_Auto->DriveForward()->Schedule();
-  m_Auto = auto1->FourBallAuto();
+  m_Auto = auto1->TwoBallAuto();
   m_Auto->Schedule();
 }
 
