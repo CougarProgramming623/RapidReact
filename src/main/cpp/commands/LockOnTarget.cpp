@@ -38,3 +38,7 @@ void LockOnTarget::Execute() {
         rotationPower, r->GetNavX().GetYaw(), true);
   }
 }
+
+void LockOnTarget::End(bool interrupted){
+  Robot::GetRobot()->GetDriveTrain().CartesianDrive(0, 0, 0, 0, true);
+}

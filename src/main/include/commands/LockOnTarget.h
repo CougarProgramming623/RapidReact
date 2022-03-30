@@ -12,6 +12,8 @@ class LockOnTarget
 
   void Initialize() override;
   void Execute() override;
+  void End(bool interrupted) override;
+
 
  private:
   double m_Angle;

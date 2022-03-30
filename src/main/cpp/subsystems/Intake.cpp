@@ -11,7 +11,7 @@
 #include "Robot.h"
 #include "Util.h"
 
-#define standardUpSpeed .4
+#define standardUpSpeed .5
 #define standardDownSpeed -0.25
 #define standardInOutSpeed 1  // standard moves in
 #define voltageThreshhold \
@@ -37,6 +37,8 @@ Intake::Intake()
 void Intake::IntakeInit() {
   bindUpDownButton();
   bindIngestEjectButtons();
+  m_motorUpDown.EnableVoltageCompensation(true);
+  m_motorUpDown.ConfigVoltageCompSaturation(10);
 }
 
 void Intake::bindUpDownButton() {

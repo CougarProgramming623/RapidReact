@@ -161,7 +161,7 @@ frc2::SequentialCommandGroup* Auto::FourBallAuto() {
           frc2::WaitCommand(4_s),
           std::move(*Robot::GetRobot()->GetShooter().ScaleToDistanceCommand()),
           frc2::SequentialCommandGroup(
-              frc2::WaitCommand(1_s),
+              frc2::WaitCommand(2_s),
               frc2::FunctionalCommand(
                   [&] {  // onInit
                   },
@@ -189,7 +189,7 @@ frc2::SequentialCommandGroup* Auto::FourBallAuto() {
       ),
 
       frc2::ParallelDeadlineGroup(
-          frc2::WaitCommand(1.0_s),
+          frc2::WaitCommand(2.0_s),
           LockOnTarget(true)
       ),
       frc2::ParallelDeadlineGroup(
