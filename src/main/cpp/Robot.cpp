@@ -144,6 +144,11 @@ void Robot::RobotPeriodic() {
       .GetTable()
       .GetEntry(COB_KEY_ROBOT_ANGLE)
       .SetDouble(GetRealYaw());
+    
+  GetCOB()
+      .GetTable()
+      .GetEntry("/COB/gyroAngle")
+      .SetDouble(GetNavX().GetYaw());
   GetCOB()
       .GetTable()
       .GetEntry(COB_KEY_MATCH_TIME)
