@@ -30,7 +30,7 @@
 #include <frc/Timer.h>
 
 const int kSTRIP_1_START = 111;
-const int kSTRIP_2_START = 192;
+const int kSTRIP_2_START = 207;
 
 Robot* Robot::s_Instance = nullptr;
 
@@ -48,7 +48,7 @@ Robot::Robot()
 
 void Robot::RobotInit() {
   DebugOutF("Robot Init");
-  m_NumLED = 272;
+  m_NumLED = 280;
   m_LED.SetLength(m_NumLED);
 
   for (int i = 0; i < m_NumLED; i++) {
@@ -117,6 +117,16 @@ void Robot::RobotPeriodic() {
       m_LEDIndex = 0;
     Strobe(m_LEDIndex % 8 >= 4, m_AllianceColor, m_NumLED, m_ledBuffer);
     m_LEDIndex++;
+  }
+
+  if(std::abs(GetNavX().GetYaw()) > 90){
+    for (int i = kSTRIP_1_START; i < kSTRIP_2_START; i++){
+      m_ledBuffer[i].SetLED(m_AllianceColor);
+    }
+  } else {
+    for (int i = kSTRIP_2_START; i < m_NumLED; i++){
+      m_ledBuffer[i].SetLED(m_AllianceColor);
+    }
   }
 
   m_LED.SetData(m_ledBuffer); 
