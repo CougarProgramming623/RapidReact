@@ -72,7 +72,7 @@ class Robot : public frc::TimedRobot {
  private:
   static Robot* s_Instance;
   frc::AddressableLED m_LED{9};
-  std::array<frc::AddressableLED::LEDData, 208> m_ledBuffer;
+  std::array<frc::AddressableLED::LEDData, 272> m_ledBuffer;
 
   Shooter m_Shooter;
   Intake m_Intake;
