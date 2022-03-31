@@ -91,4 +91,5 @@ class Robot : public frc::TimedRobot {
 
   Climb m_Climb;
   frc2::SequentialCommandGroup* m_Auto;
+
 };

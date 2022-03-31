@@ -186,8 +186,19 @@ void Robot::AutonomousInit() {
   GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(false);
   Auto* auto1 = new Auto();
   GetNavX().ZeroYaw();
+  if(GetButtonBoard().GetRawButton(-1)){
+      m_Auto = auto1->TwoBallAuto();
+  }
+  if(GetButtonBoard().GetRawButton(-1)){
+      m_Auto = auto1->TwoAndPrep();
+  }
+  if(GetButtonBoard().GetRawButton(-1)){
+      m_Auto = auto1->Taxi();
+  }
+  if(GetButtonBoard().GetRawButton(-1)){
+      m_Auto = auto1->Nothing();
+  }
   // m_Auto->DriveForward()->Schedule();
-  m_Auto = auto1->TwoBallAuto();
   m_Auto->Schedule();
 }
 

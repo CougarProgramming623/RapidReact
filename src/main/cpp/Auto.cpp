@@ -103,3 +103,7 @@ frc2::SequentialCommandGroup* Auto::TwoAndPrep() {
   );
   return group;
 }
+
+frc2::SequentialCommandGroup* Auto::Taxi() {}
+
+frc2::SequentialCommandGroup* Auto::Nothing() {}

@@ -15,6 +15,9 @@ class Auto {
 
   frc2::SequentialCommandGroup* TwoBallAuto();
   frc2::SequentialCommandGroup* TwoAndPrep();
+  frc2::SequentialCommandGroup* Taxi();
+  frc2::SequentialCommandGroup* Nothing();
+
 
  private:
 };
