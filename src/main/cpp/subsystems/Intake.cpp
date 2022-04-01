@@ -60,11 +60,11 @@ frc2::SequentialCommandGroup* Intake::MoveUp() {
       frc2::FunctionalCommand(
           [&] {}, [&] { 
           DebugOutF(std::to_string(Robot::GetRobot()->GetNavX().GetRate()));
-          if(Robot::GetRobot()->GetNavX().GetVelocityZ() > 5){
+          if(abs(Robot::GetRobot()->GetNavX().GetVelocityZ()) > 5){
             m_motorUpDown.Set(ControlMode::PercentOutput, -1);
-          } else if (Robot::GetRobot()->GetNavX().GetVelocityZ() > 4){
+          } else if (abs(Robot::GetRobot()->GetNavX().GetVelocityZ()) > 4){
             m_motorUpDown.Set(ControlMode::PercentOutput, -.85);
-          } else if (Robot::GetRobot()->GetNavX().GetVelocityZ() > 3){
+          } else if (abs(Robot::GetRobot()->GetNavX().GetVelocityZ()) > 3){
             m_motorUpDown.Set(ControlMode::PercentOutput, -.55);
           } else {
             m_motorUpDown.Set(ControlMode::PercentOutput, -.3);
