@@ -11,7 +11,7 @@
 #include "Robot.h"
 #include "Util.h"
 
-#define standardUpSpeed .4
+#define standardUpSpeed .6
 #define standardDownSpeed -0.25
 #define standardInOutSpeed 1  // standard moves in
 #define voltageThreshhold \
@@ -58,7 +58,18 @@ frc2::SequentialCommandGroup* Intake::MoveUp() {
               [&](bool e) {}, [&] { return false; }, {}),
           frc2::WaitCommand(2_s)),
       frc2::FunctionalCommand(
-          [&] {}, [&] { m_motorUpDown.Set(ControlMode::PercentOutput, -.2); },
+          [&] {}, [&] { 
+          DebugOutF(std::to_string(Robot::GetRobot()->GetNavX().GetRate()));
+          if(Robot::GetRobot()->GetNavX().GetVelocityZ() > 5){
+            m_motorUpDown.Set(ControlMode::PercentOutput, -1);
+          } else if (Robot::GetRobot()->GetNavX().GetVelocityZ() > 4){
+            m_motorUpDown.Set(ControlMode::PercentOutput, -.85);
+          } else if (Robot::GetRobot()->GetNavX().GetVelocityZ() > 3){
+            m_motorUpDown.Set(ControlMode::PercentOutput, -.55);
+          } else {
+            m_motorUpDown.Set(ControlMode::PercentOutput, -.3);
+          }
+          },
           [&](bool e) {}, [&] { return false; }, {}));
   command->AddRequirements(this);
   return command;
