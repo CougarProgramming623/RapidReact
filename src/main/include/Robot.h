@@ -55,10 +55,9 @@ class Robot : public frc::TimedRobot {
   inline Intake& GetIntake() { return m_Intake; }
 
   inline AHRS& GetNavX() { return m_NavX; }
-  inline double GetRealYaw() { return GetNavX().GetYaw() - m_AngleOffset; }
+  inline double GetRealYaw() { return GetNavX().GetYaw();}
   inline void ResetYaw() { 
     GetNavX().ZeroYaw(); 
-    m_AngleOffset = 0;
   }
 
   inline COB& GetCOB() { return m_COB; }
@@ -97,7 +96,4 @@ class Robot : public frc::TimedRobot {
 
   Climb m_Climb;
   frc2::SequentialCommandGroup* m_Auto;
-
-  double m_AngleOffset;
-  double m_InitialAngle;
 };

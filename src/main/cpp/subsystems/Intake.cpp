@@ -59,7 +59,6 @@ frc2::SequentialCommandGroup* Intake::MoveUp() {
           frc2::WaitCommand(2_s)),
       frc2::FunctionalCommand(
           [&] {}, [&] { 
-          DebugOutF(std::to_string(Robot::GetRobot()->GetNavX().GetRate()));
           if (abs(Robot::GetRobot()->GetNavX().GetRate()) > 2){
             m_motorUpDown.Set(ControlMode::PercentOutput, -1);
           } else {
