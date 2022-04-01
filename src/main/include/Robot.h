@@ -14,6 +14,7 @@
 #include <frc2/command/SubsystemBase.h>
 
 #include <AHRS.h>
+#include <frc/RobotController.h>
 
 #include "COB.h"
 #include "LEDFunction.h"
@@ -54,6 +55,11 @@ class Robot : public frc::TimedRobot {
   inline Intake& GetIntake() { return m_Intake; }
 
   inline AHRS& GetNavX() { return m_NavX; }
+  inline double GetRealYaw() { return GetNavX().GetYaw() - m_AngleOffset; }
+  inline void ResetYaw() { 
+    GetNavX().ZeroYaw(); 
+    m_AngleOffset = 0;
+  }
 
   inline COB& GetCOB() { return m_COB; }
   inline OI& GetOI() { return m_OI; }
@@ -91,4 +97,7 @@ class Robot : public frc::TimedRobot {
 
   Climb m_Climb;
   frc2::SequentialCommandGroup* m_Auto;
+
+  double m_AngleOffset;
+  double m_InitialAngle;
 };

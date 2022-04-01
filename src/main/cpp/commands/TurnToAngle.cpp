@@ -44,11 +44,11 @@ TurnToAngle::TurnToAngle(double angle, double speed) {
 
 void TurnToAngle::Initialize() {
   m_RotTicks = 2048.0 / 60 * kGEARBOX_RATIO * m_Angle() * 9 / 10 * 1.028;
-  m_TargetAngle = m_Angle() + Robot::GetRobot()->GetNavX().GetYaw();
+  m_TargetAngle = m_Angle() + Robot::GetRobot()->GetRealYaw();
   FOR_ALL_MOTORS(.Set(ControlMode::PercentOutput, 0))
 
   DebugOutF("TurnToAngle Initialize starting at " +
-            std::to_string(Robot::GetRobot()->GetNavX().GetYaw()) +
+            std::to_string(Robot::GetRobot()->GetRealYaw()) +
             " going to " + std::to_string(m_TargetAngle));
 
   m_FinalTicks[0] =
@@ -110,7 +110,7 @@ bool TurnToAngle::IsFinished() {
       //  kDERIVATIVE_THRESHOLD ||
       //  std::abs(m_DriveTrain.GetBackR().GetErrorDerivative())  <=
       //  kDERIVATIVE_THRESHOLD )) ||
-      (std::abs(Robot::GetRobot()->GetNavX().GetYaw() - m_TargetAngle) <= 1);
+      (std::abs(Robot::GetRobot()->GetRealYaw() - m_TargetAngle) <= 1);
 }
 
 void TurnToAngle::End(bool end) {

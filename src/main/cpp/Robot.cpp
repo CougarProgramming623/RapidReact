@@ -80,7 +80,9 @@ void Robot::RobotInit() {
       GetCOB().GetTable().GetEntry("/limelight/ledMode").SetDouble(1);
   });
 
-  frc2::Button(BUTTON_L(4)).WhenPressed([&] { GetNavX().ZeroYaw(); });
+  frc2::Button(BUTTON_L(4)).WhenPressed([&] { ResetYaw(); });
+
+  ResetYaw();
 }
 
 void Robot::RobotPeriodic() {
@@ -122,22 +124,7 @@ void Robot::RobotPeriodic() {
   
 
   if (frc::RobotController::GetUserButton()) {
-    if (Robot::GetRobot()
-            ->GetCOB()
-            .GetTable()
-            .GetEntry("/limelight/ledMode")
-            .GetDouble(2) == 1)
-      Robot::GetRobot()
-          ->GetCOB()
-          .GetTable()
-          .GetEntry("/limelight/ledMode")
-          .SetDouble(0);
-    else
-      Robot::GetRobot()
-          ->GetCOB()
-          .GetTable()
-          .GetEntry("/limelight/ledMode")
-          .SetDouble(1);
+    m_InitialAngle = GetNavX().GetYaw();
   }
 
   PushDistance();
@@ -150,12 +137,17 @@ void Robot::RobotPeriodic() {
   // GetCOB().GetTable().GetEntry(COB_KEY_FOD).SetBoolean(GetDriveTrain().m_FOD);
   if (GetCOB().GetTable().GetEntry(COB_KEY_NAVX_RESET).GetBoolean(false) ==
       true) {
-    GetNavX().ZeroYaw();
+    ResetYaw();
     GetCOB().GetTable().GetEntry(COB_KEY_NAVX_RESET).SetBoolean(false);
   }
   GetCOB()
       .GetTable()
       .GetEntry(COB_KEY_ROBOT_ANGLE)
+      .SetDouble(GetRealYaw());
+    
+  GetCOB()
+      .GetTable()
+      .GetEntry("/COB/gyroAngle")
       .SetDouble(GetNavX().GetYaw());
   GetCOB()
       .GetTable()
@@ -165,6 +157,8 @@ void Robot::RobotPeriodic() {
       .GetTable()
       .GetEntry(COB_KEY_TICKS)
       .SetDouble(GetCOB().GetTable().GetEntry(COB_KEY_TICKS).GetDouble(0) + 1);
+
+  GetCOB().GetTable().GetEntry("/navX/realYaw").SetDouble(GetRealYaw());
 }
 
 void Robot::AutonomousInit() {
@@ -173,7 +167,7 @@ void Robot::AutonomousInit() {
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
   GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(false);
   Auto* auto1 = new Auto();
-  GetNavX().ZeroYaw();
+  m_AngleOffset = GetNavX().GetYaw() - m_InitialAngle;
   // m_Auto->DriveForward()->Schedule();
   m_Auto = auto1->TwoBallAuto();
   m_Auto->Schedule();
