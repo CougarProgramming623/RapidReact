@@ -124,7 +124,7 @@ void Robot::RobotPeriodic() {
   
 
   if (frc::RobotController::GetUserButton()) {
-    m_InitialAngle = GetNavX().GetYaw();
+    GetNavX().ZeroYaw();
   }
 
   PushDistance();
@@ -167,7 +167,6 @@ void Robot::AutonomousInit() {
   GetCOB().GetTable().GetEntry(COB_KEY_ENABLED).SetBoolean(true);
   GetCOB().GetTable().GetEntry(COB_KEY_IS_TELE).SetBoolean(false);
   Auto* auto1 = new Auto();
-  m_AngleOffset = GetNavX().GetYaw() - m_InitialAngle;
   // m_Auto->DriveForward()->Schedule();
   m_Auto = auto1->TwoBallAuto();
   m_Auto->Schedule();
