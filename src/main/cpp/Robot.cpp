@@ -119,12 +119,12 @@ void Robot::RobotPeriodic() {
     m_LEDIndex++;
   }
 
-  if(std::abs(GetRealYaw()) > 90){
-    for (int i = kSTRIP_1_START; i < kSTRIP_2_START; i++){
+  if(std::abs(GetRealYaw()) > 90){ //GetRealYaw Change
+    for (int i = kSTRIP_2_START; i < m_NumLED; i++){
       m_ledBuffer[i].SetLED(m_AllianceColor);
     }
   } else {
-    for (int i = kSTRIP_2_START; i < m_NumLED; i++){
+    for (int i = kSTRIP_1_START; i < kSTRIP_2_START; i++){
       m_ledBuffer[i].SetLED(m_AllianceColor);
     }
   }
@@ -158,7 +158,7 @@ void Robot::RobotPeriodic() {
   GetCOB()
       .GetTable()
       .GetEntry("/COB/gyroAngle")
-      .SetDouble(GetNavX().GetRealYaw());
+      .SetDouble(GetRealYaw()); //GetRealYaw Change
   GetCOB()
       .GetTable()
       .GetEntry(COB_KEY_MATCH_TIME)
@@ -222,6 +222,8 @@ bool Robot::InRange() {
   return GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).GetDouble(0) >= 500 &&
          GetCOB().GetTable().GetEntry(COB_KEY_DISTANCE).GetDouble(0) <= 530;
 }
+
+
 
 #ifndef RUNNING_FRC_TESTS
 int main() {
