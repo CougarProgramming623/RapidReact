@@ -55,7 +55,13 @@ class Robot : public frc::TimedRobot {
   inline Intake& GetIntake() { return m_Intake; }
 
   inline AHRS& GetNavX() { return m_NavX; }
-  inline double GetRealYaw() { return GetNavX().GetYaw();}
+  inline double GetRealYaw() { 
+    double yaw = GetNavX().GetYaw()  + 180; 
+    if(yaw > 180) 
+      return yaw - 360;
+    else 
+      return yaw;
+    }
   inline void ResetYaw() { 
     GetNavX().ZeroYaw(); 
   }

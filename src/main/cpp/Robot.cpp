@@ -119,7 +119,7 @@ void Robot::RobotPeriodic() {
     m_LEDIndex++;
   }
 
-  if(std::abs(GetNavX().GetYaw()) > 90){
+  if(std::abs(GetRealYaw()) > 90){
     for (int i = kSTRIP_1_START; i < kSTRIP_2_START; i++){
       m_ledBuffer[i].SetLED(m_AllianceColor);
     }
@@ -158,7 +158,7 @@ void Robot::RobotPeriodic() {
   GetCOB()
       .GetTable()
       .GetEntry("/COB/gyroAngle")
-      .SetDouble(GetNavX().GetYaw());
+      .SetDouble(GetNavX().GetRealYaw());
   GetCOB()
       .GetTable()
       .GetEntry(COB_KEY_MATCH_TIME)
