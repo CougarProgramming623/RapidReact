@@ -45,7 +45,6 @@ frc2::FunctionalCommand* Climb::ManualClimb() {
           m_PullUpArm.Set(ControlMode::PercentOutput, 0);
         }
 
-        DebugOutF("current voltage on pot: " + std::to_string(m_Analog.GetValue()));
         double pivot = Robot::GetRobot()->GetButtonBoard().GetRawAxis(3);
         // DebugOutF("setting pivot to " + std::to_string(pivot));
         pivot = 0.1 > std::abs(pivot) ? 0 : pivot;
