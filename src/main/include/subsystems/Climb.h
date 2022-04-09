@@ -37,6 +37,7 @@ class Climb : public frc2::SubsystemBase {
   ctre::phoenix::motorcontrol::can::TalonFX m_PullUpArm;
 
   frc::AnalogInput m_Analog{3};
+  frc::AnalogInput m_AnalogUp{2}; //Change (!)
   frc::DigitalInput m_LowBound{0};
 
   frc2::Button m_AutoLock;

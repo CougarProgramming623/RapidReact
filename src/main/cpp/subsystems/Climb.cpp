@@ -36,7 +36,7 @@ frc2::FunctionalCommand* Climb::ManualClimb() {
           // DebugOutF("Current: " +
           // std::to_string(m_PullUpArm.GetSelectedSensorPosition()) + " , min:
           // " + std::to_string(m_MinSensorPosition));
-          if (m_PullUpArm.GetSelectedSensorPosition() > m_MinSensorPosition) {
+          if (m_AnalogUp.GetVoltage() < 1) {
             m_PullUpArm.Set(ControlMode::PercentOutput, pullup);
           } else {
             m_PullUpArm.Set(ControlMode::PercentOutput, 0);
@@ -45,18 +45,18 @@ frc2::FunctionalCommand* Climb::ManualClimb() {
           m_PullUpArm.Set(ControlMode::PercentOutput, 0);
         }
 
-        // DebugOutF("current voltage on pot" +
-        // std::to_string(m_Analog.GetValue()));
+        DebugOutF("current voltage on pot: " + std::to_string(m_Analog.GetValue()));
         double pivot = Robot::GetRobot()->GetButtonBoard().GetRawAxis(3);
         // DebugOutF("setting pivot to " + std::to_string(pivot));
         pivot = 0.1 > std::abs(pivot) ? 0 : pivot;
-        if (m_Analog.GetValue() > 1250) {
-          m_PivotArm.Set(ControlMode::PercentOutput, pivot);
-        } else if (pivot < 0) {
-          m_PivotArm.Set(ControlMode::PercentOutput, pivot);
-        } else {
-          m_PivotArm.Set(ControlMode::PercentOutput, 0);
-        }
+        m_PivotArm.Set(ControlMode::PercentOutput, pivot);
+        // if (m_Analog.GetValue() > 1250) {
+        //   m_PivotArm.Set(ControlMode::PercentOutput, pivot);
+        // } else if (pivot < 0) {
+        //   m_PivotArm.Set(ControlMode::PercentOutput, pivot);
+        // } else {
+        //   m_PivotArm.Set(ControlMode::PercentOutput, 0);
+        // }
       },  // On Excute
       [&](bool e) {
 

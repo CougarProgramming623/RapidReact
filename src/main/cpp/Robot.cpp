@@ -169,6 +169,8 @@ void Robot::RobotPeriodic() {
       .SetDouble(GetCOB().GetTable().GetEntry(COB_KEY_TICKS).GetDouble(0) + 1);
 
   GetCOB().GetTable().GetEntry("/navX/realYaw").SetDouble(GetRealYaw());
+
+  
 }
 
 void Robot::AutonomousInit() {
