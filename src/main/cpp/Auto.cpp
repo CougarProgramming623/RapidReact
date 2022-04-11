@@ -101,17 +101,21 @@ frc2::SequentialCommandGroup* Auto::ShootAndDriveBack() {
 frc2::SequentialCommandGroup* Auto::TwoBallAuto() {
   frc2::SequentialCommandGroup* group = new frc2::SequentialCommandGroup();
   group->AddCommands(frc2::ParallelDeadlineGroup(
-      DriveToPos(2.5, 0, 0),
+      frc2::SequentialCommandGroup(
+        frc2::WaitCommand(.5_s),
+        DriveToPos(2, 0, 0)
+      ),
       std::move(*Robot::GetRobot()->GetIntake().MoveDown()),
       frc2::SequentialCommandGroup(
           frc2::ParallelDeadlineGroup(
               frc2::WaitCommand(0.5_s),
               std::move(*Robot::GetRobot()->GetIntake().Eject())),
           std::move(*Robot::GetRobot()->GetIntake().Ingest()))));
+          
   group->AddCommands(
       frc2::PrintCommand("Starting race group"),
       frc2::ParallelRaceGroup(
-          DriveToPos(-2.3, 0, 0),
+          DriveToPos(-1.8, 0, 0),
           std::move(*Robot::GetRobot()->GetIntake().MoveUp())),
       frc2::PrintCommand("Finished race group"),
       // TurnToAngle(-90, 0.2),
