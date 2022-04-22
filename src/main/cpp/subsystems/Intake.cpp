@@ -13,7 +13,7 @@
 
 #define standardUpSpeed .6
 #define standardDownSpeed -0.25
-#define standardInOutSpeed 1  // standard moves in
+#define standardInOutSpeed .85  // standard moves in
 #define voltageThreshhold \
   1  // voltage to stop the UpDownMotor from moving further down
 
