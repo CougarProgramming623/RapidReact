@@ -46,16 +46,17 @@ frc2::FunctionalCommand* Climb::ManualClimb() {
         }
 
         double pivot = Robot::GetRobot()->GetButtonBoard().GetRawAxis(3);
-        // DebugOutF("setting pivot to " + std::to_string(pivot));
+        //DebugOutF("setting pivot to " + std::to_string(pivot));
+        Robot::GetRobot()->GetCOB().GetTable().GetEntry("/CCOB/pivotPOT").SetDouble(m_Analog.GetValue());
         pivot = 0.1 > std::abs(pivot) ? 0 : pivot;
         m_PivotArm.Set(ControlMode::PercentOutput, pivot);
-        // if (m_Analog.GetValue() > 1250) {
-        //   m_PivotArm.Set(ControlMode::PercentOutput, pivot);
-        // } else if (pivot < 0) {
-        //   m_PivotArm.Set(ControlMode::PercentOutput, pivot);
-        // } else {
-        //   m_PivotArm.Set(ControlMode::PercentOutput, 0);
-        // }
+        if (m_Analog.GetValue() > 1250 || Robot::GetRobot()->GetButtonBoard().GetRawButton(11)) {
+          m_PivotArm.Set(ControlMode::PercentOutput, pivot);
+        } else if (pivot < 0) {
+          m_PivotArm.Set(ControlMode::PercentOutput, pivot);
+        } else {
+          m_PivotArm.Set(ControlMode::PercentOutput, 0);
+        }
       },  // On Excute
       [&](bool e) {
 
